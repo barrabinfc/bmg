@@ -12,7 +12,7 @@ class Perseguida(models.Model):
     updated_at       = models.DateTimeField(auto_now=True) 
     created_at       = models.DateTimeField(auto_now_add=True)
     
-    hash  = models.CharField(max_length=1000, unique=True, editable=False)
+    hash  = models.CharField(max_length=255, unique=True, editable=False)
     image = ImageWithThumbsField(upload_to='photos/', sizes=THUMBS_SIZE )
     
     approved         = models.BooleanField(default=False)
