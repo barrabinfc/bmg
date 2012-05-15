@@ -3,7 +3,7 @@ from hashlib import sha512
 
 from thumbs import ImageWithThumbsField
 
-from app.settings import THUMBS_SIZE 
+from settings import THUMBS_SIZE 
 
 # Create your models here.
 class Perseguida(models.Model):

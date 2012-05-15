@@ -4,9 +4,9 @@ from django.http import HttpResponse
 
 from django.views.decorators.csrf import csrf_exempt
 
-from app.settings import THUMBS_SIZE
-from app.perseguida.models import Perseguida
-from app.perseguida.forms import PerseguidaForm
+from settings import THUMBS_SIZE
+from perseguida.models import Perseguida
+from perseguida.forms import PerseguidaForm
 
 from utils.utils import qs_to_json
 import json, random

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app.perseguida.models import Perseguida
+from perseguida.models import Perseguida
 
 class PerseguidaAdmin( admin.ModelAdmin ):
     fields = ['approved','name','image',]
