@@ -164,6 +164,4 @@ LOGGING = {
     }
 }
 
-ADMIN_MEDIA_PREFIX = '/media/admin/'
-
 from app_settings import *
