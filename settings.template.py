@@ -48,7 +48,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/home/rapp/bancogenital/media/'
+MEDIA_ROOT = '/var/rapp/bancogenital/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -63,14 +63,14 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/media/'
+STATIC_URL = 'http://genitalia.me/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/home/rapp/bancogenital/media",
+    "/var/rapp/bancogenital/static",
 )
 
 # List of finder classes that know how to find static files in
