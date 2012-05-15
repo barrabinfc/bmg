@@ -1,0 +1,73 @@
+/**** Base styles ****/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+html {
+  overflow: hidden;
+}
+
+body { 
+  font: 13px 'Helvetica Neue', Arial, sans-serif;
+  background: #D8D5D2;
+  background: #000;
+  color: #222;
+  line-height: 1.6em;
+  display: block;
+}
+
+#viewport {
+    width:100%;
+     height:450px;
+     position:relative;
+     overflow:hidden;
+     margin:0 auto;
+     background:#212121;
+}
+
+.tile {
+    width: 125px;
+    height: 150px;
+    opacity: 0.4;
+    
+    -webkit-transition-duration: 0.3s;
+       -moz-transition-duration: 0.3s;
+         -o-transition-duration: 0.3s;
+            transition-duration: 0.3s;
+
+    -webkit-transition-property: height, width, opacity;
+       -moz-transition-property: height, width, opacity;
+         -o-transition-property: height, width, opacity;
+            transition-property: height, width, opacity;
+}
+
+.tile img {
+    width: 125px;
+    height: 150px;
+    -moz-box-shadow: 1px 1px 10px #000;
+    -webkit-box-shadow: 1px 1px 10px #000;
+    box-shadow: 1px 1px 10px #000;        
+}
+
+.tile:hover {
+   opacity: 1;
+}

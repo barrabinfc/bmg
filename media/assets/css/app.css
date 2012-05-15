@@ -1,0 +1,131 @@
+/**** Base styles ****/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+body { 
+  font: 13px 'Helvetica Neue', Arial, sans-serif;
+  background: #D8D5D2;
+  background: #000;
+  color: #222;
+  line-height: 1.6em;
+}
+
+
+.menu {
+    background-color: #fff;
+    position: fixed;
+    opacity: 0.95;
+    width: 100%;
+    top: 0px;
+    margin: 0px;
+    z-index: 3;
+}
+
+#bancogenital-container {
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin-top: 32px;
+}
+
+.photo {
+    opacity: 0.5;
+    margin: 1px;
+/*    padding: 1px;*/
+/*    background: #D8D5D2;*/
+
+    background: #000;
+    font-size: 11px;
+/*    line-height: 1.4em;*/
+    float: left;
+    opacity: 0.8;
+}
+
+.photo img {
+    display: block;
+    width: 100%;    
+}
+
+.col4 { width: 480px; }
+.col3 { width: 280px; }
+
+.size-500x600 {
+    width: 500px;
+    height: 600px;
+}
+
+.size-250x300 {
+    width: 250px;
+    height: 300px;
+}
+
+.size-125x150 {
+    width: 125px;
+    height: 150px;
+}
+
+.size-512x512 {
+    width: 512px;
+    height: 512px;
+}
+
+.size-256x256 {
+    width: 256px;
+    height: 256px;
+}
+
+.size-128x128 {
+    width: 128px;
+    height: 128px;
+}
+
+
+
+/**** Masonry CSS3 transitions ****/
+
+.masonry,
+.masonry .masonry-brick {
+  -webkit-transition-duration: 0.7s;
+     -moz-transition-duration: 0.7s;
+       -o-transition-duration: 0.7s;
+          transition-duration: 0.7s;
+}
+
+.masonry {
+  -webkit-transition-property: height, width;
+     -moz-transition-property: height, width;
+       -o-transition-property: height, width;
+          transition-property: height, width;
+}
+
+.masonry .masonry-brick {
+  -webkit-transition-property: left, right, top;
+     -moz-transition-property: left, right, top;
+       -o-transition-property: left, right, top;
+          transition-property: left, right, top;
+}
