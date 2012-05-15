@@ -12,14 +12,14 @@ class Perseguida(models.Model):
     updated_at       = models.DateTimeField(auto_now=True) 
     created_at       = models.DateTimeField(auto_now_add=True)
     
-    hash  = models.CharField(max_length=255, unique=True, editable=False)
+    hash  = models.CharField(max_length=255, editable=False)
     image = ImageWithThumbsField(upload_to='photos/', sizes=THUMBS_SIZE )
     
     approved         = models.BooleanField(default=False)
 
     def admin_thumbnail(self):
         #return u'<img src="%s" label="x"/>' % getattr(self.image, 'url_256x256.jpg')
-        return u"<img src=\"%s\"/>" % getattr(self.image,'url_125x150')
+        return u"<img src=\"%s\"/>" % getattr(self.image,'url_150x225')
 
     admin_thumbnail.short_description = 'Thumbnail'
     admin_thumbnail.allow_tags = True

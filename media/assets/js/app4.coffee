@@ -39,8 +39,6 @@ class BancoGenital
                     
         # Init Wall
         mywall.initWall();
-        
-        $jQ.zoomooz.setup({duration: 500, nativeanimation: true})
     
     createDOMPhotos: (items) =>
         items.each( (e,i) =>
