@@ -8,7 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     
     url(r'^$',               'perseguida.views.preview_home',    name='preview_home'),
-    url(r'^home$',           'perseguida.views.home',            name='home'),
+    url(r'^preview$',        'perseguida.views.home',            name='home'),
     url(r'^photos$',        'perseguida.views.photos',          name='photos'),
     url(r'^photos/upload$', 'perseguida.views.photos_upload',   name='photos_upload'),
     

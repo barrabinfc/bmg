@@ -8,7 +8,7 @@ Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 """
 
 THUMBS_SIZE = (
-    (125,150),
-    (250,300),
-    (500,600)
+    (150,225),
+    (300,450),
+    (600,900)
 )
