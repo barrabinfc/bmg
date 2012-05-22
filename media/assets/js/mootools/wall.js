@@ -74,6 +74,7 @@ var Wall = new Class({
         autoposition     : false,             // Autoposizionamento wall
         draggable        : true,              // Abilita drag
         inertia          : false,             // Abilita inertia
+        inertiaSpeed     : 0.9,
         invert           : false,             // Inverte direzione drag
         width            : 0,                 // W tile
         height           : 0,                 // H tile
@@ -87,6 +88,9 @@ var Wall = new Class({
         preload          : false,             // Precarica contenuto
         callOnUpdate     : Function,          // Azione on drag/complete
         callOnChange     : Function,          // Azione scatenata quando viene impostato id elemento attivo
+        callOnMouseDown  : Function,        
+        callOnMouseUp    : Function,
+        callOnMouseDragged : Function,
         detectMobile     : true               // Detect mobile device
     },
 
@@ -163,15 +167,25 @@ var Wall = new Class({
                     clearTimeout(this.periodicalID);
                     // Reset Movement
                     this.moved = 0;
+                    
+                    
+                    this.startX = e.page.x;
+                    this.startY = e.page.y;
+                    
                     // Posizione Inizio Drag
                     this.xPos = e.page.x;
                     this.yPos = e.page.y;
+                    
+                    this.options.callOnMouseDown(e)
                 }.bind( this ),
                 onDrag: function(el, e){
                     this.xspeed = e.page.x - this.xPos; // x mouse speed
                     this.yspeed = e.page.y - this.yPos; // y mouse speed
                     this.xPos   = e.page.x;
                     this.yPos   = e.page.y;
+                    
+                    this.options.callOnMouseDragged( [this.startX - this.xPos, 
+                                                     this.startY - this.yPos] , e)
                     //
                     e.stopPropagation();
                     // Interrompe Slideshow
@@ -183,6 +197,8 @@ var Wall = new Class({
                     this.moved++;
                 }.bind( this ),
                 onComplete: function(el, e){
+                    
+                    this.options.callOnMouseUp( e )
                     e.preventDefault();
                     // Verifica inertia
                     if( this.options.inertia == true ){
@@ -201,8 +217,9 @@ var Wall = new Class({
                             if( finY > 0) this.wall.setStyle("top",  Math.min(this.maxy, finY));
                             
                             // Decrementa velocità di spostamento
-                            this.xspeed *= 0.9;
-                            this.yspeed *= 0.9;
+                            this.xspeed *= this.options.inertiaSpeed;
+                            this.yspeed *= this.options.inertiaSpeed;
+                            
                             // Aggiorna Wall
                             this.options.callOnUpdate(this.updateWall());
                             // Interrompe spostamento se prossimo a 0.6

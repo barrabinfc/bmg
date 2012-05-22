@@ -6,7 +6,14 @@
   BancoGenital = (function() {
     function BancoGenital(viewport, size) {
       this.onResize = __bind(this.onResize, this);
+      this.zoomOut = __bind(this.zoomOut, this);
+      this.zoomIn = __bind(this.zoomIn, this);
+      this.zoomOut2 = __bind(this.zoomOut2, this);
+      this.zoomIn2 = __bind(this.zoomIn2, this);
       this.onPhotoClick = __bind(this.onPhotoClick, this);
+      this.onMouseDragged = __bind(this.onMouseDragged, this);
+      this.onMouseUp = __bind(this.onMouseUp, this);
+      this.onMouseDown = __bind(this.onMouseDown, this);
       this.createDOMPhotos = __bind(this.createDOMPhotos, this);
       this.setup = __bind(this.setup, this);      this.size = size;
       WIDTH = this.size[0];
@@ -18,27 +25,26 @@
       this.onResize();
     }
     BancoGenital.prototype.setup = function(photoList) {
-      var mywall;
       this.photoJSONList = photoList;
       this.imgCounter = Math.floor(Math.random() * (this.photoJSONList.length - 1));
       window.addEventListener('resize', this.onResize, false);
-      mywall = new Wall("wall", {
+      this.wall = new Wall("wall", {
         "draggable": true,
-        "width": 130,
-        "height": 160,
+        "width": 155,
+        "height": 230,
         "inertia": true,
+        "inertiaSpeed": 0.95,
         "printCoordinates": true,
         "rangex": [-300, 300],
         "rangey": [-300, 300],
         callOnUpdate: __bind(function(items) {
           return this.createDOMPhotos(items);
-        }, this)
+        }, this),
+        callOnMouseDown: this.onMouseDown,
+        callOnMouseUp: this.onMouseUp,
+        callOnMouseDragged: this.onMouseDragged
       });
-      mywall.initWall();
-      return $jQ.zoomooz.setup({
-        duration: 500,
-        nativeanimation: true
-      });
+      return this.wall.initWall();
     };
     BancoGenital.prototype.createDOMPhotos = function(items) {
       return items.each(__bind(function(e, i) {
@@ -53,26 +59,64 @@
         img = new Element("img[src='" + currPhoto.url_small + "']");
         img.inject(e.node).fade("hide").fade("in");
         $jQ(img).data('photo_info', currPhoto);
-        return $jQ(img).on('click', this.onPhotoClick);
+        return $jQ(img).mouseup(this.onPhotoClick);
       }, this));
     };
-    BancoGenital.prototype.onPhotoClick = function(ev) {
-      console.log(" inZoom bef -> " + this.inZoom);
-      if (!this.inZoom) {
-        $jQ(ev.target).attr('src', $jQ(ev.target).data('photo_info').url);
-        $jQ(ev.target).zoomTo({
-          targetSize: 0.75,
-          duration: 600
-        });
-        this.inZoom = true;
-      } else {
-        this.inZoom = false;
-        $jQ('body').zoomTo({
-          targetSize: 0.75,
-          duration: 600
-        });
+    BancoGenital.prototype.onMouseDown = function(e) {
+      return console.log("down");
+    };
+    BancoGenital.prototype.onMouseUp = function(e) {
+      console.log("up");
+      if (!this.dragged) {
+        console.log("Single Click");
       }
-      return ev.stopPropagation();
+      return this.dragged = false;
+    };
+    BancoGenital.prototype.onMouseDragged = function(delta, e) {
+      if (Math.abs(delta[0]) > 5 || Math.abs(delta[1]) > 5) {
+        return this.dragged = true;
+      }
+    };
+    BancoGenital.prototype.onPhotoClick = function(ev) {
+      if (this.dragged) {
+        return;
+      }
+      this.cTarget = $jQ(ev.target);
+      if (!this.inZoom) {
+        this.zoomIn(this.cTarget);
+        return this.lastTarget = this.cTarget;
+      } else {
+        if (this.cTarget.attr('url') === this.lastTarget.attr('url')) {
+          return this.zoomOut();
+        } else {
+          this.zoomIn(this.cTarget);
+          return this.lastTarget = this.cTarget;
+        }
+      }
+    };
+    BancoGenital.prototype.zoomIn2 = function(photo_el) {
+      return this.inZoom = true;
+    };
+    BancoGenital.prototype.zoomOut2 = function(photo_el) {
+      return this.inZoom = false;
+    };
+    BancoGenital.prototype.zoomIn = function(photo_el) {
+      var items;
+      this.inZoom = true;
+      $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url);
+      $jQ(photo_el).zoomTo({
+        targetSize: 0.75,
+        duration: 600
+      });
+      items = this.wall.updateWall();
+      return this.createDOMPhotos(items);
+    };
+    BancoGenital.prototype.zoomOut = function() {
+      this.inZoom = false;
+      return $jQ('body').zoomTo({
+        targetSize: 0.75,
+        duration: 600
+      });
     };
     BancoGenital.prototype.onResize = function() {
       var _ref2;

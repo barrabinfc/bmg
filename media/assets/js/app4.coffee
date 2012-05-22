@@ -27,19 +27,25 @@ class BancoGenital
         # Setup Events
         window.addEventListener('resize', @onResize, false)
         
-        mywall = new Wall("wall", {
+        @wall = new Wall("wall", {
                         "draggable":true,
-                        "width":130,
-                        "height":160,
+                        "width":155,
+                        "height":230,
                         "inertia": true,
+                        "inertiaSpeed": 0.95,
                         "printCoordinates":true,
                         "rangex":[-300,300],
                         "rangey":[-300,300],
-                        callOnUpdate:  (items) => @createDOMPhotos(items) })
+                        callOnUpdate:  (items) => @createDOMPhotos(items),
+                        callOnMouseDown: @onMouseDown,
+                        callOnMouseUp: @onMouseUp,
+                        callOnMouseDragged: @onMouseDragged })
                     
         # Init Wall
-        mywall.initWall();
-    
+        @wall.initWall();
+        
+
+
     createDOMPhotos: (items) =>
         items.each( (e,i) =>
             if(@imgCounter >= @photoJSONList.length-1)
@@ -54,21 +60,61 @@ class BancoGenital
             img.inject(e.node).fade("hide").fade("in");
             
             $jQ(img).data('photo_info', currPhoto)
-            $jQ(img).on('click', @onPhotoClick)
+            $jQ(img).mouseup(@onPhotoClick)
         )
-    
-    onPhotoClick: (ev) =>
-        console.log(" inZoom bef -> #{@inZoom}")
-        if not @inZoom
-            $jQ(ev.target).attr('src', $jQ(ev.target).data('photo_info').url)
-            $jQ(ev.target).zoomTo({targetSize: 0.75, duration: 600})
-            @inZoom = true
-        else
-            @inZoom = false
-            $jQ('body').zoomTo({targetSize: 0.75, duration: 600})
         
-        ev.stopPropagation()
+    onMouseDown: (e) =>
+        console.log "down"
+        
+    onMouseUp: (e) =>
+        console.log "up"
+        
+        if not @dragged
+            console.log "Single Click"
+            
+        @dragged = false
+        #ev.stopPropagation()
+    
+    onMouseDragged: (delta,e) =>
+        
+        if(Math.abs(delta[0]) > 5 || Math.abs(delta[1]) > 5)            
+            @dragged = true
+                
+    onPhotoClick: (ev) =>
+        
+        return if @dragged
+        
+        @cTarget = $jQ(ev.target)
+        if not @inZoom
+            @zoomIn( @cTarget )
+            @lastTarget = @cTarget
+        else
+            if @cTarget.attr('url') == @lastTarget.attr('url')
+                @zoomOut()
+            else
+                @zoomIn( @cTarget )
+                @lastTarget = @cTarget
+                
+        #ev.stopPropagation()
+        
+    zoomIn2: (photo_el) =>
+        @inZoom = true
+        
+    zoomOut2: (photo_el) =>
+        @inZoom = false
 
+    zoomIn: (photo_el) =>
+        @inZoom = true
+        $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url)
+        $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600})
+        
+        items = @wall.updateWall()
+        @createDOMPhotos(items)
+    
+    zoomOut: =>
+        @inZoom = false
+        $jQ('body').zoomTo({targetSize: 0.75, duration: 600})        
+        
     onResize: =>
         [WIDTH,HEIGHT] = [window.innerWidth, window.innerHeight]
         $jQ(@container).css({width: WIDTH, height: HEIGHT})

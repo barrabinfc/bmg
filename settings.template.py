@@ -164,4 +164,6 @@ LOGGING = {
     }
 }
 
+ON_WEBBY_NODE = True
+
 from app_settings import *
