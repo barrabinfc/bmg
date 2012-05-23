@@ -2,3 +2,4 @@
 media/photos
 mockdata
 *.pyc
+static/
