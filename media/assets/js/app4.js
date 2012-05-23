@@ -33,7 +33,7 @@
         "width": 155,
         "height": 230,
         "inertia": true,
-        "inertiaSpeed": 0.95,
+        "inertiaSpeed": 0.92,
         "printCoordinates": true,
         "rangex": [-300, 300],
         "rangey": [-300, 300],
@@ -62,14 +62,8 @@
         return $jQ(img).mouseup(this.onPhotoClick);
       }, this));
     };
-    BancoGenital.prototype.onMouseDown = function(e) {
-      return console.log("down");
-    };
+    BancoGenital.prototype.onMouseDown = function(e) {};
     BancoGenital.prototype.onMouseUp = function(e) {
-      console.log("up");
-      if (!this.dragged) {
-        console.log("Single Click");
-      }
       return this.dragged = false;
     };
     BancoGenital.prototype.onMouseDragged = function(delta, e) {
@@ -101,15 +95,12 @@
       return this.inZoom = false;
     };
     BancoGenital.prototype.zoomIn = function(photo_el) {
-      var items;
       this.inZoom = true;
       $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url);
-      $jQ(photo_el).zoomTo({
+      return $jQ(photo_el).zoomTo({
         targetSize: 0.75,
         duration: 600
       });
-      items = this.wall.updateWall();
-      return this.createDOMPhotos(items);
     };
     BancoGenital.prototype.zoomOut = function() {
       this.inZoom = false;

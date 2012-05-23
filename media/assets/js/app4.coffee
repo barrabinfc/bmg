@@ -32,7 +32,7 @@ class BancoGenital
                         "width":155,
                         "height":230,
                         "inertia": true,
-                        "inertiaSpeed": 0.95,
+                        "inertiaSpeed": 0.92,
                         "printCoordinates":true,
                         "rangex":[-300,300],
                         "rangey":[-300,300],
@@ -64,14 +64,8 @@ class BancoGenital
         )
         
     onMouseDown: (e) =>
-        console.log "down"
         
     onMouseUp: (e) =>
-        console.log "up"
-        
-        if not @dragged
-            console.log "Single Click"
-            
         @dragged = false
         #ev.stopPropagation()
     
@@ -105,11 +99,19 @@ class BancoGenital
 
     zoomIn: (photo_el) =>
         @inZoom = true
-        $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url)
-        $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600})
+        #clone = $jQ(photo_el).clone()
+        #clone.attr('src', $jQ(photo_el).data('photo_info').url)
+        #clone.data('photo_info', $jQ(photo_el).data('photo_info'))
         
-        items = @wall.updateWall()
-        @createDOMPhotos(items)
+        #clone.appendTo( $jQ(photo_el).parent() )
+        $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url )
+        
+        #$jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url)
+        #$jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600})
+        $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600})
+    
+        #items = @wall.updateWall()
+        #@createDOMPhotos(items)
     
     zoomOut: =>
         @inZoom = false
