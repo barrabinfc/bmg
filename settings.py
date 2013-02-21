@@ -11,10 +11,10 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'db',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
+        'ENGINE': 'django.db.backends.mysql',                 # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'bancogenital',                      # Or path to database file if using sqlite3.
+        'USER':     'bancogenital',                      # Not used with sqlite3.
+        'PASSWORD': 'vovozinho',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -48,29 +48,29 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/Users/frangossauro/Projects/bancogenital/media/'
+MEDIA_ROOT = '/var/rapp/bancogenital/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = 'http://localhost:8000/media/'
+MEDIA_URL = 'http://genitalia.me/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/Users/frangossauro/Projects/bancogenital/static'
+STATIC_ROOT = '/var/rapp/bancogenital/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = 'http://genitalia.me/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/Users/frangossauro/Projects/bancogenital/media/assets',
+    "/var/rapp/bancogenital/media/assets",
 )
 
 # List of finder classes that know how to find static files in
@@ -95,7 +95,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.media',
-    'django.core.context_processors.static'    
+    'django.core.context_processors.static'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -114,6 +114,7 @@ ROOT_URLCONF = 'urls'
 WSGI_APPLICATION = 'wsgi.application'
 
 TEMPLATE_DIRS = (
+    #'/var/rapp/bancogenital/templates'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -128,9 +129,12 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    
+
+    'dbbackup',
+
     'perseguida'
 )
 
@@ -163,6 +167,11 @@ LOGGING = {
     }
 }
 
+
+DBBACKUP_STORAGE='dbbackup.storage.filesystem_storage'
+DBBACKUP_FILESYSTEM_DIRECTORY='/var/rapp/backups'
+
 ON_WEBBY_NODE = False
 
 from app_settings import *
+from local_settings import *
