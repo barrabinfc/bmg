@@ -7,8 +7,8 @@ from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
 
 from settings import THUMBS_SIZE, STATIC_ROOT
-from perseguida.models import Perseguida
-from perseguida.forms import PerseguidaForm
+from genitalia.models import Genitalia
+from genitalia.forms import GenitaliaForm
 
 from utils.utils import qs_to_json
 import json, random
@@ -16,15 +16,15 @@ import json, random
 # Create your views here.
 def home(request):
     """ Index View """
-    return render_to_response('perseguida/home.html', context_instance=RequestContext(request) )
+    return render_to_response('genitalia/home.html', context_instance=RequestContext(request) )
 
 @csrf_exempt
 def photos_upload(request):
     """ Upload a picture """
     if request.method == 'GET':
-        return render_to_response('perseguida/upload.html')
+        return render_to_response('genitalia/upload.html')
     elif request.method == 'POST':
-        photo = PerseguidaForm(request.POST, request.FILES)
+        photo = PhotoForm(request.POST, request.FILES)
         if photo.is_valid():
             photo.save()
 
@@ -49,7 +49,7 @@ def photos(request):
 
     # If no data
     if not data:
-        for photo in Perseguida.objects.filter(approved=True):
+        for photo in Photos.objects.filter(approved=True):
             small = randomize_url(photo)
             data.append({
                     'id':           photo.id,

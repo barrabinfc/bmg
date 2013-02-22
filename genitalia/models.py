@@ -5,8 +5,7 @@ from thumbs import ImageWithThumbsField
 
 from settings import THUMBS_SIZE
 
-# Create your models here.
-class Perseguida(models.Model):
+class Genitalia(models.Model):
     name             = models.CharField(max_length=128, blank=True)
     meta             = models.TextField(blank=True)
     updated_at       = models.DateTimeField(auto_now=True)
@@ -17,19 +16,24 @@ class Perseguida(models.Model):
 
     approved         = models.BooleanField(default=False)
 
-    def admin_thumbnail(self):
+    def as_thumb(self):
         return u"<img src=\"%s\"/>" % getattr(self.image,'url_150x225')
+    as_thumb.short_description = 'Thumbnail'
+    as_thumb.allow_tags  =  True
+    as_thumb.admin_order_field = 'admin_thumbnail'
 
-    admin_thumbnail.short_description = 'Thumbnail'
-    admin_thumbnail.allow_tags  =  True
-    admin_thumbnail.admin_order_field = 'admin_thumbnail'
+
+    def as_link(self):
+        return u'<a href="%s">%s</a>' % (self.image.url , self.image)
+    as_link.short_description = "PHOTO URL"
+    as_link.allow_tags = True
 
     def save(self, *args, **kwargs):
         """ Generate hash of the image """
         h = sha512()
         h.update(self.image.read())
         self.hash = h.hexdigest()
-        return super(Perseguida, self).save(self,*args,**kwargs)
+        return super(Photo, self).save(self,*args,**kwargs)
 
     def __unicode__(self):
         if not self.name:

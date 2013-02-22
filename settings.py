@@ -146,7 +146,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     'dbbackup',
-    'perseguida'
+    'genitalia'
 )
 
 # A sample logging configuration. The only tangible logging

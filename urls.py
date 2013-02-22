@@ -7,11 +7,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
-    #url(r'^$',               'perseguida.views.preview_home',    name='preview_home'),
-    url(r'^$',               'perseguida.views.home',            name='home'),
-    #url(r'^preview$',        'perseguida.views.home',            name='home'),
-    url(r'^photos$',        'perseguida.views.photos',          name='photos'),
-    url(r'^photos/upload$', 'perseguida.views.photos_upload',   name='photos_upload'),
+    url(r'^$',               'genitalia.views.home',            name='home'),
+    url(r'^photos$',         'genitalia.views.photos',          name='photos'),
+    url(r'^photos/upload$',  'genitalia.views.photos_upload',   name='photos_upload'),
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^grappelli/', include('grappelli.urls')),
