@@ -65,7 +65,8 @@ MEDIA_URL = 'http://genitalia.me/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/var/rapp/bancogenital/static/'
+#STATIC_ROOT = '/var/rapp/bancogenital/static/'
+
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -76,7 +77,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/var/rapp/bancogenital/media/assets",
+    #"/var/rapp/bancogenital/media/assets",
 )
 
 # List of finder classes that know how to find static files in
@@ -101,15 +102,20 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.media',
-    'django.core.context_processors.static'
+    'django.core.context_processors.static',
+    "django.core.context_processors.request",
+    "django.core.context_processors.i18n",
+
+    'django.contrib.messages.context_processors.messages',
+
 )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -127,12 +133,16 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    # Core part
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.messages',
     'django.contrib.sessions',
-    #'django.contrib.sites',
-    #'django.contrib.messages',
+
     'django.contrib.staticfiles',
+
+    'grappelli.dashboard',
+    'grappelli',
     'django.contrib.admin',
 
     'dbbackup',
@@ -173,5 +183,21 @@ DBBACKUP_FILESYSTEM_DIRECTORY='/var/rapp/backups'
 
 ON_PRODUCTION = False
 
-from app_settings import *
-from local_settings import *
+THUMBS_SIZE = (
+    (150,225),
+    (300,450),
+    (600,900)
+)
+
+GRAPPELLI_ADMIN_TITLE='BMG - Banco MUNDIAL da genitalia'
+GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
+
+
+try:
+    LOCAL_SETTINGS
+except NameError:
+    try:
+        from local_settings import *
+    except ImportError:
+        print "Could not import local_settings"
+        pass

@@ -1,5 +1,10 @@
-ROOT='/Users/frangossauro/work/Projects/bancogenital'
-PROJECT_ROOT=('%s/src'  % ROOT)
+#!/usr/bin/env python
+LOCAL_SETTINGS = True
+
+from settings import *
+
+MROOT='/Users/frangossauro/work/Projects/bancogenital'
+PROJECT_ROOT=('%s/src'  % MROOT)
 
 
 #TEMPLATE_DIRS = (
@@ -25,4 +30,4 @@ STATIC_ROOT = ('%s/static' % PROJECT_ROOT)
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = 'http://127.0.0.1:8000/static/'
 
-DBBACKUP_FILESYSTEM_DIRECTORY=('%s/backups' % ROOT)
+DBBACKUP_FILESYSTEM_DIRECTORY=('%s/backups' % MROOT)

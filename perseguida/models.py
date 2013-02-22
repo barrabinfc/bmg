@@ -3,27 +3,27 @@ from hashlib import sha512
 
 from thumbs import ImageWithThumbsField
 
-from settings import THUMBS_SIZE 
+from settings import THUMBS_SIZE
 
 # Create your models here.
 class Perseguida(models.Model):
     name             = models.CharField(max_length=128, blank=True)
     meta             = models.TextField(blank=True)
-    updated_at       = models.DateTimeField(auto_now=True) 
+    updated_at       = models.DateTimeField(auto_now=True)
     created_at       = models.DateTimeField(auto_now_add=True)
-    
-    hash  = models.CharField(max_length=255, editable=False)
-    image = ImageWithThumbsField(upload_to='photos/', sizes=THUMBS_SIZE )
-    
+
+    hash             = models.CharField(max_length=255, editable=False)
+    image            = ImageWithThumbsField(upload_to='photos/', sizes=THUMBS_SIZE )
+
     approved         = models.BooleanField(default=False)
 
     def admin_thumbnail(self):
-        #return u'<img src="%s" label="x"/>' % getattr(self.image, 'url_256x256.jpg')
         return u"<img src=\"%s\"/>" % getattr(self.image,'url_150x225')
 
     admin_thumbnail.short_description = 'Thumbnail'
-    admin_thumbnail.allow_tags = True
-    
+    admin_thumbnail.allow_tags  =  True
+    admin_thumbnail.admin_order_field = 'admin_thumbnail'
+
     def save(self, *args, **kwargs):
         """ Generate hash of the image """
         h = sha512()

@@ -160,10 +160,12 @@
     }
 
     Overlay.prototype.setPage = function(new_page) {
+      var session;
       if (this.cpage) {
         this.cpage.hide();
       }
-      return this.cpage = $jQ('#' + new_page);
+      this.cpage = $jQ('#' + new_page);
+      return session = new_page;
     };
 
     Overlay.prototype.show = function() {
@@ -172,8 +174,10 @@
     };
 
     Overlay.prototype.hide = function() {
+      var session;
       this.el.fadeOut('slow');
-      return this.on = false;
+      this.on = false;
+      return session = 'wall';
     };
 
     return Overlay;
@@ -187,13 +191,12 @@
   $jQ(function() {
     var banco, menu, overlay, session,
       _this = this;
-    overlay = new Overlay('#overlay');
-    overlay.setPage('startmessage').show();
     session = 'startmessage';
+    overlay = new Overlay('#overlay');
+    overlay.setPage('startmessage');
+    overlay.show();
     banco = new BancoGenital('#viewport', [window.innerWidth, window.innerHeight]);
     menu = $jQ('#menu');
-    menu.show();
-    $jQ('#menu');
     $jQ.getJSON(API_URL, function(data) {
       var obj, x, _i, _len;
       x = [];
@@ -205,17 +208,14 @@
     });
     $jQ('#enter-site').on('click', function(ev) {
       overlay.hide();
-      menu.show();
-      return session = 'wall';
+      return menu.show();
     });
     $jQ('#menu-mostraoteu').on('click', function(ev) {
       if (session === 'mostraoteu') {
         overlay.hide();
-        session = 'wall';
       } else {
         overlay.setPage('mostraoteu');
         overlay.show();
-        session = 'mostraoteu';
       }
       ev.stopPropagation();
       return false;

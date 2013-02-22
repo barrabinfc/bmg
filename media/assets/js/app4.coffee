@@ -128,6 +128,8 @@ class Overlay
         @cpage.hide() if(@cpage)
         @cpage = $jQ('#' + new_page)
 
+        session = new_page
+
     show: =>
         @el.fadeIn('fast')
         @on = true
@@ -135,6 +137,7 @@ class Overlay
     hide: =>
         @el.fadeOut('slow')
         @on = false
+        session = 'wall'
 
 # Start on documentReady
 $.noConflict()
@@ -143,16 +146,14 @@ $jQ = jQuery
 $jQ ->
 
     # Show the /etc/motd
-    overlay = new Overlay('#overlay')
-    overlay.setPage('startmessage').show()
     session = 'startmessage'
+    overlay = new Overlay('#overlay')
+    overlay.setPage('startmessage')
+    overlay.show()
 
     # Start the genitalia wall
     banco = new BancoGenital( '#viewport', [window.innerWidth, window.innerHeight] )
     menu  = $jQ('#menu')
-    menu.show()
-
-    $jQ('#menu')
 
     # Get genitalia pictures, and start feeding it!
     $jQ.getJSON API_URL , (data) =>
@@ -167,16 +168,15 @@ $jQ ->
     $jQ('#enter-site').on 'click', (ev) ->
                             overlay.hide()
                             menu.show()
-                            session = 'wall'
+
+    #$jQ('#menu-mostraoteu').airport(['MOSTRA O TEU!','MOTRA A SUA!'])
 
     $jQ('#menu-mostraoteu').on 'click', (ev) ->
                             if(session == 'mostraoteu')
                                 overlay.hide()
-                                session = 'wall'
                             else
                                 overlay.setPage('mostraoteu')
                                 overlay.show()
-                                session = 'mostraoteu'
 
                             ev.stopPropagation()
                             return false

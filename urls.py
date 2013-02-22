@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^photos/upload$', 'perseguida.views.photos_upload',   name='photos_upload'),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^grappelli/', include('grappelli.urls')),
 )
 
 

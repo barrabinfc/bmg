@@ -6,7 +6,7 @@ from django.core.cache import cache
 
 from django.views.decorators.csrf import csrf_exempt
 
-from settings import THUMBS_SIZE
+from settings import THUMBS_SIZE, STATIC_ROOT
 from perseguida.models import Perseguida
 from perseguida.forms import PerseguidaForm
 
