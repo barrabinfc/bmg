@@ -16,6 +16,9 @@ class Genitalia(models.Model):
 
     approved         = models.BooleanField(default=False)
 
+    class Meta:
+        db_table = 'perseguida_perseguida'
+
     def as_thumb(self):
         return u"<img src=\"%s\"/>" % getattr(self.image,'url_150x225')
     as_thumb.short_description = 'Thumbnail'

@@ -49,7 +49,7 @@ def photos(request):
 
     # If no data
     if not data:
-        for photo in Photos.objects.filter(approved=True):
+        for photo in Genitalia.objects.filter(approved=True):
             small = randomize_url(photo)
             data.append({
                     'id':           photo.id,

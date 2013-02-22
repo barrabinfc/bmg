@@ -4,6 +4,8 @@ API_URL = '/photos'
 [WIDTH,HEIGHT] = [window.innerWidth,window.innerHeight];
 SESSIONS       = ['startmessage','wall','mostraoteu','about']
 
+[session,overlay,banco,menu] = [null,null,null,null]
+
 #
 # Banco Genitalia App
 #
@@ -132,6 +134,7 @@ class Overlay
 
     show: =>
         @el.fadeIn('fast')
+        @cpage.show()
         @on = true
 
     hide: =>
@@ -146,7 +149,6 @@ $jQ = jQuery
 $jQ ->
 
     # Show the /etc/motd
-    session = 'startmessage'
     overlay = new Overlay('#overlay')
     overlay.setPage('startmessage')
     overlay.show()
@@ -154,6 +156,7 @@ $jQ ->
     # Start the genitalia wall
     banco = new BancoGenital( '#viewport', [window.innerWidth, window.innerHeight] )
     menu  = $jQ('#menu')
+    menu.hide()
 
     # Get genitalia pictures, and start feeding it!
     $jQ.getJSON API_URL , (data) =>
@@ -180,6 +183,33 @@ $jQ ->
 
                             ev.stopPropagation()
                             return false
+
+    $jQ("#fileupload-dropzone").dropzone({ url: "/photos/upload" });
+
+
+    # MOstra o Teu UPLOAD
+    #$jQ('#fileupload').fileupload({
+        #dataType: 'json',
+        #dropZone: $jQ('#fileupload-dropzone')
+        #done: (e,data) ->
+            #console.log("Done",e,data)
+    #})
+
+    #dropzone = $jQ('#fileupload-dropzone')
+    #$jQ(document).bind('dragover', (e) ->
+        #dropzone = $jQ('#fileupload-dropzone')
+
+        #if (e.target == dropzone[0])        
+            #dropzone.addClass('hover')
+        #else                                
+            #dropzone.removeClass('hover')
+    #)
+
+    #$jQ(document).bind('drop dragover', (e) ->
+        #dropzone.removeClass('hover')
+        #e.preventDefault()
+    #)
+
 
 
     # GLOBAL VARS
