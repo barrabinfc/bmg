@@ -23,8 +23,26 @@ footer, header, hgroup, menu, nav, section {
   display: block;
 }
 
+a {
+    text-decoration: none;
+    color: #ededed;
+    font-family: 'EB Garamond', serif;
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
 html {
   overflow: hidden;
+}
+
+ol,ul {
+    list-style: none;
+}
+
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
 }
 
 body { 
@@ -77,6 +95,53 @@ p {
 }
 
 
+.menubuttons {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'EB Garamond', serif;
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #fff;
+    line-height: 52px;
+}
+
+
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.pink {
+    background-color: #EA1592;
+}
+
+.green {
+    background-color: #04EDB3;
+}
+
+.s300 {
+    width: 300px;
+}
+
+.s200 {
+    width: 200px;
+}
+
+.s150 {
+    width: 150px;
+}
+
+.s100 {
+    width: 100px;
+}
+
+
 
 
 #overlay {
@@ -94,7 +159,10 @@ p {
     top: 50%;
     left: 50%;
     margin-top: -300px;
-    margin-left: -450px
+    margin-left: -450px;
+
+    /* starts hidden*/
+    display: none;
 }
 
 .infoscreen .left {
@@ -108,7 +176,7 @@ p {
 .infoscreen .right {
     width: 500px;
     height: 600px;
-    float: left;
+    float: right;
 }
 
 .infoscreen .right .top {
@@ -141,10 +209,27 @@ p {
 #menu {
     position: fixed;
     height: 52px;
-    border-bottom: 1px solid #e1e1e1;
     width: 100%;
     top: 0px;
-    z-index: 1000;
+    z-index: 1010;
+}
+
+#menu ul {
+    height: 52px;
+    /*background-color: rgba(0,0,0,0.8);*/
+}
+
+#menu ul li {
+    border: 1px solid #e1e1e1;
+}
+
+
+#menu ul li:hover {
+    border: 2px solid #e1e1e1;
+}
+
+#menu ul li .active {
+    border: 2px solid #e1e1e1;
 }
 
 .tile {

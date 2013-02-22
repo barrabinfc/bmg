@@ -30,10 +30,10 @@
     
     <script src="{{ MEDIA_URL }}assets/js/jquery/jquery.min.js" type="text/javascript" charset="utf-8" ></script>    
     <script src="{{ MEDIA_URL }}assets/js/jquery/jquery.zoomooz.js" type="text/javascript" charset="utf-8" ></script>    
+    <script src="{{ MEDIA_URL }}assets/js/jquery/jquery.html5uploader.min.js" type="text/javascript" charset="utf-8" ></script>    
     
     <script src="{{ MEDIA_URL }}assets/js/app4.js" type="text/javascript" charset="utf-8" ></script>
 
-    
     <script type="text/javascript">
         var MEDIA_URL  = "{{ MEDIA_URL }}";
         var STATIC_URL = "{{ STATIC_URL }}";
@@ -60,16 +60,35 @@
                 </div>
 
                 <div class="bottom">
-                    <a href="#" class="squarebuttons" id="enter-site">bora!</a>
+                    <a href="javascript: return null;" class="squarebuttons" id="enter-site">bora!</a>
+                </div>
+            </div>
+        </div>
+        <div id="mostraoteu" class="infoscreen">
+            <div class="left">
+            </div>
+            <div class="right">
+                <div class="top">
+                    <h1>BMG</h1>
+                    <hr>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vestibulum laoreet erat, eget scelerisque felis sollicitudin non. Integer accumsan, magna at dignissim aliquam, nunc enim semper felis</p>
+
+
+                    <p>Pellentesque eu mattis leo. Curabitur ante quam, feugiat vitae aliquam sit amet, mollis sed arcu. Pellentesque vitae ultricies lacus. Praesent venenatis sodales urna vel eleifend. Sed ut leo a est </p>
+
+                </div>
+
+                <div class="bottom">
+                    <a href="javascript: return null;" class="squarebuttons" id="enter-site">bora!</a>
                 </div>
             </div>
         </div>
     </div>
     <div id="viewport">
         <div id="menu">
-            <ul> 
-                <li><a href="/about">About</a></li>
-                <li><a href="/upload">Mostra o seu!</a></li>
+            <ul>
+                <li class="right"><a id="menu-about" href="/about" class="menubuttons green s150">BMG</a></li>
+                <li class="right"><a id="menu-mostraoteu" href="/upload" class="menubuttons pink s300">Mostra o teu!</a></li>
             </ul>
         </div>
         <div id="wall"></div>

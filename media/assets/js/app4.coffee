@@ -2,8 +2,7 @@
 API_URL = '/photos'
 
 [WIDTH,HEIGHT] = [window.innerWidth,window.innerHeight];
-
-
+SESSIONS       = ['startmessage','wall','mostraoteu','about']
 
 #
 # Banco Genitalia App
@@ -11,9 +10,8 @@ API_URL = '/photos'
 class BancoGenital
     constructor: (viewport,size) ->
         @size   = size
-        WIDTH   = @size[0]
-        HEIGHT  = @size[1]   
-                
+        [WIDTH,HEIGHT] = [ @size[0], @size[1]]
+
         @photoJSONList  = []
         @photosDOMList  = []
         @inZoom         = false
@@ -42,10 +40,10 @@ class BancoGenital
                         callOnMouseDown: @onMouseDown,
                         callOnMouseUp: @onMouseUp,
                         callOnMouseDragged: @onMouseDragged })
-                    
+
         # Init Wall
         @wall.initWall();
-        
+
 
 
     createDOMPhotos: (items) =>
@@ -54,9 +52,9 @@ class BancoGenital
                 @imgCounter = 0
             else
                 @imgCounter++
-            
+
             currPhoto = @photoJSONList[@imgCounter]
-            
+
             $jQ(e.node).text("")
             img = new Element("img[src='#{currPhoto.url_small}']")
             img.inject(e.node).fade("hide").fade("in");
@@ -67,18 +65,18 @@ class BancoGenital
         
     onMouseDown: (e) =>
         
+
     onMouseUp: (e) =>
         @dragged = false
         #ev.stopPropagation()
     
     onMouseDragged: (delta,e) =>
-        
         if(Math.abs(delta[0]) > 5 || Math.abs(delta[1]) > 5)            
             @dragged = true
-                
+
     onPhotoClick: (ev) =>
         return if @dragged
-        
+
         @cTarget = $jQ(ev.target)
         if not @inZoom
             @zoomIn( @cTarget )
@@ -89,60 +87,104 @@ class BancoGenital
             else
                 @zoomIn( @cTarget )
                 @lastTarget = @cTarget
-                
+
         #ev.stopPropagation()
-        
-    zoomIn2: (photo_el) =>
-        @inZoom = true
-        
-    zoomOut2: (photo_el) =>
-        @inZoom = false
 
     zoomIn: (photo_el) =>
         @inZoom = true
         #clone = $jQ(photo_el).clone()
         #clone.attr('src', $jQ(photo_el).data('photo_info').url)
         #clone.data('photo_info', $jQ(photo_el).data('photo_info'))
-        
+
         #clone.appendTo( $jQ(photo_el).parent() )
         $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url )
-        
+
         #$jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url)
         #$jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600})
         $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600})
-    
+
         #items = @wall.updateWall()
         #@createDOMPhotos(items)
-    
+
     zoomOut: =>
         @inZoom = false
         $jQ('body').zoomTo({targetSize: 0.75, duration: 600})        
-        
+
     onResize: =>
         [WIDTH,HEIGHT] = [window.innerWidth, window.innerHeight]
         $jQ(@container).css({width: WIDTH, height: HEIGHT})
 
 
+
+class Overlay
+    constructor: (el) ->
+        @el = $jQ(el)
+        @pages = ['startmessage','mostraoteu']
+
+        @el.css({width: WIDTH, height: HEIGHT})
+        @on = false
+
+    setPage: (new_page) =>
+        @cpage.hide() if(@cpage)
+        @cpage = $jQ('#' + new_page)
+
+    show: =>
+        @el.fadeIn('fast')
+        @on = true
+
+    hide: =>
+        @el.fadeOut('slow')
+        @on = false
+
 # Start on documentReady
 $.noConflict()
 
-app = null
 $jQ = jQuery
 $jQ ->
 
-    # Show the start overlay
-    #$jQ('#overlay').css({'width': WIDTH, 'height': HEIGHT})
-                        #.fadeIn('fast')
+    # Show the /etc/motd
+    overlay = new Overlay('#overlay')
+    overlay.setPage('startmessage').show()
+    session = 'startmessage'
 
-    #$jQ('#enter-site').on('click', (ev)-> 
-                            #$jQ('#overlay').fadeOut('slow') )
-                            #
-    $jQ('#overlay').hide();
-    
-    app = new BancoGenital( '#viewport', [window.innerWidth, window.innerHeight] )
+    # Start the genitalia wall
+    banco = new BancoGenital( '#viewport', [window.innerWidth, window.innerHeight] )
+    menu  = $jQ('#menu')
+    menu.show()
 
-    # Get all photos
+    $jQ('#menu')
+
+    # Get genitalia pictures, and start feeding it!
     $jQ.getJSON API_URL , (data) =>
         x = []
         x.push(obj) for obj in data
-        app.setup x
+
+        banco.setup x
+
+    ###############
+    # User Events #
+    ###############
+    $jQ('#enter-site').on 'click', (ev) ->
+                            overlay.hide()
+                            menu.show()
+                            session = 'wall'
+
+    $jQ('#menu-mostraoteu').on 'click', (ev) ->
+                            if(session == 'mostraoteu')
+                                overlay.hide()
+                                session = 'wall'
+                            else
+                                overlay.setPage('mostraoteu')
+                                overlay.show()
+                                session = 'mostraoteu'
+
+                            ev.stopPropagation()
+                            return false
+
+
+    # GLOBAL VARS
+    window.overlay = overlay
+    window.banco   = banco
+    window.menu    = menu
+    window.session = session
+    window.$jQ     = $jQ
