@@ -14,7 +14,8 @@ time, mark, audio, video {
   border: 0;
   font-size: 100%;
   font: inherit;
-  vertical-align: baseline;
+  /*vertical-align: baseline;*/
+  font-family: 'EB Garamond', serif;
 }
 
 article, aside, details, figcaption, figure,
@@ -27,27 +28,129 @@ html {
 }
 
 body { 
-  font: 13px 'Helvetica Neue', Arial, sans-serif;
+  font: 16px 'EB Garamond', serif;
+  -webkit-font-smoothing: antialiased;
+
   background: #D8D5D2;
   background: #000;
-  color: #222;
+  color: #ededed;
   line-height: 1.6em;
   display: block;
 }
 
+h1 {
+    /*font-family: "helvetica neue", helvetica, arial, verdana, sans-serif;*/
+    font-family: 'EB Garamond', serif;
+    font-size: 31px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #f1f1f1;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+.squarebuttons {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'EB Garamond', serif;
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #fff;
+    background-color: #FF8A00;
+    width: 300px;
+    line-height: 36px;
+
+    margin: 0px auto;
+
+    -webkit-transition: all .1s ease-out;
+       /*-moz-transition: all .2s ease-in-out;*/
+         /*-o-transition: all .2s ease-in-out;*/
+            /*transition: all .2s ease-in-out;*/
+}
+
+.squarebuttons:hover {
+    -webkit-transform: scale(1.1);
+}
+
+
+
+
+#overlay {
+    width: 100%;
+    height: 600px;
+    position: fixed;
+    z-index: 1000;
+    overflow: hidden;
+    background: #000;
+    opacity: 0.93;
+}
+
+.infoscreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -300px;
+    margin-left: -450px
+}
+
+.infoscreen .left {
+    width: 400px;
+    height: 600px;
+    float: left;
+    position: relative;
+    margin: 0px auto;
+}
+
+.infoscreen .right {
+    width: 500px;
+    height: 600px;
+    float: left;
+}
+
+.infoscreen .right .top {
+    margin-top: 60px;
+    height: 400px;
+    display: block;
+}
+
+.infoscreen .right .bottom {
+    position: relative;
+    bottom: 0px;
+}
+
+/*.logo {*/
+    /*display: block;*/
+    /*position: relative;*/
+    /*margin-top: 30px;*/
+    /*left: 30px;*/
+/*}*/
+
 #viewport {
     width:100%;
-     height:450px;
+     height: 100%;
      position:relative;
      overflow:hidden;
      margin:0 auto;
      background:#212121;
 }
 
+#menu {
+    position: fixed;
+    height: 52px;
+    border-bottom: 1px solid #e1e1e1;
+    width: 100%;
+    top: 0px;
+    z-index: 1000;
+}
+
 .tile {
     width: 150px;
     height: 225px;
-    border-radius: 3px;
+    /*border-radius: 3px;*/
     opacity: 0.8;
     
     -webkit-transition-property: height, width, opacity, border-radius;
@@ -59,10 +162,10 @@ body {
 .tile img {
     width: 150px;
     height: 225px;
-    border-radius: 3px;
-    -moz-box-shadow: 1px 1px 10px #000;
-    -webkit-box-shadow: 1px 1px 10px #000;
-    box-shadow: 1px 1px 10px #000;        
+    /*border-radius: 3px;*/
+    /*-moz-box-shadow: 1px 1px 10px #000;*/
+    /*-webkit-box-shadow: 1px 1px 10px #000;*/
+    /*box-shadow: 1px 1px 10px #000;        */
     
     -webkit-transition-duration: 0.25s;
        -moz-transition-duration: 0.25s;
@@ -90,22 +193,22 @@ body {
     height: 235px;
     */
     
-    z-index: 9999999;
-    -moz-box-shadow: 0px 0px 20px #1f1f1f;
-    -webkit-box-shadow: 0px 0px 20px #1f1f1f;
-    box-shadow: 0px 0px 20px #1f1f1f;        
+    z-index: 10;
+    /*-moz-box-shadow: 0px 0px 20px #1f1f1f;*/
+    /*-webkit-box-shadow: 0px 0px 20px #1f1f1f;*/
+    /*box-shadow: 0px 0px 20px #1f1f1f;        */
     
     transform: scale(1.05);
     -webkit-transform:  scale(1.05) translate(-5px,-5px); /* prefixo para browsers webkit */
     -moz-transform:     scale(1.05) translate(-4px,-5px); /* prefixo para browsers gecko */
     -o-transform:       scale(1.05) translate(-4px,-5px); 
 
-    border-radius: 5px;
-    -webkit-border-radius: 5px;    
+    /*border-radius: 5px;*/
+    /*-webkit-border-radius: 5px;    */
 }
 
 .tile:hover {
    opacity: 1;
-   z-index: 9999999;
+   z-index: 12;
    
 }

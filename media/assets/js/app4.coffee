@@ -1,8 +1,10 @@
 # Constants
 API_URL = '/photos'
 
-[WIDTH,HEIGHT] = [1024,768];
-                
+[WIDTH,HEIGHT] = [window.innerWidth,window.innerHeight];
+
+
+
 #
 # Banco Genitalia App
 #
@@ -15,7 +17,7 @@ class BancoGenital
         @photoJSONList  = []
         @photosDOMList  = []
         @inZoom         = false
-        
+
         @container = $jQ(viewport)
         @onResize()
         
@@ -75,7 +77,6 @@ class BancoGenital
             @dragged = true
                 
     onPhotoClick: (ev) =>
-        
         return if @dragged
         
         @cTarget = $jQ(ev.target)
@@ -128,8 +129,19 @@ $.noConflict()
 app = null
 $jQ = jQuery
 $jQ ->
+
+    # Show the start overlay
+    #$jQ('#overlay').css({'width': WIDTH, 'height': HEIGHT})
+                        #.fadeIn('fast')
+
+    #$jQ('#enter-site').on('click', (ev)-> 
+                            #$jQ('#overlay').fadeOut('slow') )
+                            #
+    $jQ('#overlay').hide();
+    
     app = new BancoGenital( '#viewport', [window.innerWidth, window.innerHeight] )
 
+    # Get all photos
     $jQ.getJSON API_URL , (data) =>
         x = []
         x.push(obj) for obj in data

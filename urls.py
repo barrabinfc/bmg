@@ -17,7 +17,8 @@ urlpatterns = patterns('',
 )
 
 
-if not settings.ON_WEBBY_NODE:
+# Include static and media urls
+if not settings.ON_PRODUCTION:
     urlpatterns += patterns('',
         url(r'^media/(?P<path>.*)$',  'django.views.static.serve', {
             'document_root': settings.MEDIA_ROOT

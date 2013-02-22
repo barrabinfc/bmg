@@ -2,9 +2,9 @@ ROOT='/Users/frangossauro/work/Projects/bancogenital'
 PROJECT_ROOT=('%s/src'  % ROOT)
 
 
-TEMPLATE_DIRS = (
-    '/var/rapp/bancogenital/templates'
-)
+#TEMPLATE_DIRS = (
+#    '/var/rapp/bancogenital/templates'
+#)
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"

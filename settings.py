@@ -124,17 +124,12 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
+    #'django.contrib.sites',
+    #'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
 
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-
     'dbbackup',
-
     'perseguida'
 )
 
@@ -171,7 +166,7 @@ LOGGING = {
 DBBACKUP_STORAGE='dbbackup.storage.filesystem_storage'
 DBBACKUP_FILESYSTEM_DIRECTORY='/var/rapp/backups'
 
-ON_WEBBY_NODE = False
+ON_PRODUCTION = False
 
 from app_settings import *
 from local_settings import *
