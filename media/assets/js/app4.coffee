@@ -1,5 +1,7 @@
 # Constants
-API_URL = '/photos'
+API_URL = '/photos/json'
+API_SUBMIT_PHOTO = '/photos/upload'
+API_VERIFY_PHOTO = '/photos/verify'
 
 [WIDTH,HEIGHT] = [window.innerWidth,window.innerHeight];
 SESSIONS       = ['startmessage','wall','mostraoteu','about']
@@ -114,7 +116,8 @@ class BancoGenital
 
     onResize: =>
         [WIDTH,HEIGHT] = [window.innerWidth, window.innerHeight]
-        $jQ(@container).css({width: WIDTH, height: HEIGHT})
+        $jQ(@container).css({width: WIDTH, height: HEIGHT});
+        $jQ('#overlay').css({width: WIDTH, height: HEIGHT});
 
 
 
@@ -151,12 +154,12 @@ $jQ ->
     # Show the /etc/motd
     overlay = new Overlay('#overlay')
     overlay.setPage('startmessage')
-    overlay.show()
+    overlay.hide()
 
     # Start the genitalia wall
     banco = new BancoGenital( '#viewport', [window.innerWidth, window.innerHeight] )
     menu  = $jQ('#menu')
-    menu.hide()
+    menu.show()
 
     # Get genitalia pictures, and start feeding it!
     $jQ.getJSON API_URL , (data) =>
@@ -172,8 +175,6 @@ $jQ ->
                             overlay.hide()
                             menu.show()
 
-    #$jQ('#menu-mostraoteu').airport(['MOSTRA O TEU!','MOTRA A SUA!'])
-
     $jQ('#menu-mostraoteu').on 'click', (ev) ->
                             if(session == 'mostraoteu')
                                 overlay.hide()
@@ -184,8 +185,81 @@ $jQ ->
                             ev.stopPropagation()
                             return false
 
-    $jQ("#fileupload-dropzone").dropzone({ url: "/photos/upload" });
+    $jQ('#bt-cancel-photo').on 'click', (ev) ->
+            overlay.hide()
 
+            ev.stopPropagation()
+            return false 
+
+
+    $jQ('#photo-submit').dropzone({
+        url: API_VERIFY_PHOTO,
+        paramName: 'photo',
+        createImageThumbnails: true,
+        thumbnailWidth: 300,
+        thumbnailHeight: 450,
+        previewTemplate: "",
+        parallelUploads: 1,
+    });
+
+    dropzone = $jQ('#photo-submit').data('dropzone')
+    dragEnter = (ev) ->
+        $jQ('#photo-submit').addClass('drag');
+
+    dragLeave = (ev)  ->
+        $jQ('#photo-submit').removeClass('drag');
+
+    dropzone.on("dragenter", dragEnter );
+    dropzone.on("dragleave", dragLeave );
+    dropzone.on("drop", dragLeave );
+
+    # Show file preview
+    dropzone.on "thumbnail", (file,dataUrl) ->
+        # Clean message
+        $jQ('div','#photo-submit').remove();
+
+        img = new Image;
+        img.src = dataUrl;
+
+        if($jQ('img','#photo-submit').length)
+            $jQ('img','#photo-submit').attr( {'src': dataUrl});
+        else
+            $jQ('#photo-submit').append(img);
+
+    photoSubmitSuccess = (data)->
+        console.log(data);
+        overlay.hide()
+
+    photoSubmitError = (data) ->
+        console.log(data);
+
+    # Send photo by hand... weirdo
+    $jQ('#bt-submit-photo').on 'click', (ev) ->
+        files = $jQ('#photo-submit').data('dropzone').files
+        file  = files[ files.length - 1];
+
+        photo = new FormData()
+        photo.append('photo',  file)
+
+        xhr = new XMLHttpRequest()
+        xhr.open('POST', API_SUBMIT_PHOTO, true);
+        xhr.onload = (e) ->
+            response = xhr.responseText;
+
+            if(xhr.getResponseHeader("content-type").indexOf("application/json"))
+                response = JSON.parse(response)
+
+            if(response['status'] == 'OK')          photoSubmitSuccess(response)
+            else                                    photoSubmitError(response)
+
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        xhr.setRequestHeader("X-File-Name", file.name);
+
+        xhr.send(photo);
+
+        return false
 
     # MOstra o Teu UPLOAD
     #$jQ('#fileupload').fileupload({

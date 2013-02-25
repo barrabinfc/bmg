@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from settings import THUMBS_SIZE, STATIC_ROOT
 from genitalia.models import Genitalia
-from genitalia.forms import GenitaliaForm
+from genitalia.forms import GenitaliaForm, SinglePhotoForm
 
 from utils.utils import qs_to_json
 import json, random
@@ -19,29 +19,33 @@ def home(request):
     return render_to_response('genitalia/home.html', context_instance=RequestContext(request) )
 
 @csrf_exempt
-def photos_upload(request):
-    """ Upload a picture """
+def photos_verify(request):
+    """ Just verify if picture is valid """
     if request.method == 'GET':
         return render_to_response('genitalia/upload.html')
     elif request.method == 'POST':
-        photo = PhotoForm(request.POST, request.FILES)
+        photo = SinglePhotoForm(request.POST, request.FILES)
         if photo.is_valid():
-            photo.save()
-
-            return HttpResponse('OK')
+            return HttpResponse( json.dumps({'status': 'OK'}), mimetype='application/json')
         else:
-            print photo.errors
             for field in photo:
                 print field.name, field.errors
 
-            return HttpResponse('FAIL')
+            return HttpResponse( json.dumps({'status': 'FAIL'}), mimetype='application/json' )
 
-def photos(request):
+def photos_upload(request):
+    """ Upload photos """
+    if request.method == 'POST':
+        photo = SinglePhotoForm(request.POST, request.FILES)
+        if photo.is_valid():
+
+            return HttpResponse( json.dumps({'status': 'OK'}), mimetype='application/json' )
+        else:
+            return HttpResponse( json.dumps({'status': 'FAIL'}), mimetype='application/json' )
+
+def photos_json(request):
     """ Server the photos as a JSON """
     def randomize_url(photo):
-        #return {'url': getattr(photo.image, 'url_128x128'), 'size': (128,128)}
-        #return {'url': getattr(photo.image, 'url_512x512'), 'size': (512,512)}
-        #choice = random.choice( THUMBS_SIZE[:2] )
         choice = THUMBS_SIZE[0]
         return {'url': getattr(photo.image, 'url_%sx%s' % (choice[0],choice[1])), 'size': choice }
 

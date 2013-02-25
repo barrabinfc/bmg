@@ -15,7 +15,7 @@ time, mark, audio, video {
   font-size: 100%;
   font: inherit;
   /*vertical-align: baseline;*/
-  font-family: 'EB Garamond', serif;
+  font-family: 'Arvo', serif;
 }
 
 article, aside, details, figcaption, figure,
@@ -26,7 +26,7 @@ footer, header, hgroup, menu, nav, section {
 a {
     text-decoration: none;
     color: #ededed;
-    font-family: 'EB Garamond', serif;
+    font-family: 'Arvo', serif;
     font-size: 24px;
     text-transform: uppercase;
     font-weight: bold;
@@ -46,7 +46,7 @@ li {
 }
 
 body { 
-  font: 16px 'EB Garamond', serif;
+  font: 16px 'Arvo', serif;
   -webkit-font-smoothing: antialiased;
 
   background: #D8D5D2;
@@ -58,7 +58,7 @@ body {
 
 h1 {
     /*font-family: "helvetica neue", helvetica, arial, verdana, sans-serif;*/
-    font-family: 'EB Garamond', serif;
+    font-family: 'Arvo', serif;
     font-size: 31px;
     font-weight: bold;
     text-transform: uppercase;
@@ -73,25 +73,39 @@ p {
     display: block;
     text-align: center;
     text-decoration: none;
-    font-family: 'EB Garamond', serif;
+    font-family: 'Arvo', serif;
     font-size: 24px;
-    text-transform: uppercase;
+    text-transform: lowercase;
     font-weight: bold;
     color: #fff;
-    background-color: #FF8A00;
+    background-color: #8E57C5;
     width: 300px;
     line-height: 36px;
 
+    border: 2px solid rgba(0,0,0,0);
+
     margin: 0px auto;
 
-    -webkit-transition: all .1s ease-out;
-       /*-moz-transition: all .2s ease-in-out;*/
-         /*-o-transition: all .2s ease-in-out;*/
-            /*transition: all .2s ease-in-out;*/
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
+}
+.squarebuttons:hover {
+    border: 2px solid #fff;
+    background-color: #6EA4D3;
 }
 
-.squarebuttons:hover {
-    -webkit-transform: scale(1.1);
+.bt-small {
+    width: 140px;
+}
+
+.bt-cancel {
+    background-color: #C22F2D;
+}
+
+.bt-cancel:hover {
+    background-color: #FF452E;
 }
 
 
@@ -99,7 +113,7 @@ p {
     display: block;
     text-align: center;
     text-decoration: none;
-    font-family: 'EB Garamond', serif;
+    font-family: 'Arvo', serif;
     font-size: 24px;
     text-transform: uppercase;
     font-weight: bold;
@@ -150,8 +164,8 @@ p {
     position: fixed;
     z-index: 1000;
     overflow: hidden;
-    background: #000;
-    opacity: 0.93;
+    opacity: 0.9;
+    background: transparent -webkit-gradient(radial, center center, 3000, center center, 0, from(transparent), to(#000000));
 }
 
 .infoscreen {
@@ -199,35 +213,40 @@ p {
 
 
 #mostraoteu {
-    padding-top: 60px;
+    width: 100%;
+    height: 450px;
+    position: relative;
+    top: 100px;
+    left: 0px;
+    margin: 0px auto;
 }
 
-#fileupload-dropzone {
-    width: 350px;
-    height: 350px;
-    border: 2px solid #fff;
+#mostraoteu .bottom {
+    margin: 30px auto;
+    width: 300px;
 }
-#fileupload-dropzone {
-    line-height: 350px;
+
+#mostraoteu .squarebuttons {
+    float: left;
+    margin-left: 5px;
+}
+
+#photo-submit {
+    width: 300px;
+    height: 450px;
+    border: 2px dashed #fff;
     text-align: center;
     font-weight: bold;
     margin: 0px auto;
+    overflow: hidden;
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
 }
-#fileupload-dropzone.in {
-    font-size: 32px;
-    line-height: 200px;
-    font-size: larger;
-}
-#fileupload-dropzone.hover {
-    background: lawngreen;
-}
-#fileupload-dropzone.fade {
-    -webkit-transition: all 0.3s ease-out;
-    -moz-transition: all 0.3s ease-out;
-    -ms-transition: all 0.3s ease-out;
-    -o-transition: all 0.3s ease-out;
-    transition: all 0.3s ease-out;
-    opacity: 1;
+.drag {
+    background-color: rgba(255,255,255,0.5);
 }
 
 #fileupload-dropzone label {
@@ -251,20 +270,24 @@ p {
 
 #menu ul {
     height: 52px;
-    /*background-color: rgba(0,0,0,0.8);*/
 }
 
 #menu ul li {
-    border: 1px solid #e1e1e1;
+    border: 2px solid rgba(255,255,255,0.0);
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
 }
 
 
 #menu ul li:hover {
-    border: 2px solid #e1e1e1;
+    border: 2px solid #fff;
 }
 
 #menu ul li .active {
-    border: 2px solid #e1e1e1;
+    border: 2px solid #fff;
 }
 
 

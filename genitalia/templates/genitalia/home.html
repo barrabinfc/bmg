@@ -15,15 +15,11 @@
     <link rel="image_src" href="http://genitalia.me/fb_logo.jpg" > 
 
     <link href='http://fonts.googleapis.com/css?family=Domine:400,700|EB+Garamond&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    
-    
-    <!--
-    <link href="{{ STATIC_URL }}css/bootstrap/bootstrap.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
-    -->
-    
+    <link href='http://fonts.googleapis.com/css?family=Arvo:400,700,400italic,700italic|Nova+Square|Bevan' rel='stylesheet' type='text/css'>                                                        
+
+
     <link href="{{ MEDIA_URL }}assets/css/app4.css" rel="stylesheet">
-    
+
     <script src="{{ MEDIA_URL }}assets/js/mootools/mootools-core-1.3.2.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ MEDIA_URL }}assets/js/mootools/mootools-more-1.3.2.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ MEDIA_URL }}assets/js/mootools/wall.js" type="text/javascript" charset="utf-8"></script>
@@ -34,8 +30,6 @@
 
 
     <script src="{{ MEDIA_URL }}assets/js/jquery/dropzone.js" type="text/javascript" charset="utf-8" ></script>
-    <script src="{{ MEDIA_URL }}assets/js/jquery/jquery.fileupload.js" type="text/javascript" charset="utf-8" ></script>
-    
     <script src="{{ MEDIA_URL }}assets/js/app4.js" type="text/javascript" charset="utf-8" ></script>
 
     <script type="text/javascript">
@@ -69,33 +63,21 @@
             </div>
         </div>
         <div id="mostraoteu" class="infoscreen">
-            <div class="left">
                 <div class="top">
-                    <h1>Mostra o seu que a gente mostra o nosso</h1>
-                    <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vestibulum laoreet erat, eget scelerisque felis sollicitudin non. Integer accumsan, magna at dignissim aliquam, nunc enim semper felis</p>
-                    <p>Pellentesque eu mattis leo. Curabitur ante quam, feugiat vitae aliquam sit amet, mollis sed arcu. Pellentesque vitae ultricies lacus. Praesent venenatis sodales urna vel eleifend. Sed ut leo a est </p>
-                </div>
-            </div>
-            <div class="right">
-                <div class="top">
-                    <div id="fileupload-dropzone">
-                        <label>Drop your genitalia here</label>
-                    </div>
+                    <form action="/photo/verify" method="POST" enctype"multipart/form-data" id="photo-submit" class="square">
+                        <input name="photo" type="file" style="display: none;">
+                    </form>
                 </div>
                 <div class="bottom">
-                    <a href="javascript: return false;" class="squarebuttons" id="submit-photo">podecre!</a>
+                    <a href="javascript: return false;" class="squarebuttons bt-small bt-cancel" id="bt-cancel-photo">Cancelar</a>
+                    <a href="javascript: return false;" class="squarebuttons bt-small" id="bt-submit-photo">Enviar</a>
                 </div>
-                <!--
-                    <input id="fileupload" type="file" name="files[]" data-url="/photos/upload">
-                -->
-            </div>
+
         </div>
     </div>
     <div id="viewport">
         <div id="menu">
             <ul>
-                <li class="right"><a id="menu-about" href="/about" class="menubuttons green s150">BMG</a></li>
                 <li class="right"><a id="menu-mostraoteu" href="/upload" class="menubuttons pink s300">Mostra o teu!</a></li>
             </ul>
         </div>
