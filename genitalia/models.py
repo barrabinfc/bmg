@@ -1,9 +1,18 @@
 from django.db import models
 from hashlib import sha512
 
+import uuid,os
+
 from thumbs import ImageWithThumbsField
 
 from settings import THUMBS_SIZE
+
+def photo_hash(instance,filename):
+    path = 'photos/'
+    ext  = filename.split('.')[-1]
+    filename = "%s.%s" % ( uuid.uuid4(), ext )
+
+    return os.path.join( path, filename )
 
 class Genitalia(models.Model):
     name             = models.CharField(max_length=128, blank=True)
@@ -11,9 +20,8 @@ class Genitalia(models.Model):
     updated_at       = models.DateTimeField(auto_now=True)
     created_at       = models.DateTimeField(auto_now_add=True)
 
+    image            = ImageWithThumbsField(upload_to=photo_hash, sizes=THUMBS_SIZE )
     hash             = models.CharField(max_length=255, editable=False)
-    image            = ImageWithThumbsField(upload_to='photos/', sizes=THUMBS_SIZE )
-
     approved         = models.BooleanField(default=False)
 
     class Meta:
@@ -36,7 +44,7 @@ class Genitalia(models.Model):
         h = sha512()
         h.update(self.image.read())
         self.hash = h.hexdigest()
-        return super(Photo, self).save(self,*args,**kwargs)
+        return super(Genitalia, self).save(self,*args,**kwargs)
 
     def __unicode__(self):
         if not self.name:

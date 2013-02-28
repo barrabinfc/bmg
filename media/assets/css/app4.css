@@ -155,6 +155,9 @@ p {
     width: 100px;
 }
 
+.hidden {
+    display: none;
+}
 
 
 
@@ -229,6 +232,12 @@ p {
 #mostraoteu .squarebuttons {
     float: left;
     margin-left: 5px;
+}
+
+#mostraoteu #uploadSuccessMessage {
+    margin: 30px auto;
+    width: 300px;
+    position: absolute;
 }
 
 #photo-submit {

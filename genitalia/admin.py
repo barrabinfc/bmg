@@ -2,6 +2,8 @@ from django.contrib import admin
 from genitalia.models import Genitalia
 from django.contrib.admin import BooleanFieldListFilter
 
+from django.core.cache import cache
+
 class GenitaliaAdmin( admin.ModelAdmin ):
 
     def unpublish(self, request, queryset):
@@ -9,12 +11,18 @@ class GenitaliaAdmin( admin.ModelAdmin ):
         msg  = '%s photos were rejected!' % rows
         self.message_user(request, msg)
 
+        # Clean the cache!
+        cache.delete('photos_json')
+
     unpublish.short_description = 'Reject photos'
 
     def publish(self, request, queryset):
         rows = queryset.update(approved=True)
         msg  = '%s photos were published!' % rows
         self.message_user(request, msg)
+
+        # Clean the cache!
+        cache.delete('photos_json')
 
     publish.short_description = 'Publish photos'
 

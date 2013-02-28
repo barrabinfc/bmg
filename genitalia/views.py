@@ -38,7 +38,8 @@ def photos_upload(request):
     if request.method == 'POST':
         photo = SinglePhotoForm(request.POST, request.FILES)
         if photo.is_valid():
-
+            genitalia = Genitalia(name='',image=request.FILES['photo'])
+            genitalia.save()
             return HttpResponse( json.dumps({'status': 'OK'}), mimetype='application/json' )
         else:
             return HttpResponse( json.dumps({'status': 'FAIL'}), mimetype='application/json' )
