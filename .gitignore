@@ -3,3 +3,4 @@
 media/photos
 mockdata
 static/
+local_settings.py
