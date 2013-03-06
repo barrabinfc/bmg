@@ -1,27 +1,37 @@
 from fabric.api import *
 import os
 
-PROJECT_ROOT = os.path.join( os.path.realpath( __file__ ) , '..' )
+
+PROJECT_ROOT = '/Users/frangossauro/work/Projects/bancogenital'
 REMOTE_PROJECT_ROOT = '/var/www/genitalia.me'
+
+print PROJECT_ROOT
 
 env.hosts = ['barrabin-fc.net']
 env.use_ssh_config = True
 
 def full_backup():
     local("./manage.py dbbackup")
-    with cd(PROJECT_ROOT):
-        local("zip backups/bancogenital-photos.zip app/media/photos/*")
+    local("zip ../backups/bancogenital-photos.zip media/photos/*")
 
-def prepare_deploy():
-    local("./manage.py dbbackup")
-    local("git add -p && git commit")
-    local("git push")
+    print ""
+    print "*"*70
+    print "Backup on        ../backups   "
+    print "                         -> bancogenital_photos.zip "
+    print "                         -> bancogenital-%DATE%.mysql"
+    print "*"*70
+    print ""
+    print " Extract with  unzip ../backups/bancogenital-photos.zip -d app/media/photos"
+    print ""
+    print ""
 
 def deploy():
-    with cd(REMOTE_PROJECT_ROOT):
-        run('cd app && git pull')
-
+    remote_fetch_app()
     restart_uwsgi()
 
-def restart_uwsgi():
+def remote_fetch_app():
+    with cd(REMOTE_PROJECT_ROOT):
+        run('cd app && git pull origin master')
+
+def remote_restart_uwsgi():
     run("uwsgi --reload /var/www/genitalia.me/reload")
