@@ -53,26 +53,26 @@ SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
+USE_I18N = False
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
-USE_L10N = True
+USE_L10N = False
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = "%s/app/media/" % PROJECT_ROOT
-MEDIA_URL = 'http://localhost:8080/media/'
+MEDIA_URL = 'http://genitalia.me/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = "%s/static/" % (PROJECT_ROOT)
-STATIC_URL = 'http://localhost:8080/static/'
+STATIC_URL = 'http://genitalia.me/static/'
 
 STATICFILES_DIRS = (
     '%s/app/media/assets' % (PROJECT_ROOT),
