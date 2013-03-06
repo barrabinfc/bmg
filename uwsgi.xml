@@ -1,7 +1,0 @@
-<uwsgi>
-    <pythonpath>/var/www/genitalia.me/app/</pythonpath>
-    <pythonpath>/var/www/genitalia.me/venv/</pythonpath>
-    <app mountpoint="/">
-            <script>wsgi.py</script>
-    </app>
-</uwsgi>

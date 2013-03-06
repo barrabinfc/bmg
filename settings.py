@@ -1,6 +1,9 @@
 # Django settings for app project.
+import uwsgi,os
 
-DEBUG = True
+PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.join( os.getcwd() , '..' )
+
+DEBUG = (uwsgi.opt['DJANGO_DEBUG'] == 'no' ) or True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -54,38 +57,21 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/var/rapp/bancogenital/media/'
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
+MEDIA_ROOT = "%s/app/media/" % (PROJECT_ROOT)
 MEDIA_URL = 'http://genitalia.me/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-#STATIC_ROOT = '/var/rapp/bancogenital/static/'
-
-
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
+STATIC_ROOT = "%s/static/" % (PROJECT_ROOT)
 STATIC_URL = 'http://genitalia.me/static/'
-
-# Additional locations of static files
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    #"/var/rapp/bancogenital/media/assets",
-)
 
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -126,10 +112,6 @@ ROOT_URLCONF = 'urls'
 WSGI_APPLICATION = 'wsgi.application'
 
 TEMPLATE_DIRS = (
-    #'/var/rapp/bancogenital/templates'
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
 )
 
 INSTALLED_APPS = (
@@ -192,11 +174,5 @@ THUMBS_SIZE = (
 GRAPPELLI_ADMIN_TITLE='BMG - Banco MUNDIAL da genitalia'
 GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 
-try:
-    LOCAL_SETTINGS
-except NameError:
-    try:
-        from local_settings import *
-    except ImportError:
-        print "Could not import local_settings"
-        pass
+
+DBBACKUP_FILESYSTEM_DIRECTORY=('%s/backups' % PROJECT_ROOT)
