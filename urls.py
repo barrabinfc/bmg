@@ -28,8 +28,11 @@ if not settings.ON_PRODUCTION:
         # This is for dev purposes. This way you don't need to alter
         # the templates when on production, just point them to
         # STATIC_URL
+        url(r'^static/grappelli/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.STATIC_ROOT + 'grappelli/'
+        }),
         url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.STATICFILES_DIRS[0]
-        }),
+        })
         
     )

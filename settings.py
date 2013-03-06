@@ -65,14 +65,14 @@ USE_TZ = True
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = "%s/app/media/" % PROJECT_ROOT
-MEDIA_URL = 'http://localhost:8080/media/'
+MEDIA_URL = 'http://localhost:8000/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = "%s/static/" % (PROJECT_ROOT)
-STATIC_URL = 'http://localhost:8080/static/'
+STATIC_URL = 'http://localhost:8000/static/'
 
 STATICFILES_DIRS = (
     '%s/app/media/assets' % (PROJECT_ROOT),
@@ -92,7 +92,6 @@ SECRET_KEY = 'ok-g5u5og5%b(vgr!uz$q8mz^#t7(g$eempo_eg=40tx&amp;rq47u'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
