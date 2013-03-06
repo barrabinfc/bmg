@@ -22,7 +22,7 @@ def home(request):
 def photos_verify(request):
     """ Just verify if picture is valid """
     if request.method == 'GET':
-        return render_to_response('genitalia/upload.html')
+        return HttpResponse( json.dumps({'status': 'FAIL'}), mimetype='application/json' )
     elif request.method == 'POST':
         photo = SinglePhotoForm(request.POST, request.FILES)
         if photo.is_valid():

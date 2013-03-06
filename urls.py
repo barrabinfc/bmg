@@ -23,7 +23,13 @@ if not settings.ON_PRODUCTION:
         url(r'^media/(?P<path>.*)$',  'django.views.static.serve', {
             'document_root': settings.MEDIA_ROOT
         }),
+        
+        # serves the static files under MEDIA_ROOT 
+        # This is for dev purposes. This way you don't need to alter
+        # the templates when on production, just point them to
+        # STATIC_URL
         url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
-            'document_root': settings.STATIC_ROOT
+            'document_root': settings.STATICFILES_DIRS[0]
         }),
+        
     )
