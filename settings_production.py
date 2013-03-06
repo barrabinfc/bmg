@@ -172,6 +172,7 @@ LOGGING = {
 
 DBBACKUP_STORAGE='dbbackup.storage.filesystem_storage'
 DBBACKUP_FILESYSTEM_DIRECTORY=('%s/backups' % PROJECT_ROOT)
+DBBACKUP_MEDIA_PATH='%s/photos' % (MEDIA_ROOT)
 
 ON_PRODUCTION = False
 
