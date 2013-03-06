@@ -26,11 +26,11 @@ class GenitaliaAdmin( admin.ModelAdmin ):
 
     publish.short_description = 'Publish photos'
 
-    list_display = ['approved','as_link','as_thumb']
+    list_display = ['id','approved','as_link','as_thumb']
     actions      = ['publish','unpublish']
 
     list_filter  = [ 'approved', ]
-    ordering = ['approved','-created_at',]
+    ordering = ['approved','-id','-created_at',]
 
     save_on_top = True
     actions_on_top = True

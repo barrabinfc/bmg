@@ -21,7 +21,7 @@ class Genitalia(models.Model):
     created_at       = models.DateTimeField(auto_now_add=True)
 
     image            = ImageWithThumbsField(upload_to=photo_hash, sizes=THUMBS_SIZE )
-    hash             = models.CharField(max_length=255, editable=False)
+    hash             = models.CharField(max_length=255, editable=False,unique=False)
     approved         = models.BooleanField(default=False)
 
     class Meta:

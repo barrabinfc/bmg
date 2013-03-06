@@ -6,7 +6,8 @@ http://django.es
 from django.db.models import ImageField
 from django.db.models.fields.files import ImageFieldFile
 from PIL import Image
-from django.core.files.base import ContentFile
+from django.core.files.base import ContentFile 
+from django.core.files import File
 import cStringIO
 
 def generate_thumb(img, thumb_size, format):
@@ -84,6 +85,9 @@ class ImageWithThumbsFieldFile(ImageFieldFile):
     def save(self, name, content, save=True):
         super(ImageWithThumbsFieldFile, self).save(name, content, save)
         
+        self.generate_thumbs()
+                    
+    def generate_thumbs(self):
         if self.sizes:
             for size in self.sizes:
                 (w,h) = size
@@ -91,12 +95,12 @@ class ImageWithThumbsFieldFile(ImageFieldFile):
                 thumb_name = '%s.%sx%s.%s' % (split[0],w,h,split[1])
                 
                 # you can use another thumbnailing function if you like
-                thumb_content = generate_thumb(content, size, split[1])
+                thumb_content = generate_thumb( File(self), size, split[1])
                 
                 thumb_name_ = self.storage.save(thumb_name, thumb_content)        
                 
                 if not thumb_name == thumb_name_:
-                    raise ValueError('There is already a file named %s' % thumb_name)
+                    raise ValueError('There is already a file named %s' % thumb_name)        
         
     def delete(self, save=True):
         name=self.name

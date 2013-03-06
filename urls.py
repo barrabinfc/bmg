@@ -31,6 +31,10 @@ if not settings.ON_PRODUCTION:
         url(r'^static/grappelli/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.STATIC_ROOT + 'grappelli/'
         }),
+        url(r'^static/admin/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.STATIC_ROOT + 'admin/'
+        }),
+        
         url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.STATICFILES_DIRS[0]
         })

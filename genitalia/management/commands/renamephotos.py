@@ -36,12 +36,11 @@ def query_yes_no(question, default="yes"):
             return valid[choice]
         else:
             sys.stdout.write("Please respond with 'yes' or 'no' "\
-                             "(or 'y' or 'n').\n")
-    
+                             "(or 'y' or 'n').\n")    
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
-        all_genitalias = Genitalia.objects.all()[:1]
+        all_genitalias = Genitalia.objects.all()
         query_yes_no("Renaming %d photos. Proceed?" % all_genitalias.count() )
 
         for gen in all_genitalias:
@@ -50,31 +49,25 @@ class Command(BaseCommand):
             (basepath,filename) = os.path.split( img.name )
             ext                 = filename.split('.')[-1]
             
-            
             # Rename
             new_file =     '%s/%s.%s' % (basepath, uuid.uuid4(),ext)
+            full_oldname = img.path
+            full_newname = os.path.normpath( os.path.join( settings.MEDIA_ROOT , new_file) )
+            
             print u"Renaming %s to %s" % (img.name, new_file )
             
-            print os.path.join( settings.MEDIA_ROOT, img.name )
+            # I don't need a rename, tks
+            #os.rename(  full_oldname , full_newname )
             
-            os.rename(  os.path.join( settings.MEDIA_ROOT , img.name) , 
-                        os.path.join( settings.MEDIA_ROOT , new_file) )
+            # Save to db as a new photo
+            new_genitalia = gen
+            new_genitalia.id = None
+            new_genitalia.pk = None
+            new_genitalia.image.save( new_file, File( open(full_oldname,'r') ) )
+            #new_genitalia.image.generate_thumbs()
+            #new_genitalia.save()
             
-            # Save to db
-            img.name = new_file
-            gen.save()
+            gen.delete()
             
-            #os.rename( img.name , new_file )
-            #img.save( new_file, File(img,'r') , save=True )
+            print u"Saved with ID %s" % ( new_genitalia.id )
             
-            #try:
-            #new_file = '%s.%s' % (basepath, new_filename,ext)
-            #print u"Renaming %s to %s.%s" % (filename, new_file )
-                
-            #os.rename( img.path , new_file )
-            #img.path = new_file
-                
-                #img.save()
-            #except:
-            #    print basepath                
-            #    print new_filename
