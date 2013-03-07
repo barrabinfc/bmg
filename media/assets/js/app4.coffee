@@ -8,6 +8,8 @@ SESSIONS       = ['startmessage','wall','mostraoteu','about']
 
 [session,overlay,banco,menu] = [null,null,null,null]
 
+PHOTO_TILING = 'sequential'     # or sequential
+
 #
 # Banco Genitalia App
 #
@@ -37,12 +39,12 @@ class BancoGenital
                         "height":230,
                         "inertia": true,
                         "inertiaSpeed": 0.92,
-                        "printCoordinates":true,
+                        "printCoordinates":false,
                         "rangex":[-300,300],
                         "rangey":[-300,300],
                         callOnUpdate:  (items) => @createDOMPhotos(items),
-                        callOnMouseDown: @onMouseDown,
-                        callOnMouseUp: @onMouseUp,
+                        callOnMouseDown:    @onMouseDown,
+                        callOnMouseUp:      @onMouseUp,
                         callOnMouseDragged: @onMouseDragged })
 
         # Init Wall
@@ -52,11 +54,12 @@ class BancoGenital
 
     createDOMPhotos: (items) =>
         items.each( (e,i) =>
-            if(@imgCounter >= @photoJSONList.length-1)
-                @imgCounter = 0
-            else
-                @imgCounter++
-
+            
+            if PHOTO_TILING == 'random'
+                @imgCounter = Math.floor( Math.random() * @photoJSONList.length )
+            else if PHOTO_TILING == 'sequential'
+                @imgCounter = (@photoJSONList.length-1 + @imgCounter++) % @photoJSONList.length
+            
             currPhoto = @photoJSONList[@imgCounter]
 
             $jQ(e.node).text("")
@@ -68,39 +71,49 @@ class BancoGenital
         )
         
     onMouseDown: (e) =>
+        if @inZoom
+            e.stop()
         
-
+        return
+        
     onMouseUp: (e) =>
         @dragged = false
-        #ev.stopPropagation()
     
     onMouseDragged: (delta,e) =>
-        if(Math.abs(delta[0]) > 5 || Math.abs(delta[1]) > 5)            
+        if(Math.abs(delta[0]) > 5 or Math.abs(delta[1]) > 5)
             @dragged = true
+        
+        if @inZoom
+            e.stop()
 
+    # Someone clicked on the photo.
     onPhotoClick: (ev) =>
+        # Dont zoom if dragging
         return if @dragged
 
         @cTarget = $jQ(ev.target)
         if not @inZoom
             @zoomIn( @cTarget )
-            @lastTarget = @cTarget
-        else
-            if @cTarget.attr('url') == @lastTarget.attr('url')
+        else            
+            if @cTarget.attr('src') == @prevTarget.attr('src')
                 @zoomOut()
             else
                 @zoomIn( @cTarget )
-                @lastTarget = @cTarget
-
-        #ev.stopPropagation()
 
     zoomIn: (photo_el) =>
+        @prevTarget = @cTarget
         @inZoom = true
+        
+        pos = $jQ(photo_el).offset()
+        pos.left = pos.left - 40;
+        pos.top = pos.top - 40;
+        
+        $jQ('#close-icon').offset( pos ).show();
+        
         #clone = $jQ(photo_el).clone()
         #clone.attr('src', $jQ(photo_el).data('photo_info').url)
-        #clone.data('photo_info', $jQ(photo_el).data('photo_info'))
-
         #clone.appendTo( $jQ(photo_el).parent() )
+        
         $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url )
 
         #$jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url)
@@ -163,10 +176,7 @@ $jQ ->
 
     # Get genitalia pictures, and start feeding it!
     $jQ.getJSON API_URL , (data) =>
-        x = []
-        x.push(obj) for obj in data
-
-        banco.setup x
+        banco.setup data
 
     ###############
     # User Events #
@@ -260,30 +270,6 @@ $jQ ->
         xhr.send(photo);
 
         return false
-
-    # MOstra o Teu UPLOAD
-    #$jQ('#fileupload').fileupload({
-        #dataType: 'json',
-        #dropZone: $jQ('#fileupload-dropzone')
-        #done: (e,data) ->
-            #console.log("Done",e,data)
-    #})
-
-    #dropzone = $jQ('#fileupload-dropzone')
-    #$jQ(document).bind('dragover', (e) ->
-        #dropzone = $jQ('#fileupload-dropzone')
-
-        #if (e.target == dropzone[0])        
-            #dropzone.addClass('hover')
-        #else                                
-            #dropzone.removeClass('hover')
-    #)
-
-    #$jQ(document).bind('drop dragover', (e) ->
-        #dropzone.removeClass('hover')
-        #e.preventDefault()
-    #)
-
 
 
     # GLOBAL VARS
