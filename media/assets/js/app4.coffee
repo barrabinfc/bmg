@@ -19,19 +19,34 @@ class GenitaliaItem
         @img = $jQ('img',@el)
         @el.hide();
         
+        # Create a placeholder for the full image
+        @full_res_img = @img.clone()
+        @el.append( @full_res_img )
+        
+        console.log("Loaded img at #{data.url_small}")
+        
         # When the image is loaded, set hover effects and events
-        @img.imagesLoaded( =>
-            
+        @img.imagesLoaded =>
+            console.log("Loaded img at #{data.url_small}")
             @el.fadeIn(1000)
             
             # Register ev's
-            #$jQ(@el).click (ev)->
-            #    $jQ( ev.target ).zoomTo({targetsize:0.75, duration:600});
+            $jQ(@el).click (ev) =>
                 
-            #    $jQ(this).parent().find('img:first').stop().animate({opacity:1}, 1000)
-            #$jQ(@img).mouseout ->
-            #    $jQ(this).stop().animate({opacity: 0}, 1000)        
-        )
+                console.log("clicked");
+                
+                # Load a full resolution image
+                @full_res_img = @img.clone()
+                @full_res_img.src = data.url                
+                @el.append( @full_res_img )
+                
+                @full_res_img.imagesLoaded =>
+                    
+                    console.log("Loaded full res" , @full_res_img)
+                    @img.fadeOut(500)
+                    @full_res_img.fadeIn(500)
+
+        
         
         #@img.hide(500)
         @getPos()
@@ -73,6 +88,9 @@ class BancoGenital
         @photoJSONList    = photoList
         @imgCounter = Math.floor( Math.random() * (@photoJSONList.length - 1) )
         
+        if DEBUG
+            @imgCounter = 0
+        
         # Setup Events
         $jQ(window).resize @onResize
         
@@ -91,18 +109,19 @@ class BancoGenital
             @last_col = 0
             for c_col in [1..@columns]
                 @last_col = @last_col + 1
-                @addItem( @getPhotoData )
+                @addItem( @getPhotoData() )
                 
         # Setup zoom again
         $jQ('.wall-item').zoomTarget()
 
-    getPhotoData: (row,col) ->
+    getPhotoData: (row,col) =>
         if PHOTO_TILING == 'random'
             @imgCounter = Math.floor( Math.random() * @photoJSONList.length )
         else if PHOTO_TILING == 'sequential'
             @imgCounter = (@photoJSONList.length-1 + @imgCounter++) % @photoJSONList.length
         
         currPhoto = @photoJSONList[@imgCounter]
+                
         return currPhoto
     
     onMouseDown: (e) =>

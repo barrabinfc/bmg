@@ -28,8 +28,23 @@
       this.el = $jQ("<div id='" + data.id + "' attr-pos='" + pos[0] + "-" + pos[1] + "' class='wall-item'><img src='" + data.url_small + "'></div>");
       this.img = $jQ('img', this.el);
       this.el.hide();
+      this.full_res_img = this.img.clone();
+      this.el.append(this.full_res_img);
+      console.log("Loaded img at " + data.url_small);
       this.img.imagesLoaded(function() {
-        return _this.el.fadeIn(1000);
+        console.log("Loaded img at " + data.url_small);
+        _this.el.fadeIn(1000);
+        return $jQ(_this.el).click(function(ev) {
+          console.log("clicked");
+          _this.full_res_img = _this.img.clone();
+          _this.full_res_img.src = data.url;
+          _this.el.append(_this.full_res_img);
+          return _this.full_res_img.imagesLoaded(function() {
+            console.log("Loaded full res", _this.full_res_img);
+            _this.img.fadeOut(500);
+            return _this.full_res_img.fadeIn(500);
+          });
+        });
       });
       this.getPos();
     }
@@ -74,6 +89,8 @@
 
       this.onMouseDown = __bind(this.onMouseDown, this);
 
+      this.getPhotoData = __bind(this.getPhotoData, this);
+
       this.setup = __bind(this.setup, this);
 
       var _ref2;
@@ -91,6 +108,9 @@
       var page, _i, _results;
       this.photoJSONList = photoList;
       this.imgCounter = Math.floor(Math.random() * (this.photoJSONList.length - 1));
+      if (DEBUG) {
+        this.imgCounter = 0;
+      }
       $jQ(window).resize(this.onResize);
       _results = [];
       for (page = _i = 1; _i <= 2; page = ++_i) {
@@ -112,7 +132,7 @@
         this.last_col = 0;
         for (c_col = _j = 1, _ref3 = this.columns; 1 <= _ref3 ? _j <= _ref3 : _j >= _ref3; c_col = 1 <= _ref3 ? ++_j : --_j) {
           this.last_col = this.last_col + 1;
-          this.addItem(this.getPhotoData);
+          this.addItem(this.getPhotoData());
         }
       }
       return $jQ('.wall-item').zoomTarget();
