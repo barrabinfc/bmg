@@ -5,8 +5,6 @@ import os
 PROJECT_ROOT = '/Users/frangossauro/work/Projects/bancogenital'
 REMOTE_PROJECT_ROOT = '/var/www/genitalia.me'
 
-print PROJECT_ROOT
-
 env.hosts = ['barrabin-fc.net']
 env.use_ssh_config = True
 

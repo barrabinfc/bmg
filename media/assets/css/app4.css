@@ -32,6 +32,11 @@ a {
     font-weight: bold;
 }
 
+a:hover , a:active {
+    text-decoration: none;
+    color: #fff;
+}
+
 html {
   overflow: hidden;
 }
@@ -110,6 +115,33 @@ p {
     background-color: #6EA4D3;
 }
 
+.iconbutton {
+    display: block;
+    color: #fff;
+    text-align: center;
+    text-transform: lowercase;
+    width: 100px;
+    line-height: 52px;
+    padding-top: 10px;
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;    
+}
+
+.iconbutton:hover {
+     text-shadow:   0 0 5px #fff, 
+                    0 0 10px #fff, 
+                    0 0 15px #ff2d95,
+                    0 0 20px #ff2d95,
+                    0 0 30px #ff2d95;
+            
+            /*        0 0 40px #ff2d95, 
+                    0 0 50px #ff2d95, 
+                    0 0 75px #ff2d95; */
+}
+
 .bt-small {
     width: 140px;
 }
@@ -133,6 +165,7 @@ p {
     font-weight: bold;
     color: #fff;
     line-height: 52px;
+    padding-top: 10px;
 }
 
 
@@ -187,17 +220,16 @@ p {
 
 .infoscreen {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -300px;
-    margin-left: -450px;
-
+    margin: 0 auto;
+    width: 600px;
+    height: 600px;
+    
     /* starts hidden*/
     display: none;
 }
 
 .infoscreen .left {
-    width: 400px;
+    width: 200px;
     height: 600px;
     float: left;
     position: relative;
@@ -205,7 +237,7 @@ p {
 }
 
 .infoscreen .right {
-    width: 500px;
+    width: 200px;
     height: 600px;
     float: right;
 }
@@ -228,7 +260,7 @@ p {
     bottom: 0px;
 }
 
-#close-icon {
+#zoom-icon {
     position: absolute;
     top: 30px;
     left: 30px;
@@ -237,29 +269,23 @@ p {
     text-shadow: #000 0px 0px 5px;
 }
 
-
-#mostraoteu {
-    width: 100%;
-    height: 450px;
-    position: relative;
-    top: 100px;
-    left: 0px;
-    margin: 0px auto;
+#choose-upload {
+    padding-top: 150px;
 }
 
-#mostraoteu .bottom {
+#mostraoteu-upload .bottom {
     margin: 30px auto;
     width: 300px;
 }
 
-#mostraoteu .squarebuttons {
+#mostraoteu-upload .squarebuttons {
     float: left;
     margin-left: 5px;
 }
 
-#mostraoteu #uploadSuccessMessage {
+#mostraoteu-upload #uploadSuccessMessage {
     margin: 30px auto;
-    width: 300px;
+    width: 150px;
     position: absolute;
 }
 
@@ -277,10 +303,16 @@ p {
          -o-transition: all .150s ease-out;
             transition: all .150s ease-out;
 }
+
+#bt-submit-photo {
+    margin: 0px auto;
+}
+
+
 .drag {
     background-color: rgba(255,255,255,0.5);
 }
-
+*
 #fileupload-dropzone label {
     margin: 0px auto;
 }
@@ -305,21 +337,23 @@ p {
 }
 
 #menu ul li {
+    /*
     border: 2px solid rgba(255,255,255,0.0);
 
     -webkit-transition: all .150s ease-out;
        -moz-transition: all .150s ease-out;
          -o-transition: all .150s ease-out;
             transition: all .150s ease-out;
+    */
 }
 
 
 #menu ul li:hover {
-    border: 2px solid #fff;
+    /*border: 2px solid #fff;*/
 }
 
 #menu ul li .active {
-    border: 2px solid #fff;
+    /*border: 2px solid #fff;*/
 }
 
 
@@ -329,73 +363,44 @@ p {
     width:100%;
      height: 100%;
      position:relative;
-     overflow:hidden;
+     overflow: scroll-y;
      margin:0 auto;
      background:#212121;
 }
 
-.tile {
+.wall-item {
     width: 150px;
     height: 225px;
-    /*border-radius: 3px;*/
-    opacity: 0.8;
     
-    -webkit-transition-property: height, width, opacity, border-radius;
-       -moz-transition-property: height, width, opacity, border-radius;
-         -o-transition-property: height, width, opacity, border-radius;
-            transition-property: height, width, opacity, border-radius;
+/*    border: 1px solid transparent;*/
+    
+    float: left;
+    margin: 5px;
+    
+/*    opacity: 0.5;*/
+
+    -webkit-transition: all .150s ease;
+       -moz-transition: all .150s ease;
+         -o-transition: all .150s ease;
+            transition: all .150s ease;
+    
+}
+.wall-item:hover{
+/*    opacity: 1;*/
+    
+/*    box-shadow:   0 0 5px #C0A189, 
+                   0 0 10px #C0A189, 
+                   0 0 15px #998A70,
+                   0 0 20px #998A70,
+                   0 0 30px #000;
+*/    
+    transform: scale(1.1);
+    -webkit-transform:  scale(1.1) translate(-10px,-10px); /* prefixo para browsers webkit */
+    -moz-transform:     scale(1.1) translate(-4px,-5px); /* prefixo para browsers gecko */
+    -o-transform:       scale(1.1) translate(-4px,-5px);     
 }
 
-.tile img {
+.wall-item img {
     width: 150px;
-    height: 225px;
-    /*border-radius: 3px;*/
-    /*-moz-box-shadow: 1px 1px 10px #000;*/
-    /*-webkit-box-shadow: 1px 1px 10px #000;*/
-    /*box-shadow: 1px 1px 10px #000;        */
-    
-    -webkit-transition-duration: 0.25s;
-       -moz-transition-duration: 0.25s;
-         -o-transition-duration: 0.25s;
-            transition-duration: 0.25s;
-            
-    /*
-    -webkit-transition-timing-function: ease-out;
-    -moz-transition-timing-function: ease-out;
-    -o-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
-    */
-
-    -webkit-transition-property: height, width, opacity, border-radius, transform, -webkit-transform;
-       -moz-transition-property: height, width, opacity, border-radius;
-         -o-transition-property: height, width, opacity, border-radius;
-            transition-property: height, width, opacity, border-radius;
-}
-
-.tile img:hover {
-    opacity: 1;
-    
-    /*
-    width: 160px;
-    height: 235px;
-    */
-    
-    z-index: 10;
-    /*-moz-box-shadow: 0px 0px 20px #1f1f1f;*/
-    /*-webkit-box-shadow: 0px 0px 20px #1f1f1f;*/
-    /*box-shadow: 0px 0px 20px #1f1f1f;        */
-    
-    transform: scale(1.05);
-    -webkit-transform:  scale(1.05) translate(-5px,-5px); /* prefixo para browsers webkit */
-    -moz-transform:     scale(1.05) translate(-4px,-5px); /* prefixo para browsers gecko */
-    -o-transform:       scale(1.05) translate(-4px,-5px); 
-
-    /*border-radius: 5px;*/
-    /*-webkit-border-radius: 5px;    */
-}
-
-.tile:hover {
-   opacity: 1;
-   z-index: 12;
-   
+    height: 225px; 
 }
