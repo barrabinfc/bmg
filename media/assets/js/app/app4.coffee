@@ -1,21 +1,7 @@
-OverlayManager = require('overlay')
-
-# Constants
-API_URL = '/photos/json'
-API_SUBMIT_PHOTO = '/photos/upload'
-API_VERIFY_PHOTO = '/photos/verify'
-
-[WIDTH,HEIGHT] = [window.innerWidth,window.innerHeight];
-SESSIONS       = ['startmessage','wall','mostraoteu','about']
-
-[overlay,banco,menu] = [null,null,null,null]
-
-PHOTO_TILING = 'sequential'     # or sequential
-
 #
 # Banco Genitalia App
 #
-class BancoGenital
+class App
     constructor: (viewport,size) ->
         @size   = size
         [WIDTH,HEIGHT] = [ @size[0], @size[1]]
@@ -132,40 +118,4 @@ class BancoGenital
         $jQ(@container).css({width: WIDTH, height: HEIGHT});
         $jQ('#overlay').css({width: WIDTH, height: HEIGHT});
 
-
-
-# Start on documentReady
-$.noConflict()
-
-$jQ = jQuery
-$jQ ->
-
-    # Show the /etc/motd
-    overlay = new OverlayManager('#overlay')
-
-    # Start the genitalia wall
-    banco = new BancoGenital( '#viewport', [window.innerWidth, window.innerHeight] )
-    menu  = $jQ('#menu')
-    menu.show()
-
-    # Get genitalia pictures, and start feeding it!
-    $jQ.getJSON API_URL , (data) =>
-        banco.setup data
-
-    ###############
-    # User Events #
-    ###############
-    $jQ('#menu-mostraoteu').on 'click', (ev) ->
-                            if(overlay.on)
-                                overlay.hide()
-                            else
-                                overlay.setPage('photobooth')
-                                overlay.show()
-
-                            ev.stopPropagation()
-
-    # GLOBAL VARS
-    window.overlay = overlay
-    window.banco   = banco
-    window.menu    = menu
-    window.$jQ     = $jQ
+module.exports = App

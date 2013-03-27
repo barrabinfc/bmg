@@ -1,15 +1,10 @@
-overlay = require('overlay')
-
-API_URL = '/photos/json'
-API_SUBMIT_PHOTO = '/photos/upload'
-API_VERIFY_PHOTO = '/photos/verify'
-
-
-class PhotoUploadOverlay(object)
-    start: =>         
+class PhotoboothOvr
+    constructor: (@parent, @el) ->
+        
+    start: => 
         # Setup dropzone
         $jQ('#photo-submit',@el).dropzone({
-            url: API_VERIFY_PHOTO,
+            url: window.API_VERIFY_PHOTO,
             paramName: 'photo',
             createImageThumbnails: true,
             thumbnailWidth: 300,
@@ -73,7 +68,7 @@ class PhotoUploadOverlay(object)
         photo.append('photo',  file)
 
         xhr = new XMLHttpRequest()
-        xhr.open('POST', API_SUBMIT_PHOTO, true);
+        xhr.open('POST', window.API_SUBMIT_PHOTO, true);
         xhr.onload = (e) =>
             response = xhr.responseText;
 
@@ -101,3 +96,5 @@ class PhotoUploadOverlay(object)
     photoSubmitError: (data) ->
         console.log(data);
     
+
+module.exports = PhotoboothOvr

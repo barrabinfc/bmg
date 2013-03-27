@@ -29,13 +29,27 @@
     <script src="{{ STATIC_URL }}js/jquery/jquery-ui.min.js" type="text/javascript" charset="utf-8" ></script>
     <script src="{{ STATIC_URL }}js/jquery/jquery.zoomooz.js" type="text/javascript" charset="utf-8" ></script>
 
-
     <script src="{{ STATIC_URL }}js/jquery/dropzone.js" type="text/javascript" charset="utf-8" ></script>
-    <script src="{{ STATIC_URL }}js/app4.js" type="text/javascript" charset="utf-8" ></script>
+    <script src="{{ STATIC_URL }}js/package.js" type="text/javascript" charset="utf-8" ></script>
 
     <script type="text/javascript">
         var MEDIA_URL  = "{{ MEDIA_URL }}";
         var STATIC_URL = "{{ STATIC_URL }}";
+        
+        window.API_URL = '/photos/json'
+        window.API_SUBMIT_PHOTO = '/photos/upload'
+        window.API_VERIFY_PHOTO = '/photos/verify'
+
+        window.WIDTH = window.innerWidth;
+        window.HEIGHT = window.innerHeight;
+        window.PHOTO_TILING = 'sequential';
+
+        var $jQ = $;
+        $.noConflict();
+
+        document.addEventListener('DOMContentLoaded', function(){
+            require('index').init()
+        })
     </script>
 </head>
 
