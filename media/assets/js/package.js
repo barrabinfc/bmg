@@ -222,10 +222,11 @@
       if (overlay.on) {
         overlay.hide();
       } else {
-        overlay.setPage('photobooth');
+        overlay.setPage('mostraoteu');
         overlay.show();
       }
-      return ev.stopPropagation();
+      ev.stopPropagation();
+      return false;
     });
     window.overlay = overlay;
     window.banco = banco;
@@ -237,118 +238,6 @@
 
 }).call(this);
 }, "overlay/PhotoUpload": function(exports, require, module) {(function() {
-  var PhotoboothOvr,
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  PhotoboothOvr = (function() {
-    function PhotoboothOvr(parent, el) {
-      this.parent = parent;
-      this.el = el;
-      this.stop = __bind(this.stop, this);
-      this.start = __bind(this.start, this);
-    }
-
-    PhotoboothOvr.prototype.start = function() {
-      var dropzone;
-
-      $jQ('#photo-submit', this.el).dropzone({
-        url: window.API_VERIFY_PHOTO,
-        paramName: 'photo',
-        createImageThumbnails: true,
-        thumbnailWidth: 300,
-        thumbnailHeight: 450,
-        previewTemplate: "",
-        parallelUploads: 1
-      });
-      dropzone = $jQ('#photo-submit').data('dropzone');
-      dropzone.on("dragenter", this.dragEnter);
-      dropzone.on("dragleave", this.dragLeave);
-      dropzone.on("drop", this.dragLeave);
-      dropzone.on('thumbnail', this.thumbnail);
-      return this.setupEvents();
-    };
-
-    PhotoboothOvr.prototype.stop = function() {};
-
-    PhotoboothOvr.prototype.setupEvents = function() {
-      $jQ('#bt-cancel-photo', this.el).on('click', function(ev) {
-        overlay.hide();
-        return ev.stopPropagation();
-      });
-      return $jQ('#bt-submit-photo').on('click', this.submitPicture);
-    };
-
-    PhotoboothOvr.prototype.dragEnter = function(ev) {
-      return $jQ('#photo-submit').addClass('drag');
-    };
-
-    PhotoboothOvr.prototype.dragLeave = function(ev) {
-      return $jQ('#photo-submit').removeClass('drag');
-    };
-
-    PhotoboothOvr.prototype.thumbnail = function(file, dataUrl) {
-      var img;
-
-      $jQ('div', '#photo-submit').remove();
-      img = new Image;
-      img.src = dataUrl;
-      if (($jQ('img', '#photo-submit').length)) {
-        return $jQ('img', '#photo-submit').attr({
-          'src': dataUrl
-        });
-      } else {
-        return $jQ('#photo-submit').append(img);
-      }
-    };
-
-    PhotoboothOvr.prototype.submitPicture = function(ev) {
-      var file, files, photo, xhr,
-        _this = this;
-
-      files = $jQ('#photo-submit').data('dropzone').files;
-      file = files[files.length - 1];
-      photo = new FormData();
-      photo.append('photo', file);
-      xhr = new XMLHttpRequest();
-      xhr.open('POST', window.API_SUBMIT_PHOTO, true);
-      xhr.onload = function(e) {
-        var response;
-
-        response = xhr.responseText;
-        if (xhr.getResponseHeader("content-type").indexOf("application/json")) {
-          response = JSON.parse(response);
-        }
-        if ((response['status'] === 'OK')(_this.photoSubmitSuccess(response))) {
-
-        } else {
-          return _this.photoSubmitError(response);
-        }
-      };
-      xhr.setRequestHeader("Accept", "application/json");
-      xhr.setRequestHeader("Cache-Control", "no-cache");
-      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-      xhr.setRequestHeader("X-File-Name", file.name);
-      xhr.send(photo);
-      return false;
-    };
-
-    PhotoboothOvr.prototype.photoSubmitSuccess = function(data) {
-      console.log(data);
-      return overlay.hide();
-    };
-
-    PhotoboothOvr.prototype.photoSubmitError = function(data) {
-      return console.log(data);
-    };
-
-    return PhotoboothOvr;
-
-  })();
-
-  module.exports = PhotoboothOvr;
-
-}).call(this);
-}, "overlay/Photobooth": function(exports, require, module) {(function() {
   var PhotoUploadOvr,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -460,6 +349,118 @@
   module.exports = PhotoUploadOvr;
 
 }).call(this);
+}, "overlay/Photobooth": function(exports, require, module) {(function() {
+  var PhotoboothOvr,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  PhotoboothOvr = (function() {
+    function PhotoboothOvr(parent, el) {
+      this.parent = parent;
+      this.el = el;
+      this.stop = __bind(this.stop, this);
+      this.start = __bind(this.start, this);
+    }
+
+    PhotoboothOvr.prototype.start = function() {
+      var dropzone;
+
+      $jQ('#photo-submit', this.el).dropzone({
+        url: window.API_VERIFY_PHOTO,
+        paramName: 'photo',
+        createImageThumbnails: true,
+        thumbnailWidth: 300,
+        thumbnailHeight: 450,
+        previewTemplate: "",
+        parallelUploads: 1
+      });
+      dropzone = $jQ('#photo-submit').data('dropzone');
+      dropzone.on("dragenter", this.dragEnter);
+      dropzone.on("dragleave", this.dragLeave);
+      dropzone.on("drop", this.dragLeave);
+      dropzone.on('thumbnail', this.thumbnail);
+      return this.setupEvents();
+    };
+
+    PhotoboothOvr.prototype.stop = function() {};
+
+    PhotoboothOvr.prototype.setupEvents = function() {
+      $jQ('#bt-cancel-photo', this.el).on('click', function(ev) {
+        overlay.hide();
+        return ev.stopPropagation();
+      });
+      return $jQ('#bt-submit-photo').on('click', this.submitPicture);
+    };
+
+    PhotoboothOvr.prototype.dragEnter = function(ev) {
+      return $jQ('#photo-submit').addClass('drag');
+    };
+
+    PhotoboothOvr.prototype.dragLeave = function(ev) {
+      return $jQ('#photo-submit').removeClass('drag');
+    };
+
+    PhotoboothOvr.prototype.thumbnail = function(file, dataUrl) {
+      var img;
+
+      $jQ('div', '#photo-submit').remove();
+      img = new Image;
+      img.src = dataUrl;
+      if (($jQ('img', '#photo-submit').length)) {
+        return $jQ('img', '#photo-submit').attr({
+          'src': dataUrl
+        });
+      } else {
+        return $jQ('#photo-submit').append(img);
+      }
+    };
+
+    PhotoboothOvr.prototype.submitPicture = function(ev) {
+      var file, files, photo, xhr,
+        _this = this;
+
+      files = $jQ('#photo-submit').data('dropzone').files;
+      file = files[files.length - 1];
+      photo = new FormData();
+      photo.append('photo', file);
+      xhr = new XMLHttpRequest();
+      xhr.open('POST', window.API_SUBMIT_PHOTO, true);
+      xhr.onload = function(e) {
+        var response;
+
+        response = xhr.responseText;
+        if (xhr.getResponseHeader("content-type").indexOf("application/json")) {
+          response = JSON.parse(response);
+        }
+        if ((response['status'] === 'OK')(_this.photoSubmitSuccess(response))) {
+
+        } else {
+          return _this.photoSubmitError(response);
+        }
+      };
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Cache-Control", "no-cache");
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+      xhr.setRequestHeader("X-File-Name", file.name);
+      xhr.send(photo);
+      return false;
+    };
+
+    PhotoboothOvr.prototype.photoSubmitSuccess = function(data) {
+      console.log(data);
+      return overlay.hide();
+    };
+
+    PhotoboothOvr.prototype.photoSubmitError = function(data) {
+      return console.log(data);
+    };
+
+    return PhotoboothOvr;
+
+  })();
+
+  module.exports = PhotoboothOvr;
+
+}).call(this);
 }, "overlay/manager": function(exports, require, module) {(function() {
   var OverlayManager, PhotoUpload, Photobooth,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
@@ -485,10 +486,10 @@
 
     OverlayManager.prototype.setPage = function(new_page) {
       if (this.cpage) {
-        this.init.hide();
+        this.cpage.hide();
       }
       this.cpage = $jQ('#' + new_page);
-      this.cobj = this.objs[this.pages.lastIndexOf([new_page])];
+      this.cobj = this.objs[this.pages.lastIndexOf(new_page)];
       if (!this.init) {
         this.cobj.start();
         return this.init = true;

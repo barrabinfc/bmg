@@ -12,10 +12,10 @@ class OverlayManager
         @init = false
 
     setPage: (new_page) =>
-        @init.hide() if(@cpage)
+        @cpage.hide() if(@cpage)
         @cpage = $jQ('#' + new_page)
         
-        @cobj = @objs[ @pages.lastIndexOf( [new_page] ) ]        
+        @cobj = @objs[ @pages.lastIndexOf( new_page ) ]        
         if not @init
             @cobj.start()
             @init = true

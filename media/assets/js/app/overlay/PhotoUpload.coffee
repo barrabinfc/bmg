@@ -1,4 +1,4 @@
-class PhotoboothOvr
+class PhotoUploadOvr
     constructor: (@parent, @el) ->
         
     start: => 
@@ -97,4 +97,4 @@ class PhotoboothOvr
         console.log(data);
     
 
-module.exports = PhotoboothOvr
+module.exports = PhotoUploadOvr

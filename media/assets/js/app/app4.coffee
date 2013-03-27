@@ -93,9 +93,7 @@ class App
         pos = $jQ(photo_el).offset()
         pos.left = pos.left - 40;
         pos.top = pos.top - 40;
-        
-        $jQ('#close-icon').offset( pos ).show();
-        
+                
         #clone = $jQ(photo_el).clone()
         #clone.attr('src', $jQ(photo_el).data('photo_info').url)
         #clone.appendTo( $jQ(photo_el).parent() )

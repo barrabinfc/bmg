@@ -26,6 +26,7 @@ init = ->
                                 overlay.show()
 
                             ev.stopPropagation()
+                            return false
 
     # GLOBAL VARS
     window.overlay = overlay

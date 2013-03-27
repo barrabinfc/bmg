@@ -337,34 +337,17 @@ p {
 .tile {
     width: 150px;
     height: 225px;
-    /*border-radius: 3px;*/
-    opacity: 0.8;
-    
-    -webkit-transition-property: height, width, opacity, border-radius;
-       -moz-transition-property: height, width, opacity, border-radius;
-         -o-transition-property: height, width, opacity, border-radius;
-            transition-property: height, width, opacity, border-radius;
 }
 
 .tile img {
     width: 150px;
     height: 225px;
-    /*border-radius: 3px;*/
-    /*-moz-box-shadow: 1px 1px 10px #000;*/
-    /*-webkit-box-shadow: 1px 1px 10px #000;*/
-    /*box-shadow: 1px 1px 10px #000;        */
+    opacity: 1;
     
     -webkit-transition-duration: 0.25s;
        -moz-transition-duration: 0.25s;
          -o-transition-duration: 0.25s;
             transition-duration: 0.25s;
-            
-    /*
-    -webkit-transition-timing-function: ease-out;
-    -moz-transition-timing-function: ease-out;
-    -o-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
-    */
 
     -webkit-transition-property: height, width, opacity, border-radius, transform, -webkit-transform;
        -moz-transition-property: height, width, opacity, border-radius;
@@ -373,29 +356,11 @@ p {
 }
 
 .tile img:hover {
-    opacity: 1;
-    
-    /*
-    width: 160px;
-    height: 235px;
-    */
-    
+    opacity: 1;    
     z-index: 10;
-    /*-moz-box-shadow: 0px 0px 20px #1f1f1f;*/
-    /*-webkit-box-shadow: 0px 0px 20px #1f1f1f;*/
-    /*box-shadow: 0px 0px 20px #1f1f1f;        */
     
     transform: scale(1.05);
     -webkit-transform:  scale(1.05) translate(-5px,-5px); /* prefixo para browsers webkit */
     -moz-transform:     scale(1.05) translate(-4px,-5px); /* prefixo para browsers gecko */
     -o-transform:       scale(1.05) translate(-4px,-5px); 
-
-    /*border-radius: 5px;*/
-    /*-webkit-border-radius: 5px;    */
-}
-
-.tile:hover {
-   opacity: 1;
-   z-index: 12;
-   
 }
