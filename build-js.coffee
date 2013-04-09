@@ -4,21 +4,28 @@
 #*/
 stitch  = require('stitch');
 fs      = require('fs');
+watch   = require('watch');
 
-pack = stitch.createPackage({
-  paths: [__dirname + '/media/assets/js/app']
-});
+APP_SRC = __dirname + '/media/assets/js/app'
+APP_OUT = 'media/assets/js/package.js'
 
+compile = ->
+    pack = stitch.createPackage({
+      paths: [ APP_SRC ]
+    });
 
-console.log( __dirname + '/media/assets/js/app')
-
-pack.compile (err,source) ->
-    if (err)
-        throw err;
-
-    fs.writeFile('media/assets/js/package.js', source, (err) ->
-        if (err) 
+    pack.compile (err,source) ->
+        if (err)
             throw err;
 
-        console.log('Compiled media/assets/js/package.js');
-    )
+        fs.unlink( APP_OUT , ->
+            fs.writeFile( APP_OUT, source, (err) ->
+                if (err) 
+                    throw err
+
+                console.log("Compiled #{ APP_SRC } to #{ APP_OUT }")
+            )
+        )
+
+watch.watchTree APP_SRC, ->
+    compile()

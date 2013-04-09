@@ -62,6 +62,13 @@
         document.addEventListener('DOMContentLoaded', function(){
             require('index').init()
         })
+        
+        // This function cannot be renamed. OpenBooth will always automatically call "onFlashReady" upon initializing itself.
+        function onFlashReady() {
+        	setTimeout(function() {
+                window.overlay.getController('photobooth').embedComplete()
+            }, 500 );
+        }
     </script>
 </head>
 
@@ -111,6 +118,7 @@
             <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="459" height="344" id="openbooth">
                     <param name="movie" value="{{ STATIC_URL }}swf/openbooth.swf" />
                     <param name="allowScriptAccess" value="always">
+
                     <!--[if !IE]>-->
                     <object type="application/x-shockwave-flash" data="{{ STATIC_URL }}swf/openbooth.swf" width="459" height="344">
                     <!--<![endif]-->

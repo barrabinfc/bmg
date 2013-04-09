@@ -2,99 +2,79 @@ class PhotoboothOvr
     constructor: (@parent, @el) ->
         
     start: => 
-        # Setup dropzone
-        $jQ('#photo-submit',@el).dropzone({
-            url: window.API_VERIFY_PHOTO,
-            paramName: 'photo',
-            createImageThumbnails: true,
-            thumbnailWidth: 300,
-            thumbnailHeight: 450,
-            previewTemplate: "",
-            parallelUploads: 1,
-        })
-    
-        dropzone = $jQ('#photo-submit').data('dropzone')
-        
-        # Show a sign while Dragging
-        dropzone.on("dragenter", @dragEnter );
-        dropzone.on("dragleave", @dragLeave );
-        dropzone.on("drop", @dragLeave );
-        
-        # Show the thumbnail of picture
-        dropzone.on('thumbnail', @thumbnail )
-        
-        # Setup click handlers
-        @setupEvents()
+        swfobject.switchOffAutoHideShow()
+        swfobject.registerObject("openbooth","9")
+                        
+        window.openbooth_options = {
+            'enableSound': true, # Camera sounds
+            'enableFlash': true, # Camera Flash effect
+            'enableSettingsButton': true, # Flash settings button (only appears when hovering over video)
+            'bandwidth': 0, # Max Bandwidth (0 = unlimited)
 
+            'photoQuality' : 100, # JPEG Photo quality (0 - 100)
+            'photoWidth'  : 459, # Photo width
+            'photoHeight'  : 344, # Photo height
+
+            'cameraWidth'  : 459, # Camera source width (tip: should be in increments of 320)
+            'cameraHeight' : 344, # Camera source height (tip: should be in increments of 240)
+            'cameraFPS'   : 25, # Camera source frames per second
+
+            'timerTimeout' : 3, # Camera timer length
+            'timerX'    : 198, # Camera timer X position on video
+            'timerY'    : 250, # Camera timer Y position on video
+            'timerAlpha'  : 0.6, # Camera timer opacity (0 - 1)
+            
+            'callbacks'   : {
+                'initComplete'   : @initComplete, # Fired when Flash finished initializing the init() function
+                'uploadSuccessful' : @uploadSuccessfull, # Fired when an upload was successful
+                'onError'      : @uploadError, # Fired when there was an upload error
+            
+                'previewComplete'  : @previewComplete, # Fired when a snapshot was taken
+                'previewCanceled'  : @previewCanceled, # Fired when a snapshot was dismissed
+            
+                'videoStart'    : false, # Fired when a video source started
+                'noVideoDevices'  : false, # Fired when no video sources were detected
+                'uploadComplete'  : false  # Fired when an upload function was completed
+            },
+
+            'placeholders' : {
+                'load'     : '/images/openbooth_allow_dev.jpg',  # Placeholder image: Before video started
+                'save'     : '/images/openbooth_saving_dev.jpg', # Placeholder image: While image is uploaded
+                'noVideoDevices': '/images/openbooth_nocameras_dev.jpg' # Placeholder image: When no video devices were detected
+            }
+        }
+        
+        window.openbooth = swfobject.getObjectById('openbooth')
+        @openbooth = window.openbooth
+        
+        # 
+    
+    embedComplete: =>
+        console.log("Embed complete, calling openbooth.init()")
+        console.log @openbooth
+        @openbooth.init( window.openbooth_options )
+        @openbooth.camInit();
+        console.log("Called. Waiting for init")
+
+    initComplete: (ev) =>
+        console.log("Init completed")
+        @openbooth.camInit();
+        return
+        
+    uploadedSuccessful: (ev) =>
+        return
+
+    uploadedError: (ev) =>
+        return
+
+    previewComplete: (ev) =>
+        return
+
+    previewCanceled: (ev) =>
+        return
 
     stop: =>
         return
-    
-    setupEvents: ->
-        $jQ('#bt-cancel-photo',@el).on 'click', (ev) ->
-            overlay.hide()
-            ev.stopPropagation()
-        
-        $jQ('#bt-submit-photo').on 'click' , @submitPicture 
 
-
-    # Show a sign while draggning
-    dragEnter: (ev) ->
-        $jQ('#photo-submit').addClass('drag');
-    dragLeave: (ev)  ->
-        $jQ('#photo-submit').removeClass('drag');
-
-
-    # Show file preview
-    thumbnail: (file,dataUrl) ->
-        # Clean message
-        $jQ('div','#photo-submit').remove();
-
-        img = new Image;
-        img.src = dataUrl;
-
-        if($jQ('img','#photo-submit').length)
-            $jQ('img','#photo-submit').attr( {'src': dataUrl});
-        else
-            $jQ('#photo-submit').append(img);
-
-
-    submitPicture: (ev) ->
-        # Send photo by hand... weirdo
-        files = $jQ('#photo-submit').data('dropzone').files
-        file  = files[ files.length - 1];
-
-        photo = new FormData()
-        photo.append('photo',  file)
-
-        xhr = new XMLHttpRequest()
-        xhr.open('POST', window.API_SUBMIT_PHOTO, true);
-        xhr.onload = (e) =>
-            response = xhr.responseText;
-
-            if(xhr.getResponseHeader("content-type").indexOf("application/json"))
-                response = JSON.parse(response)
-
-            if(response['status'] == 'OK')          @photoSubmitSuccess(response)
-            else                                    @photoSubmitError(response)
-
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Cache-Control", "no-cache");
-        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xhr.setRequestHeader("X-File-Name", file.name);
-
-        xhr.send(photo);
-
-        return false
-
-
-    photoSubmitSuccess: (data)->
-        console.log(data);
-        overlay.hide()
-
-
-    photoSubmitError: (data) ->
-        console.log(data);
-    
 
 module.exports = PhotoboothOvr

@@ -8,8 +8,8 @@ init = ->
     
     # Start the genitalia wall
     banco = new App( '#viewport', [window.innerWidth, window.innerHeight] )
-    menu  = $jQ('#menu')
-    menu.show()
+    #menu  = $jQ('#menu')
+    #menu.show()
 
     # Get genitalia pictures, and start feeding it!
     $jQ.getJSON API_URL , (data) =>
@@ -18,20 +18,20 @@ init = ->
     ###############
     # User Events #
     ###############
-    $jQ('#menu-mostraoteu').on 'click', (ev) ->
-                            if(overlay.on)
-                                overlay.hide()
-                            else
-                                overlay.setPage('photobooth')
-                                overlay.show()
-
-                            ev.stopPropagation()
-                            return false
+    # $jQ('#menu-mostraoteu').on 'click', (ev) ->
+    #                         if(overlay.on)
+    #                             overlay.hide()
+    #                         else
+    #                             overlay.setPage('photobooth')
+    #                             overlay.show()
+    # 
+    #                         ev.stopPropagation()
+    #                         return false
 
     # GLOBAL VARS
     window.overlay = overlay
     window.banco   = banco
-    window.menu    = menu
+    #window.menu    = menu
     window.$jQ     = $jQ
 
 module.exports.init = init

@@ -162,7 +162,6 @@
       pos = $jQ(photo_el).offset();
       pos.left = pos.left - 40;
       pos.top = pos.top - 40;
-      $jQ('#close-icon').offset(pos).show();
       $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url);
       return $jQ(photo_el).zoomTo({
         targetSize: 0.75,
@@ -207,30 +206,17 @@
   App = require('app4');
 
   init = function() {
-    var banco, menu, overlay,
+    var banco, overlay,
       _this = this;
 
     overlay = new OverlayManager('#overlay');
     overlay.hide();
     banco = new App('#viewport', [window.innerWidth, window.innerHeight]);
-    menu = $jQ('#menu');
-    menu.show();
     $jQ.getJSON(API_URL, function(data) {
       return banco.setup(data);
     });
-    $jQ('#menu-mostraoteu').on('click', function(ev) {
-      if (overlay.on) {
-        overlay.hide();
-      } else {
-        overlay.setPage('mostraoteu');
-        overlay.show();
-      }
-      ev.stopPropagation();
-      return false;
-    });
     window.overlay = overlay;
     window.banco = banco;
-    window.menu = menu;
     return window.$jQ = $jQ;
   };
 
@@ -358,101 +344,75 @@
       this.parent = parent;
       this.el = el;
       this.stop = __bind(this.stop, this);
+      this.previewCanceled = __bind(this.previewCanceled, this);
+      this.previewComplete = __bind(this.previewComplete, this);
+      this.uploadedError = __bind(this.uploadedError, this);
+      this.uploadedSuccessful = __bind(this.uploadedSuccessful, this);
+      this.initComplete = __bind(this.initComplete, this);
+      this.embedComplete = __bind(this.embedComplete, this);
       this.start = __bind(this.start, this);
     }
 
     PhotoboothOvr.prototype.start = function() {
-      var dropzone;
-
-      $jQ('#photo-submit', this.el).dropzone({
-        url: window.API_VERIFY_PHOTO,
-        paramName: 'photo',
-        createImageThumbnails: true,
-        thumbnailWidth: 300,
-        thumbnailHeight: 450,
-        previewTemplate: "",
-        parallelUploads: 1
-      });
-      dropzone = $jQ('#photo-submit').data('dropzone');
-      dropzone.on("dragenter", this.dragEnter);
-      dropzone.on("dragleave", this.dragLeave);
-      dropzone.on("drop", this.dragLeave);
-      dropzone.on('thumbnail', this.thumbnail);
-      return this.setupEvents();
-    };
-
-    PhotoboothOvr.prototype.stop = function() {};
-
-    PhotoboothOvr.prototype.setupEvents = function() {
-      $jQ('#bt-cancel-photo', this.el).on('click', function(ev) {
-        overlay.hide();
-        return ev.stopPropagation();
-      });
-      return $jQ('#bt-submit-photo').on('click', this.submitPicture);
-    };
-
-    PhotoboothOvr.prototype.dragEnter = function(ev) {
-      return $jQ('#photo-submit').addClass('drag');
-    };
-
-    PhotoboothOvr.prototype.dragLeave = function(ev) {
-      return $jQ('#photo-submit').removeClass('drag');
-    };
-
-    PhotoboothOvr.prototype.thumbnail = function(file, dataUrl) {
-      var img;
-
-      $jQ('div', '#photo-submit').remove();
-      img = new Image;
-      img.src = dataUrl;
-      if (($jQ('img', '#photo-submit').length)) {
-        return $jQ('img', '#photo-submit').attr({
-          'src': dataUrl
-        });
-      } else {
-        return $jQ('#photo-submit').append(img);
-      }
-    };
-
-    PhotoboothOvr.prototype.submitPicture = function(ev) {
-      var file, files, photo, xhr,
-        _this = this;
-
-      files = $jQ('#photo-submit').data('dropzone').files;
-      file = files[files.length - 1];
-      photo = new FormData();
-      photo.append('photo', file);
-      xhr = new XMLHttpRequest();
-      xhr.open('POST', window.API_SUBMIT_PHOTO, true);
-      xhr.onload = function(e) {
-        var response;
-
-        response = xhr.responseText;
-        if (xhr.getResponseHeader("content-type").indexOf("application/json")) {
-          response = JSON.parse(response);
-        }
-        if ((response['status'] === 'OK')(_this.photoSubmitSuccess(response))) {
-
-        } else {
-          return _this.photoSubmitError(response);
+      swfobject.switchOffAutoHideShow();
+      swfobject.registerObject("openbooth", "9");
+      window.openbooth_options = {
+        'enableSound': true,
+        'enableFlash': true,
+        'enableSettingsButton': true,
+        'bandwidth': 0,
+        'photoQuality': 100,
+        'photoWidth': 459,
+        'photoHeight': 344,
+        'cameraWidth': 459,
+        'cameraHeight': 344,
+        'cameraFPS': 25,
+        'timerTimeout': 3,
+        'timerX': 198,
+        'timerY': 250,
+        'timerAlpha': 0.6,
+        'callbacks': {
+          'initComplete': this.initComplete,
+          'uploadSuccessful': this.uploadSuccessfull,
+          'onError': this.uploadError,
+          'previewComplete': this.previewComplete,
+          'previewCanceled': this.previewCanceled,
+          'videoStart': false,
+          'noVideoDevices': false,
+          'uploadComplete': false
+        },
+        'placeholders': {
+          'load': '/images/openbooth_allow_dev.jpg',
+          'save': '/images/openbooth_saving_dev.jpg',
+          'noVideoDevices': '/images/openbooth_nocameras_dev.jpg'
         }
       };
-      xhr.setRequestHeader("Accept", "application/json");
-      xhr.setRequestHeader("Cache-Control", "no-cache");
-      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-      xhr.setRequestHeader("X-File-Name", file.name);
-      xhr.send(photo);
-      return false;
+      window.openbooth = swfobject.getObjectById('openbooth');
+      return this.openbooth = window.openbooth;
     };
 
-    PhotoboothOvr.prototype.photoSubmitSuccess = function(data) {
-      console.log(data);
-      return overlay.hide();
+    PhotoboothOvr.prototype.embedComplete = function() {
+      console.log("Embed complete, calling openbooth.init()");
+      console.log(this.openbooth);
+      this.openbooth.init(window.openbooth_options);
+      this.openbooth.camInit();
+      return console.log("Called. Waiting for init");
     };
 
-    PhotoboothOvr.prototype.photoSubmitError = function(data) {
-      return console.log(data);
+    PhotoboothOvr.prototype.initComplete = function(ev) {
+      console.log("Init completed");
+      this.openbooth.camInit();
     };
+
+    PhotoboothOvr.prototype.uploadedSuccessful = function(ev) {};
+
+    PhotoboothOvr.prototype.uploadedError = function(ev) {};
+
+    PhotoboothOvr.prototype.previewComplete = function(ev) {};
+
+    PhotoboothOvr.prototype.previewCanceled = function(ev) {};
+
+    PhotoboothOvr.prototype.stop = function() {};
 
     return PhotoboothOvr;
 
@@ -475,7 +435,7 @@
       this.show = __bind(this.show, this);
       this.setPage = __bind(this.setPage, this);      this.el = $jQ(el);
       this.pages = ['photobooth', 'mostraoteu'];
-      this.objs = [new Photobooth(this, this.el), new PhotoUpload(this, this.el)];
+      this.controllers = [new Photobooth(this, this.el), new PhotoUpload(this, this.el)];
       this.el.css({
         width: WIDTH,
         height: HEIGHT
@@ -484,12 +444,21 @@
       this.init = false;
     }
 
+    OverlayManager.prototype.getController = function(page_name) {
+      return this.controllers[this.pages.lastIndexOf(page_name)];
+    };
+
+    OverlayManager.prototype.getActiveController = function() {
+      return this.controllers[this.pages.lastIndexOf(this.cpage_name)];
+    };
+
     OverlayManager.prototype.setPage = function(new_page) {
       if (this.cpage) {
         this.cpage.hide();
       }
       this.cpage = $jQ('#' + new_page);
-      this.cobj = this.objs[this.pages.lastIndexOf(new_page)];
+      this.cpage_name = new_page;
+      this.cobj = this.controllers[this.pages.lastIndexOf(new_page)];
       if (!this.init) {
         this.cobj.start();
         return this.init = true;
