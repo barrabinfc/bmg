@@ -3,4 +3,6 @@
 media/photos
 mockdata
 static/
+venv/
 local_settings.py
+bancogenital
