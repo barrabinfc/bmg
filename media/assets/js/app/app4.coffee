@@ -1,6 +1,8 @@
 #
 # Banco Genitalia App
 #
+
+
 class App
     constructor: (viewport,size) ->
         @size   = size

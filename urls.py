@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     url(r'^grappelli/', include('grappelli.urls')),
 )
 
-
+print settings.ON_PRODUCTION
 # Include static and media urls
 if not settings.ON_PRODUCTION:
     urlpatterns += patterns('',

@@ -4,13 +4,14 @@ import os
 try:
     import uwsgi
 
-    PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.join( os.getcwd() , '..' )
+    PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.join( os.getcwd() , '' )
     DEBUG = (uwsgi.opt['DJANGO_DEBUG'] == 'no' ) or True
 except:
-    PROJECT_ROOT = os.path.join( os.getcwd(), '..' )
+    PROJECT_ROOT = os.path.join( os.getcwd(), '' )
     DEBUG = True
 
 
+print PROJECT_ROOT
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -21,7 +22,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',                 # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.mysql',                 # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'bancogenital',                      # Or path to database file if using sqlite3.
         'USER':     'bancogenital',                      # Not used with sqlite3.
         'PASSWORD': 'vovozinho',                  # Not used with sqlite3.
@@ -64,7 +65,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = "%s/app/media/" % PROJECT_ROOT
+MEDIA_ROOT = "%s/media/" % PROJECT_ROOT
 MEDIA_URL = 'http://localhost:8000/media/'
 
 # Absolute path to the directory static files should be collected to.
@@ -75,7 +76,7 @@ STATIC_ROOT = "%s/static/" % (PROJECT_ROOT)
 STATIC_URL = 'http://localhost:8000/static/'
 
 STATICFILES_DIRS = (
-    '%s/app/media/assets' % (PROJECT_ROOT),
+    '%s/media/assets' % (PROJECT_ROOT),
 )
 
 # List of finder classes that know how to find static files in

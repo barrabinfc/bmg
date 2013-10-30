@@ -1,6 +1,7 @@
 OverlayManager  = require('overlay/manager')
 App             = require('app4')
 
+console.log "TOMA NO CUU"
 init = ->
     # Show the /etc/motd
     overlay = new OverlayManager('#overlay')
@@ -8,8 +9,9 @@ init = ->
     
     # Start the genitalia wall
     banco = new App( '#viewport', [window.innerWidth, window.innerHeight] )
-    #menu  = $jQ('#menu')
-    #menu.show()
+
+    menu  = $jQ('#menu')
+    menu.show()
 
     # Get genitalia pictures, and start feeding it!
     $jQ.getJSON API_URL , (data) =>
@@ -18,15 +20,15 @@ init = ->
     ###############
     # User Events #
     ###############
-    # $jQ('#menu-mostraoteu').on 'click', (ev) ->
-    #                         if(overlay.on)
-    #                             overlay.hide()
-    #                         else
-    #                             overlay.setPage('photobooth')
-    #                             overlay.show()
-    # 
-    #                         ev.stopPropagation()
-    #                         return false
+    $jQ('#menu-mostraoteu').on 'click', (ev) ->
+                            if(overlay.on)
+                                overlay.hide()
+                            else
+                                overlay.setPage('photobooth')
+                                overlay.show()
+    
+                            ev.stopPropagation()
+                            return false
 
     # GLOBAL VARS
     window.overlay = overlay

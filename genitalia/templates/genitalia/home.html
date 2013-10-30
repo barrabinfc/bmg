@@ -35,7 +35,6 @@
     <!--
     <script src="{{ STATIC_URL }}js/jquery/jquery-ui.min.js" type="text/javascript" charset="utf-8" ></script> -->
     <script src="{{ STATIC_URL }}js/jquery/jquery.zoomooz.js" type="text/javascript" charset="utf-8" ></script>
-        
     <script src="{{ STATIC_URL }}js/jquery/jquery.imagesloaded.js" type="text/javascript" charset="utf-8" ></script>    
     <script src="{{ STATIC_URL }}js/jquery/jquery.smartscroll.js" type="text/javascript" charset="utf-8" ></script>    
 
@@ -48,11 +47,11 @@
         var MEDIA_URL  = "{{ MEDIA_URL }}";
         var STATIC_URL = "{{ STATIC_URL }}";
         
-        window.API_URL = '/photos/json'
-        window.API_SUBMIT_PHOTO = '/photos/upload'
-        window.API_VERIFY_PHOTO = '/photos/verify'
+        window.API_URL = '/photos/json';
+        window.API_SUBMIT_PHOTO = '/photos/upload';
+        window.API_VERIFY_PHOTO = '/photos/verify';
 
-        window.WIDTH = window.innerWidth;
+        window.WIDTH  = window.innerWidth;
         window.HEIGHT = window.innerHeight;
         window.PHOTO_TILING = 'sequential';
 
@@ -63,7 +62,8 @@
             require('index').init()
         })
         
-        // This function cannot be renamed. OpenBooth will always automatically call "onFlashReady" upon initializing itself.
+        // This function cannot be renamed. 
+        // OpenBooth will always automatically call "onFlashReady" upon initializing itself.
         function onFlashReady() {
         	setTimeout(function() {
                 window.overlay.getController('photobooth').embedComplete()
@@ -138,14 +138,16 @@
         <div id="menu">
             <ul>
                 <li class="right">
-                    <a id="menu-mostraoteu" href="/upload" class="iconbutton s100"><i class="icon-cloud-upload icon-2x"></i></a>
+                    <a id="menu-mostraoteu" href="/upload" class="iconbutton s100">
+                        <i class="icon-cloud-upload icon-2x"></i></a>
                 </li>
             </ul>
         </div>
         <div id="wall" class="unselectable"></div>
     </div>
-    
-<!--    
+
+
+<!--
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-31460681-1']);
@@ -159,5 +161,6 @@
 
     </script>
 -->
-</body>
+
+    </body>
 </html>
