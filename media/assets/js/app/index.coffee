@@ -1,11 +1,10 @@
 OverlayManager  = require('overlay/manager')
 App             = require('app4')
 
-console.log "TOMA NO CUU"
 init = ->
     # Show the /etc/motd
     overlay = new OverlayManager('#overlay')
-    overlay.hide()
+    #overlay.hide()
     
     # Start the genitalia wall
     banco = new App( '#viewport', [window.innerWidth, window.innerHeight] )
@@ -24,7 +23,8 @@ init = ->
                             if(overlay.on)
                                 overlay.hide()
                             else
-                                overlay.setPage('photobooth')
+                                overlay.setPage('mostraoteu')
+                                #overlay.setPage('photobooth')
                                 overlay.show()
     
                             ev.stopPropagation()
@@ -33,7 +33,7 @@ init = ->
     # GLOBAL VARS
     window.overlay = overlay
     window.banco   = banco
-    #window.menu    = menu
+    window.menu    = menu
     window.$jQ     = $jQ
 
 module.exports.init = init

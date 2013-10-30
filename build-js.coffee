@@ -2,6 +2,7 @@
 #* Run this to compile genitalia frontend js code to
 #* a single file
 #*/
+require("coffee-script")
 stitch  = require('stitch');
 fs      = require('fs');
 watch   = require('watch');
