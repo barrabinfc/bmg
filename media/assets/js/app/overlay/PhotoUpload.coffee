@@ -6,22 +6,23 @@ class PhotoUploadOvr
         $jQ('#photo-submit',@el).dropzone({
             url: window.API_VERIFY_PHOTO,
             paramName: 'photo',
-            createImageThumbnails: true,
-            thumbnailWidth: 300,
-            thumbnailHeight: 450,
+            createImageThumbnails: false,
+            thumbnailWidth:  310,
+            thumbnailHeight: 460,
             previewTemplate: "",
             parallelUploads: 1,
-        })
-    
-        dropzone = $jQ('#photo-submit').data('dropzone')
+            acceptedFiles: 'image/*'
+        });
+
+        @dropzone = $jQ('#photo-submit').data('dropzone')
         
         # Show a sign while Dragging
-        dropzone.on("dragenter", @dragEnter );
-        dropzone.on("dragleave", @dragLeave );
-        dropzone.on("drop", @dragLeave );
+        @dropzone.on("dragenter", @dragEnter );
+        @dropzone.on("dragleave", @dragLeave );
+        @dropzone.on("drop", @dragLeave );
         
         # Show the thumbnail of picture
-        dropzone.on('thumbnail', @thumbnail )
+        @dropzone.on('thumbnail', @thumbnail )
         
         # Setup click handlers
         @setupEvents()
@@ -29,13 +30,28 @@ class PhotoUploadOvr
 
     stop: =>
         return
+
+    on_show_complete: =>
+        console.log("Uepa, show")
+        return;
+
+    on_hide_complete: =>
+        console.log("Uepa, hide!")
+        return;
     
     setupEvents: ->
+        #$jQ('#photo-submit #bt-file').bind 'click', (ev) ->
+        #    console.log("Hello World")
+        #    $jQ('#photo-submit').click();
+
+            
         $jQ('#bt-cancel-photo',@el).on 'click', (ev) ->
             overlay.hide()
             ev.stopPropagation()
         
         $jQ('#bt-submit-photo').on 'click' , @submitPicture 
+
+
 
 
     # Show a sign while draggning
@@ -69,14 +85,16 @@ class PhotoUploadOvr
 
         xhr = new XMLHttpRequest()
         xhr.open('POST', window.API_SUBMIT_PHOTO, true);
+
+        that = @
         xhr.onload = (e) =>
             response = xhr.responseText;
 
             if(xhr.getResponseHeader("content-type").indexOf("application/json"))
                 response = JSON.parse(response)
 
-            if(response['status'] == 'OK')          @photoSubmitSuccess(response)
-            else                                    @photoSubmitError(response)
+            if(response['status'] == 'OK')          that.photoSubmitSuccess(response)
+            else                                    that.photoSubmitError(response)
 
         xhr.setRequestHeader("Accept", "application/json");
         xhr.setRequestHeader("Cache-Control", "no-cache");

@@ -236,30 +236,40 @@
     function PhotoUploadOvr(parent, el) {
       this.parent = parent;
       this.el = el;
+      this.on_hide_complete = __bind(this.on_hide_complete, this);
+      this.on_show_complete = __bind(this.on_show_complete, this);
       this.stop = __bind(this.stop, this);
       this.start = __bind(this.start, this);
     }
 
     PhotoUploadOvr.prototype.start = function() {
-      var dropzone;
       $jQ('#photo-submit', this.el).dropzone({
         url: window.API_VERIFY_PHOTO,
         paramName: 'photo',
-        createImageThumbnails: true,
-        thumbnailWidth: 300,
-        thumbnailHeight: 450,
+        createImageThumbnails: false,
+        thumbnailWidth: 310,
+        thumbnailHeight: 460,
         previewTemplate: "",
-        parallelUploads: 1
+        parallelUploads: 1,
+        acceptedFiles: 'image/*'
       });
-      dropzone = $jQ('#photo-submit').data('dropzone');
-      dropzone.on("dragenter", this.dragEnter);
-      dropzone.on("dragleave", this.dragLeave);
-      dropzone.on("drop", this.dragLeave);
-      dropzone.on('thumbnail', this.thumbnail);
+      this.dropzone = $jQ('#photo-submit').data('dropzone');
+      this.dropzone.on("dragenter", this.dragEnter);
+      this.dropzone.on("dragleave", this.dragLeave);
+      this.dropzone.on("drop", this.dragLeave);
+      this.dropzone.on('thumbnail', this.thumbnail);
       return this.setupEvents();
     };
 
     PhotoUploadOvr.prototype.stop = function() {};
+
+    PhotoUploadOvr.prototype.on_show_complete = function() {
+      console.log("Uepa, show");
+    };
+
+    PhotoUploadOvr.prototype.on_hide_complete = function() {
+      console.log("Uepa, hide!");
+    };
 
     PhotoUploadOvr.prototype.setupEvents = function() {
       $jQ('#bt-cancel-photo', this.el).on('click', function(ev) {
@@ -292,7 +302,7 @@
     };
 
     PhotoUploadOvr.prototype.submitPicture = function(ev) {
-      var file, files, photo, xhr,
+      var file, files, photo, that, xhr,
         _this = this;
       files = $jQ('#photo-submit').data('dropzone').files;
       file = files[files.length - 1];
@@ -300,16 +310,17 @@
       photo.append('photo', file);
       xhr = new XMLHttpRequest();
       xhr.open('POST', window.API_SUBMIT_PHOTO, true);
+      that = this;
       xhr.onload = function(e) {
         var response;
         response = xhr.responseText;
         if (xhr.getResponseHeader("content-type").indexOf("application/json")) {
           response = JSON.parse(response);
         }
-        if ((response['status'] === 'OK')(_this.photoSubmitSuccess(response))) {
+        if ((response['status'] === 'OK')(that.photoSubmitSuccess(response))) {
 
         } else {
-          return _this.photoSubmitError(response);
+          return that.photoSubmitError(response);
         }
       };
       xhr.setRequestHeader("Accept", "application/json");
@@ -468,13 +479,13 @@
     };
 
     OverlayManager.prototype.show = function() {
-      this.el.fadeIn('fast');
+      this.el.fadeIn('fast', this.cobj.on_show_complete);
       this.cpage.show();
       return this.on = true;
     };
 
     OverlayManager.prototype.hide = function() {
-      this.el.fadeOut('slow');
+      this.el.fadeOut('slow', this.cobj.on_hide_complete);
       this.on = false;
       if (this.cobj) {
         return this.cobj.stop();

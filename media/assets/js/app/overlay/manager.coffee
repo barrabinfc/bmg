@@ -32,12 +32,12 @@ class OverlayManager
             @init = true
 
     show: =>
-        @el.fadeIn('fast')
+        @el.fadeIn('fast', @cobj.on_show_complete)
         @cpage.show()
         @on = true
         
     hide: =>
-        @el.fadeOut('slow')
+        @el.fadeOut('slow', @cobj.on_hide_complete )
         @on = false
         
         @cobj.stop() if @cobj

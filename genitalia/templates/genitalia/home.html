@@ -103,14 +103,23 @@
         <!-- SIMPLE UPLOAD -->
         <div id="mostraoteu" class="infoscreen">        
                 <div class="top">
-                    <form action="/photo/verify" method="POST" enctype"multipart/form-data" id="photo-submit" class="square">
+                    <form action="/photo/verify" method="POST" enctype="multipart/form-data" id="photo-submit" class="square">
                         <input name="photo" type="file" style="display: none;">
+                        
+                        <div class="message">
+                           <a id="bt-file">
+                                <i class="icon-plus icon-4x"></i>
+                            </a>                                
+                        </div>
                     </form>
                 </div>
                 <div class="bottom">
-                    <a href="javascript: return false;" class="iconbutton" id="bt-submit-photo">
-                        <i class="icon-chevron-right icon-2x"></i>
-                    </a>                                
+<!--                         <a href="javascript: return false;" class="squarebuttons" id="bt-submit-photo">
+                            <i class="icon-arrow-left icon-2x"></i>
+                        </a>           
+ -->                        <a href="javascript: return false;" class="squarebuttons" id="bt-submit-photo">
+                            <i class="icon-arrow-right icon-2x"></i>
+                        </a>
                 </div>
 
                 <div class="hidden" id="uploadSuccessMessage">

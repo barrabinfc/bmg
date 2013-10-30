@@ -25,13 +25,13 @@ class App
         
         @wall = new Wall("wall", {
                         "draggable":true,
-                        "width":155,
-                        "height":230,
+                        "width":    155,
+                        "height":   230,
                         "inertia": true,
                         "inertiaSpeed": 0.92,
                         "printCoordinates":false,
-                        "rangex":[-300,300],
-                        "rangey":[-300,300],
+                        "rangex":   [-300,300],
+                        "rangey":   [-300,300],
                         callOnUpdate:  (items) => @createDOMPhotos(items),
                         callOnMouseDown:    @onWallMouseDown,
                         callOnMouseUp:      @onWallMouseUp,
