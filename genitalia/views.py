@@ -54,7 +54,8 @@ def photos_json(request):
 
     # If no data
     if not data:
-        for photo in Genitalia.objects.filter(approved=True):
+        for photo in Genitalia.objects.filter(approved=True).reverse():
+        #for photo in Genitalia.objects.filter(approved=True):
             small = randomize_url(photo)
             data.append({
                     'id':           photo.id,
@@ -62,7 +63,7 @@ def photos_json(request):
                     'url_small':    small['url'],
                     'type':         'size-%dx%d' % small['size']
                 })
-        cache.set('photos_json', data, 120)
+        cache.set('photos_json', data, 1200)
 
     return HttpResponse( json.dumps(data), mimetype='application/json')
 

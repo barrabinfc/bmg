@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'grappelli.dashboard',
     'grappelli',
     'django.contrib.admin',
+    'django_extensions',
 
     'dbbackup',
     'genitalia'

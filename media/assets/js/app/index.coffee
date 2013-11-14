@@ -9,6 +9,7 @@ init = ->
     # Start the genitalia wall
     banco = new App( '#viewport', [window.innerWidth, window.innerHeight] )
 
+    overlay.hide()
     menu  = $jQ('#menu')
     menu.show()
 

@@ -10,6 +10,49 @@ from django.core.files.base import ContentFile
 from django.core.files import File
 import cStringIO
 
+def flat( *nums ):
+    'Build a tuple of ints from float or integer arguments. Useful because PIL crop and resize require integer points.'
+    return tuple( int(round(n)) for n in nums )
+ 
+class ImgSize(object):
+    def __init__(self, pair):
+        self.width = float(pair[0])
+        self.height = float(pair[1])
+     
+    @property
+    def aspect_ratio(self):
+        return self.width / self.height
+     
+    @property
+    def size(self):
+        return flat(self.width, self.height)
+ 
+
+def cropped_thumbnail(img, size):
+    '''
+    Builds a thumbnail by cropping out a maximal region from the center of the original with
+    the same aspect ratio as the target size, and then resizing. The result is a thumbnail which is
+    always EXACTLY the requested size and with no aspect ratio distortion (although two edges, either
+    top/bottom or left/right depending whether the image is too tall or too wide, may be trimmed off.)
+    '''
+    original = ImgSize(img.size)
+    target = ImgSize(size)
+     
+    if target.aspect_ratio > original.aspect_ratio:
+        # image is too tall: take some off the top and bottom
+        scale_factor = target.width / original.width
+        crop_size = ImgSize( (original.width, target.height / scale_factor) )
+        top_cut_line = (original.height - crop_size.height) / 2
+        img = img.crop( flat(0, top_cut_line, crop_size.width, top_cut_line + crop_size.height) )
+    elif target.aspect_ratio < original.aspect_ratio:
+        # image is too wide: take some off the sides
+        scale_factor = target.height / original.height
+        crop_size = ImgSize( (target.width/scale_factor, original.height) )
+        side_cut_line = (original.width - crop_size.width) / 2
+        img = img.crop( flat(side_cut_line, 0, side_cut_line + crop_size.width, crop_size.height) )
+
+    return img.resize(target.size, Image.ANTIALIAS)
+
 def generate_thumb(img, thumb_size, format):
     """
     Generates a thumbnail image and returns a ContentFile object with the thumbnail
@@ -31,27 +74,9 @@ def generate_thumb(img, thumb_size, format):
     if image.mode not in ('L', 'RGB'):
         image = image.convert('RGB')
         
-    # get size
-    thumb_w, thumb_h = thumb_size
-    # If you want to generate a square thumbnail
-    if thumb_w == thumb_h:
-        # quad
-        xsize, ysize = image.size
-        # get minimum size
-        minsize = min(xsize,ysize)
-        # largest square possible in the image
-        xnewsize = (xsize-minsize)/2
-        ynewsize = (ysize-minsize)/2
-        # crop it
-        image2 = image.crop((xnewsize, ynewsize, xsize-xnewsize, ysize-ynewsize))
-        # load is necessary after crop                
-        image2.load()
-        # thumbnail of the cropped image (with ANTIALIAS to make it look better)
-        image2.thumbnail(thumb_size, Image.ANTIALIAS)
-    else:
-        # not quad
-        image2 = image
-        image2.thumbnail(thumb_size, Image.ANTIALIAS)
+    # Convert to thumb_size, cropping it if necessary to maintain
+    # Aspect RATIO
+    image2 = cropped_thumbnail(image, thumb_size )
     
     io = cStringIO.StringIO()
     # PNG and GIF are the same, JPG is JPEG

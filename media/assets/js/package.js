@@ -204,6 +204,7 @@
       _this = this;
     overlay = new OverlayManager('#overlay');
     banco = new App('#viewport', [window.innerWidth, window.innerHeight]);
+    overlay.hide();
     menu = $jQ('#menu');
     menu.show();
     $jQ.getJSON(API_URL, function(data) {
@@ -236,6 +237,7 @@
     function PhotoUploadOvr(parent, el) {
       this.parent = parent;
       this.el = el;
+      this.createThumb = __bind(this.createThumb, this);
       this.on_hide_complete = __bind(this.on_hide_complete, this);
       this.on_show_complete = __bind(this.on_show_complete, this);
       this.stop = __bind(this.stop, this);
@@ -246,10 +248,9 @@
       $jQ('#photo-submit', this.el).dropzone({
         url: window.API_VERIFY_PHOTO,
         paramName: 'photo',
-        createImageThumbnails: false,
-        thumbnailWidth: 310,
-        thumbnailHeight: 460,
-        previewTemplate: "",
+        createImageThumbnails: true,
+        thumbnailWidth: 300,
+        thumbnailHeight: 450,
         parallelUploads: 1,
         acceptedFiles: 'image/*'
       });
@@ -272,11 +273,19 @@
     };
 
     PhotoUploadOvr.prototype.setupEvents = function() {
+      $jQ('#photo-submit #bt-file').bind('click', function(ev) {
+        console.log("send it");
+        return this.showDialog();
+      });
       $jQ('#bt-cancel-photo', this.el).on('click', function(ev) {
         overlay.hide();
         return ev.stopPropagation();
       });
       return $jQ('#bt-submit-photo').on('click', this.submitPicture);
+    };
+
+    PhotoUploadOvr.prototype.showDialog = function(ev) {
+      return $jQ('#photo-submit').click();
     };
 
     PhotoUploadOvr.prototype.dragEnter = function(ev) {
@@ -287,15 +296,38 @@
       return $jQ('#photo-submit').removeClass('drag');
     };
 
+    PhotoUploadOvr.prototype.createThumb = function(file) {
+      var fileReader,
+        _this = this;
+      fileReader = new FileReader;
+      fileReader.onload = function() {
+        var img;
+        img = new Image;
+        img.onload = function() {
+          var canvas, ctx, h, thumb, w;
+          canvas = document.createElement("canvas");
+          ctx = canvas.getContext("2d");
+          w = img.width;
+          h = img.height;
+          ctx.drawImage(img, 0, 0, w, h, 0, 0, w, h);
+          thumb = canvas.toDataURL("image/png");
+          return _this.dropzone.emit('thumbnail', file, thumb);
+        };
+        return img.src = fileReader.result;
+      };
+      return fileReader.readAsDataURL(file);
+    };
+
     PhotoUploadOvr.prototype.thumbnail = function(file, dataUrl) {
       var img;
       $jQ('div', '#photo-submit').remove();
       img = new Image;
       img.src = dataUrl;
       if (($jQ('img', '#photo-submit').length)) {
-        return $jQ('img', '#photo-submit').attr({
+        $jQ('img', '#photo-submit').attr({
           'src': dataUrl
         });
+        return $jQ('img', '#photo-submit').bind('click', this.showDialog);
       } else {
         return $jQ('#photo-submit').append(img);
       }

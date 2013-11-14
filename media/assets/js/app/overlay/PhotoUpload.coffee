@@ -6,10 +6,11 @@ class PhotoUploadOvr
         $jQ('#photo-submit',@el).dropzone({
             url: window.API_VERIFY_PHOTO,
             paramName: 'photo',
-            createImageThumbnails: false,
-            thumbnailWidth:  310,
-            thumbnailHeight: 460,
-            previewTemplate: "",
+            
+            createImageThumbnails: true,
+            thumbnailWidth:  300,
+            thumbnailHeight: 450,
+            #previewTemplate: "<div class\"preview file-preview\"><div class=\"details\"></div></div>",
             parallelUploads: 1,
             acceptedFiles: 'image/*'
         });
@@ -17,6 +18,7 @@ class PhotoUploadOvr
         @dropzone = $jQ('#photo-submit').data('dropzone')
         
         # Show a sign while Dragging
+        #@dropzone.on("addedfile", @createThumb );
         @dropzone.on("dragenter", @dragEnter );
         @dropzone.on("dragleave", @dragLeave );
         @dropzone.on("drop", @dragLeave );
@@ -26,7 +28,6 @@ class PhotoUploadOvr
         
         # Setup click handlers
         @setupEvents()
-
 
     stop: =>
         return
@@ -40,25 +41,45 @@ class PhotoUploadOvr
         return;
     
     setupEvents: ->
-        #$jQ('#photo-submit #bt-file').bind 'click', (ev) ->
-        #    console.log("Hello World")
-        #    $jQ('#photo-submit').click();
+        $jQ('#photo-submit #bt-file').bind 'click', (ev) ->
+            console.log("send it")
+            @showDialog();
 
-            
         $jQ('#bt-cancel-photo',@el).on 'click', (ev) ->
             overlay.hide()
             ev.stopPropagation()
-        
+
         $jQ('#bt-submit-photo').on 'click' , @submitPicture 
+        # console.log("Saving picture, woha!")
 
 
-
+    showDialog: (ev) ->
+        $jQ('#photo-submit').click();
 
     # Show a sign while draggning
     dragEnter: (ev) ->
         $jQ('#photo-submit').addClass('drag');
     dragLeave: (ev)  ->
         $jQ('#photo-submit').removeClass('drag');
+
+    # Create thumbs
+    createThumb: (file) =>
+      fileReader = new FileReader;
+      fileReader.onload = =>
+        img = new Image;
+        img.onload = =>
+          canvas = document.createElement "canvas"
+          ctx    = canvas.getContext("2d")
+          w      = img.width
+          h      = img.height
+
+          ctx.drawImage(img, 0, 0, w, h, 0,0, w, h)
+          thumb = canvas.toDataURL("image/png")
+
+          @dropzone.emit('thumbnail', file, thumb)
+
+        img.src = fileReader.result;
+      fileReader.readAsDataURL(file)
 
 
     # Show file preview
@@ -70,7 +91,8 @@ class PhotoUploadOvr
         img.src = dataUrl;
 
         if($jQ('img','#photo-submit').length)
-            $jQ('img','#photo-submit').attr( {'src': dataUrl});
+            $jQ('img','#photo-submit').attr  {'src': dataUrl};
+            $jQ('img', '#photo-submit').bind 'click' , @showDialog
         else
             $jQ('#photo-submit').append(img);
 

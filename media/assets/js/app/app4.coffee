@@ -43,6 +43,7 @@ class App
 
     # Called when there are photo tiles to be created.
     createDOMPhotos: (items) =>
+        #console.log("Items len is -->", items.length )
         items.each( (e,i) =>
             
             if PHOTO_TILING == 'random'
