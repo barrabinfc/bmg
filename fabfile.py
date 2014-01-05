@@ -25,7 +25,7 @@ def full_backup():
 
 def deploy():
     remote_fetch_app()
-    restart_uwsgi()
+    remote_restart_uwsgi()
 
 def remote_fetch_app():
     with cd(REMOTE_PROJECT_ROOT):
