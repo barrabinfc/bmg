@@ -74,7 +74,6 @@
     }
 
     App.prototype.setup = function(photoList) {
-      var _this = this;
       this.photoJSONList = photoList;
       this.imgCounter = Math.floor(Math.random() * (this.photoJSONList.length - 1));
       window.addEventListener('resize', this.onResize, false);
@@ -87,9 +86,11 @@
         "printCoordinates": false,
         "rangex": [-300, 300],
         "rangey": [-300, 300],
-        callOnUpdate: function(items) {
-          return _this.createDOMPhotos(items);
-        },
+        callOnUpdate: (function(_this) {
+          return function(items) {
+            return _this.createDOMPhotos(items);
+          };
+        })(this),
         callOnMouseDown: this.onWallMouseDown,
         callOnMouseUp: this.onWallMouseUp,
         callOnMouseDragged: this.onWallMouseDragged
@@ -98,21 +99,22 @@
     };
 
     App.prototype.createDOMPhotos = function(items) {
-      var _this = this;
-      return items.each(function(e, i) {
-        var currPhoto, img;
-        if (PHOTO_TILING === 'random') {
-          _this.imgCounter = Math.floor(Math.random() * _this.photoJSONList.length);
-        } else if (PHOTO_TILING === 'sequential') {
-          _this.imgCounter = (_this.photoJSONList.length - 1 + _this.imgCounter++) % _this.photoJSONList.length;
-        }
-        currPhoto = _this.photoJSONList[_this.imgCounter];
-        $jQ(e.node).text("");
-        img = new Element("img[src='" + currPhoto.url_small + "']");
-        img.inject(e.node).fade("hide").fade("in");
-        $jQ(img).data('photo_info', currPhoto);
-        return $jQ(img).mouseup(_this.onPhotoClick);
-      });
+      return items.each((function(_this) {
+        return function(e, i) {
+          var currPhoto, img;
+          if (PHOTO_TILING === 'random') {
+            _this.imgCounter = Math.floor(Math.random() * _this.photoJSONList.length);
+          } else if (PHOTO_TILING === 'sequential') {
+            _this.imgCounter = (_this.photoJSONList.length - 1 + _this.imgCounter++) % _this.photoJSONList.length;
+          }
+          currPhoto = _this.photoJSONList[_this.imgCounter];
+          $jQ(e.node).text("");
+          img = new Element("img[src='" + currPhoto.url_small + "']");
+          img.inject(e.node).fade("hide").fade("in");
+          $jQ(img).data('photo_info', currPhoto);
+          return $jQ(img).mouseup(_this.onPhotoClick);
+        };
+      })(this));
     };
 
     App.prototype.onWallMouseDown = function(e) {
@@ -200,16 +202,17 @@
   App = require('app4');
 
   init = function() {
-    var banco, menu, overlay,
-      _this = this;
+    var banco, menu, overlay;
     overlay = new OverlayManager('#overlay');
     banco = new App('#viewport', [window.innerWidth, window.innerHeight]);
-    overlay.hide();
     menu = $jQ('#menu');
     menu.show();
-    $jQ.getJSON(API_URL, function(data) {
-      return banco.setup(data);
-    });
+    $jQ.getJSON(API_URL, (function(_this) {
+      return function(data) {
+        console.log(" Hello");
+        return banco.setup(data);
+      };
+    })(this));
     $jQ('#menu-mostraoteu').on('click', function(ev) {
       if (overlay.on) {
         overlay.hide();
@@ -297,24 +300,25 @@
     };
 
     PhotoUploadOvr.prototype.createThumb = function(file) {
-      var fileReader,
-        _this = this;
+      var fileReader;
       fileReader = new FileReader;
-      fileReader.onload = function() {
-        var img;
-        img = new Image;
-        img.onload = function() {
-          var canvas, ctx, h, thumb, w;
-          canvas = document.createElement("canvas");
-          ctx = canvas.getContext("2d");
-          w = img.width;
-          h = img.height;
-          ctx.drawImage(img, 0, 0, w, h, 0, 0, w, h);
-          thumb = canvas.toDataURL("image/png");
-          return _this.dropzone.emit('thumbnail', file, thumb);
+      fileReader.onload = (function(_this) {
+        return function() {
+          var img;
+          img = new Image;
+          img.onload = function() {
+            var canvas, ctx, h, thumb, w;
+            canvas = document.createElement("canvas");
+            ctx = canvas.getContext("2d");
+            w = img.width;
+            h = img.height;
+            ctx.drawImage(img, 0, 0, w, h, 0, 0, w, h);
+            thumb = canvas.toDataURL("image/png");
+            return _this.dropzone.emit('thumbnail', file, thumb);
+          };
+          return img.src = fileReader.result;
         };
-        return img.src = fileReader.result;
-      };
+      })(this);
       return fileReader.readAsDataURL(file);
     };
 
@@ -334,8 +338,7 @@
     };
 
     PhotoUploadOvr.prototype.submitPicture = function(ev) {
-      var file, files, photo, that, xhr,
-        _this = this;
+      var file, files, photo, that, xhr;
       files = $jQ('#photo-submit').data('dropzone').files;
       file = files[files.length - 1];
       photo = new FormData();
@@ -343,18 +346,20 @@
       xhr = new XMLHttpRequest();
       xhr.open('POST', window.API_SUBMIT_PHOTO, true);
       that = this;
-      xhr.onload = function(e) {
-        var response;
-        response = xhr.responseText;
-        if (xhr.getResponseHeader("content-type").indexOf("application/json")) {
-          response = JSON.parse(response);
-        }
-        if ((response['status'] === 'OK')(that.photoSubmitSuccess(response))) {
+      xhr.onload = (function(_this) {
+        return function(e) {
+          var response;
+          response = xhr.responseText;
+          if (xhr.getResponseHeader("content-type").indexOf("application/json")) {
+            response = JSON.parse(response);
+          }
+          if ((response['status'] === 'OK')(that.photoSubmitSuccess(response))) {
 
-        } else {
-          return that.photoSubmitError(response);
-        }
-      };
+          } else {
+            return that.photoSubmitError(response);
+          }
+        };
+      })(this);
       xhr.setRequestHeader("Accept", "application/json");
       xhr.setRequestHeader("Cache-Control", "no-cache");
       xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");

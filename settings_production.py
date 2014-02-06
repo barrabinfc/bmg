@@ -4,10 +4,10 @@ import os
 try:
     import uwsgi
 
-    PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.join( os.getcwd() , '..' )
+    PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.abspath( os.path.join( os.getcwd() , '..' ) )
     DEBUG = (uwsgi.opt['DJANGO_DEBUG'] == 'no' ) or True
 except:
-    PROJECT_ROOT = os.path.join( os.getcwd(), '..' )
+    PROJECT_ROOT = os.path.abspath( os.path.join( os.getcwd(), '..' ) )
     DEBUG = True
 
 

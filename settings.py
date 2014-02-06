@@ -4,14 +4,12 @@ import os
 try:
     import uwsgi
 
-    PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.join( os.getcwd() , '' )
+    PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.abspath( os.path.join( os.getcwd() , '' ) )
     DEBUG = (uwsgi.opt['DJANGO_DEBUG'] == 'no' ) or True
 except:
-    PROJECT_ROOT = os.path.join( os.getcwd(), '' )
+    PROJECT_ROOT = os.path.abspath( os.path.join( os.getcwd(), '' ) )
     DEBUG = True
 
-
-print PROJECT_ROOT
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -21,9 +19,9 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-    'default': {
+'default': {
         'ENGINE': 'django.db.backends.mysql',                 # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'bancogenital',                      # Or path to database file if using sqlite3.
+        'NAME':     'bancogenital',                      # Or path to database file if using sqlite3.
         'USER':     'bancogenital',                      # Not used with sqlite3.
         'PASSWORD': 'vovozinho',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.

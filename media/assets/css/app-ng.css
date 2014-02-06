@@ -1,0 +1,30 @@
+* {
+    box-sizing: border-box;
+    font-family: Arvo;
+}
+
+body {
+    background-color: #000;
+}
+
+#genitalia-wall {
+    margin: 0px auto;
+    width: 95%;
+    background: #000;
+}
+
+.item {
+    width: 150px;
+    height: 225px;
+    float: left;
+    background: #09F;
+    border: 1px solid #f00;
+    
+    margin-bottom: 10px;
+}
+
+.item img {
+    display: block;
+    width: 150px;
+    height: 225px;
+}

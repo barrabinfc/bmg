@@ -1,3 +1,4 @@
+# 
 OverlayManager  = require('overlay/manager')
 App             = require('app4')
 
@@ -9,12 +10,13 @@ init = ->
     # Start the genitalia wall
     banco = new App( '#viewport', [window.innerWidth, window.innerHeight] )
 
-    overlay.hide()
+    #overlay.hide()
     menu  = $jQ('#menu')
     menu.show()
 
     # Get genitalia pictures, and start feeding it!
     $jQ.getJSON API_URL , (data) =>
+        console.log(" Hello")
         banco.setup data
 
     ###############

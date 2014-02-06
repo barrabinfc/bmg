@@ -9,8 +9,9 @@ env.hosts = ['barrabin-fc.net']
 env.use_ssh_config = True
 
 def full_backup():
-    local("./manage.py dbbackup")
-    local("zip ../backups/bancogenital-photos.zip media/photos/*")
+    with cd(REMOTE_PROJECT_ROOT):
+        run("./manage.py dbbackup")
+        run("zip ../backups/bancogenital-photos.zip media/photos/*")
 
     print ""
     print "*"*70
@@ -33,3 +34,6 @@ def remote_fetch_app():
 
 def remote_restart_uwsgi():
     run("uwsgi --reload /var/www/genitalia.me/reload")
+
+def remote_testconnection():
+    run('whoami')

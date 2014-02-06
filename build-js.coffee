@@ -1,3 +1,4 @@
+#!/usr/bin/env coffee
 #/*
 #* Run this to compile genitalia frontend js code to
 #* a single file

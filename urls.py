@@ -8,6 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'^$',               'genitalia.views.home',            name='home'),
+
     url(r'^photos/json$',    'genitalia.views.photos_json',     name='photos_json'),
     url(r'^photos/verify$',  'genitalia.views.photos_verify',   name='photos_verify'),
     url(r'^photos/upload$',  'genitalia.views.photos_upload',   name='photos_upload'),
@@ -23,8 +24,8 @@ if not settings.ON_PRODUCTION:
         url(r'^media/(?P<path>.*)$',  'django.views.static.serve', {
             'document_root': settings.MEDIA_ROOT
         }),
-        
-        # serves the static files under MEDIA_ROOT 
+
+        # serves the static files under MEDIA_ROOT
         # This is for dev purposes. This way you don't need to alter
         # the templates when on production, just point them to
         # STATIC_URL
@@ -34,9 +35,9 @@ if not settings.ON_PRODUCTION:
         url(r'^static/admin/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.STATIC_ROOT + 'admin/'
         }),
-        
+
         url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.STATICFILES_DIRS[0]
         })
-        
+
     )

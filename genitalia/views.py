@@ -13,10 +13,20 @@ from genitalia.forms import GenitaliaForm, SinglePhotoForm
 from utils.utils import qs_to_json
 import json, random
 
+
+def randomize_url(photo):
+    choice = THUMBS_SIZE[0]
+    return {'url': getattr(photo.image, 'url_%sx%s' % (choice[0],choice[1])), 'size': choice }
+
+
+
 # Create your views here.
 def home(request):
     """ Index View """
-    return render_to_response('genitalia/home.html', context_instance=RequestContext(request) )
+    return render_to_response('genitalia/home2.html', context_instance=RequestContext(request) )
+
+def home(request):
+    return render_to_response( 'genitalia/home2.html', context_instance=RequestContext(request))
 
 @csrf_exempt
 def photos_verify(request):
@@ -46,10 +56,6 @@ def photos_upload(request):
 
 def photos_json(request):
     """ Server the photos as a JSON """
-    def randomize_url(photo):
-        choice = THUMBS_SIZE[0]
-        return {'url': getattr(photo.image, 'url_%sx%s' % (choice[0],choice[1])), 'size': choice }
-
     data = cache.get( 'photos_json' ) or []
 
     # If no data
@@ -63,7 +69,7 @@ def photos_json(request):
                     'url_small':    small['url'],
                     'type':         'size-%dx%d' % small['size']
                 })
-        cache.set('photos_json', data, 1200)
+        cache.set('photos_json', data, 1200*10 )
 
     return HttpResponse( json.dumps(data), mimetype='application/json')
 

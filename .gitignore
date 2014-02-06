@@ -6,3 +6,4 @@ static/
 venv/
 local_settings.py
 bancogenital
+backups/
