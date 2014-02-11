@@ -1,39 +1,69 @@
-var MEDIA_URL  = "{{ MEDIA_URL }}";
-var STATIC_URL = "{{ STATIC_URL }}";
+var Settings = function(){
+    this.MEDIA_URL  = "{{ MEDIA_URL }}";
+    this.STATIC_URL = "{{ STATIC_URL }}";
 
-window.API_URL = '/photos/json';
-window.API_SUBMIT_PHOTO = '/photos/upload';
-window.API_VERIFY_PHOTO = '/photos/verify';
+    this.API_URL = '/photos/json';
+    this.API_SUBMIT_PHOTO = '/photos/upload';
+    this.API_VERIFY_PHOTO = '/photos/verify';
 
-window.WIDTH  = window.innerWidth;
-window.HEIGHT = window.innerHeight;
-window.PHOTO_TILING = 'sequential';
+    this.bg = '#000';
+    this.per_page = 16;
+    this.scroll_offset = 30;
+    this.gutter = 2;
+    this.vertspace = 5;
+    this.columnWidth = 150;
+    this.delaytime = 100;
+
+    this.update = function(){
+        window.update();
+    };
+
+    return this;
+};
 
 window.wall_el = $('#genitalia-wall');
 window.masonry = undefined;
 
-
 function setup(){
+
+    window.wall_el = $('#genitalia-wall');
+    window.sett    = new Settings();
+    window.gui     = new dat.GUI();
+
+    console.log(window.sett);
+    gui.addColor(sett, 'bg');
+    //gui.add(sett,'columnWidth',   10,500);
+    gui.add(sett,'per_page',   8,96);
+    var gktrl = gui.add(sett,'gutter',    0,50);
+    var vktrl = gui.add(sett,'vertspace', 0,50);
+    gui.add(sett,'delaytime',  30, 1000);
+    gui.add(sett,'scroll_offset', 30 );
+    gui.add(sett,'update')
 
     // Fetch all genitalias
     fetch_genitalias_db();
 
     // create Wall
-    window.wall_el = $('#genitalia-wall');
     window.masonry = new Masonry( wall_el.get(0), {
-        columnWidth: 150,
+        columnWidth: 160,
         itemSelector: '.item',
-        gutter: 20,
-        isFitWidth: true
+        gutter: window.sett.gutter,
+        isFitWidth: true,
     });
 
     masonry.bindResize();
-
 }
 
-//imagesLoaded( wall_el.get(0), function(){
-    ////var newElements = $( newElements );
-//});
+imagesLoaded( wall_el.get(0), function(){
+    var newElements = $( newElements );
+});
+
+function update(){
+    $('.item').css({'margin-bottom': window.sett.vertspace});
+    $('body').css({'background-color': window.sett.bg});
+    window.masonry.layout();
+    masonry.layout();
+}
 
 
 
@@ -41,13 +71,13 @@ function setup(){
 
 window.gen_db = [];
 window.gen_idx = 0;
-window.per_page = 16;
 function fetch_genitalias_db(){
-    console.log("Fetching genitalias...");
-    $.getJSON( API_URL, function(data){
-        gen_db = data;
+    $.getJSON( window.sett.API_URL, function(data){
+        window.gen_db = data;
 
-        gen_idx = Math.floor( Math.random() * gen_db.length );
+        window.gen_idx = Math.floor( Math.random() * gen_db.length );
+        console.log("Per page is now -> ", window.sett.per_page)
+        next_page();
         next_page();
     });
 }
@@ -62,7 +92,7 @@ function next_page(){
         (function(){
             // Delay every image a little bit
             var c_idx = i;
-            var delay_time = i*300.0; //i*70.0 + ((Math.random()*2)-1);
+            var delay_time = i*window.sett.delaytime; //i*70.0 + ((Math.random()*2)-1);
 
             setTimeout( $.proxy(function(){
                 this.add_genitalia(photos[c_idx]);
@@ -74,9 +104,9 @@ function next_page(){
 }
 
 function get_genitalias_paginated(){
-    page = gen_db.slice(gen_idx, gen_idx + per_page );
+    page = gen_db.slice(gen_idx, gen_idx + window.sett.per_page );
 
-    gen_idx = (gen_idx + per_page) % gen_db.length;
+    gen_idx = (gen_idx + window.sett.per_page) % gen_db.length;
     //gen_idx += per_page;
 
     return page;
@@ -94,18 +124,19 @@ function add_genitalia(gen){
 };
 
 function on_end_page(){
-    next_page();
+    next_page();000
 }
 
-var SCROLL_OFFSET = 30;
 $(window).scroll(function () {
-   if ($(window).scrollTop() >= $(document).height() - $(window).height() - SCROLL_OFFSET ) {
+   if ($(window).scrollTop() >= $(document).height() - $(window).height() - window.sett.scroll_offset) {
        next_page();
    }
 });
 
+
 // go
 $(document).ready( function(){
+    console.log("setup");
     setup();
 })
 

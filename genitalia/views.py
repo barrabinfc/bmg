@@ -23,9 +23,9 @@ def randomize_url(photo):
 # Create your views here.
 def home(request):
     """ Index View """
-    return render_to_response('genitalia/home2.html', context_instance=RequestContext(request) )
+    return render_to_response('genitalia/home.html', context_instance=RequestContext(request) )
 
-def home(request):
+def home2(request):
     return render_to_response( 'genitalia/home2.html', context_instance=RequestContext(request))
 
 @csrf_exempt
