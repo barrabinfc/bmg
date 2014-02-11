@@ -41,7 +41,7 @@ function setup(){
 
 window.gen_db = [];
 window.gen_idx = 0;
-window.per_page = 32;
+window.per_page = 16;
 function fetch_genitalias_db(){
     console.log("Fetching genitalias...");
     $.getJSON( API_URL, function(data){
@@ -56,9 +56,20 @@ function fetch_genitalias_db(){
 function next_page(){
     // Add photos
     var photos = get_genitalias_paginated();
-    for(var i=0;i< photos.length; i++){
-        var d = add_genitalia(photos[i]);
-    };
+    var i      = 0;
+    for(i=0;i < photos.length; i++){
+
+        (function(){
+            // Delay every image a little bit
+            var c_idx = i;
+            var delay_time = i*300.0; //i*70.0 + ((Math.random()*2)-1);
+
+            setTimeout( $.proxy(function(){
+                this.add_genitalia(photos[c_idx]);
+                this.masonry.layout();
+            },this), delay_time ); //+ (( Math.random()*2.0)-1 )*50);
+        })(this);
+    }
     masonry.layout();
 }
 
@@ -66,9 +77,10 @@ function get_genitalias_paginated(){
     page = gen_db.slice(gen_idx, gen_idx + per_page );
 
     gen_idx = (gen_idx + per_page) % gen_db.length;
-    gen_idx += per_page;
+    //gen_idx += per_page;
 
     return page;
+
 }
 
 
