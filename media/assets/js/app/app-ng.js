@@ -47,6 +47,7 @@ function fetch_genitalias_db(){
     $.getJSON( API_URL, function(data){
         gen_db = data;
 
+        gen_idx = Math.floor( Math.random() * gen_db.length );
         next_page();
     });
 }
@@ -63,6 +64,8 @@ function next_page(){
 
 function get_genitalias_paginated(){
     page = gen_db.slice(gen_idx, gen_idx + per_page );
+
+    gen_idx = (gen_idx + per_page) % gen_db.length;
     gen_idx += per_page;
 
     return page;
@@ -73,7 +76,6 @@ function add_genitalia(gen){
     var el = $('<div class="item"></div>');
     var img = $('<img src="' + gen['url_small'] + '">');
     var t = ($(el).append(img)).get(0);
-
 
     $(wall_el).append( t );
     masonry.appended( t );
