@@ -24,9 +24,11 @@ class OverlayManager
     setPage: (new_page) =>
         @cpage.hide() if(@cpage)
         @cpage = $jQ('#' + new_page)
+
+        console.log(@cobj);
         
         @cpage_name = new_page
-        @cobj = @controllers[ @pages.lastIndexOf( new_page ) ]        
+        @cobj = @controllers[ @pages.lastIndexOf( new_page ) ]
         if not @init
             @cobj.start()
             @init = true
@@ -37,7 +39,11 @@ class OverlayManager
         @on = true
         
     hide: =>
-        @el.fadeOut('slow', @cobj.on_hide_complete )
+        if(@cobj)
+            @el.fadeOut('slow', @cobj.on_hide_complete )
+        else
+            @el.fadeOut('slow')
+
         @on = false
         
         @cobj.stop() if @cobj

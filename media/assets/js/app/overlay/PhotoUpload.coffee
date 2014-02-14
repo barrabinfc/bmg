@@ -41,11 +41,12 @@ class PhotoUploadOvr
         return;
     
     setupEvents: ->
-        $jQ('#photo-submit #bt-file').bind 'click', (ev) ->
+        $jQ('#photo-submit #bt-file').bind 'click', (ev) =>
+            console.log(this)
             console.log("send it")
             @showDialog();
 
-        $jQ('#bt-cancel-photo',@el).on 'click', (ev) ->
+        $jQ('#bt-cancel-photo',@el).on 'click', (ev) =>
             overlay.hide()
             ev.stopPropagation()
 
@@ -83,7 +84,7 @@ class PhotoUploadOvr
 
 
     # Show file preview
-    thumbnail: (file,dataUrl) ->
+    thumbnail: (file,dataUrl) =>
         # Clean message
         $jQ('div','#photo-submit').remove();
 
@@ -97,7 +98,7 @@ class PhotoUploadOvr
             $jQ('#photo-submit').append(img);
 
 
-    submitPicture: (ev) ->
+    submitPicture: (ev) =>
         # Send photo by hand... weirdo
         files = $jQ('#photo-submit').data('dropzone').files
         file  = files[ files.length - 1];
@@ -115,8 +116,10 @@ class PhotoUploadOvr
             if(xhr.getResponseHeader("content-type").indexOf("application/json"))
                 response = JSON.parse(response)
 
-            if(response['status'] == 'OK')          that.photoSubmitSuccess(response)
-            else                                    that.photoSubmitError(response)
+            if(response['status'] == 'OK')
+                @photoSubmitSuccess(response)
+            else                                    
+                @photoSubmitError(response)
 
         xhr.setRequestHeader("Accept", "application/json");
         xhr.setRequestHeader("Cache-Control", "no-cache");
@@ -128,13 +131,11 @@ class PhotoUploadOvr
         return false
 
 
-    photoSubmitSuccess: (data)->
-        console.log(data);
+    photoSubmitSuccess: (data) =>
         overlay.hide()
 
 
-    photoSubmitError: (data) ->
-        console.log(data);
-    
+    photoSubmitError: (data) =>
+        $jQ('#photo-submit').css({'border-color': '#ff0000'})
 
 module.exports = PhotoUploadOvr

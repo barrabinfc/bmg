@@ -5,7 +5,8 @@ App             = require('app4')
 init = ->
     # Show the /etc/motd
     overlay = new OverlayManager('#overlay')
-    #overlay.hide()
+    #overlay.setPage('overlay')
+    overlay.hide()
     
     # Start the genitalia wall
     banco = new App( '#viewport', [window.innerWidth, window.innerHeight] )
@@ -16,7 +17,6 @@ init = ->
 
     # Get genitalia pictures, and start feeding it!
     $jQ.getJSON API_URL , (data) =>
-        console.log(" Hello")
         banco.setup data
 
     ###############

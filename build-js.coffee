@@ -9,7 +9,7 @@ fs      = require('fs');
 watch   = require('watch');
 
 APP_SRC = __dirname + '/media/assets/js/app'
-APP_OUT = 'media/assets/js/package.js'
+APP_OUT = 'media/assets/js/package.js
 
 compile = ->
     pack = stitch.createPackage({
