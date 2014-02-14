@@ -1,6 +1,31 @@
-- Carregar o backup de fotos
-- Adicionar transição suave no clique da genitalia.
-- Corrigir zoom quando clica em genitalias vizinhas.
-- Adicionar informação de contato no source da pagina.
-- Adicionar botao de like do facebook.
-- Adicionar CDN cloudflare
++ Carregar o backup de fotos
++ Adicionar transição suave no clique da genitalia.
++ Adicionar botao de UPLOAD
++ Corrigir Crop no Upload
+
++ Adicionar build de coffee via Grunt
+
+- Mostrar mensagem de sucesso, genitalia enviada.
+- Mostrar mensagem de erro, genitalia enviada.
+- Corrigir icone/interacao de dragging que esta errado.
+
+- Corrigir imagens .TIFF que nao estao carregando.
+- Adicionar tracking Google ?
+
+- Corrigir zoom quando clica em genitalias vizinhas?
+    - Forcar Reflow??
+
+
+Home2 / Masonry (Celular)
+
+- Adicionar zoom no clique.
+
+- Trocar foto por de maior qualidade ao dar zoom na foto.
+- Adicionar animacao de troca de foto.
+
+- Adicionar botao de UPLOAD
+- Adicionar tela de UPLOAD
+
+- Fazer status de sucesso/erro no upload.
+
+- Fazer  Widget Drag/drop

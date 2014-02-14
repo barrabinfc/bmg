@@ -9,8 +9,8 @@ var Settings = function(){
     this.bg = '#000';
     this.per_page = 16;
     this.scroll_offset = 30;
-    this.gutter = 2;
-    this.vertspace = 5;
+    this.gutter = 1.0;
+    this.vertspace = 1.0;
     this.columnWidth = 150;
     this.delaytime = 100;
 
@@ -28,9 +28,10 @@ function setup(){
 
     window.wall_el = $('#genitalia-wall');
     window.sett    = new Settings();
+
+    /*
     window.gui     = new dat.GUI();
 
-    console.log(window.sett);
     gui.addColor(sett, 'bg');
     //gui.add(sett,'columnWidth',   10,500);
     gui.add(sett,'per_page',   8,96);
@@ -39,6 +40,7 @@ function setup(){
     gui.add(sett,'delaytime',  30, 1000);
     gui.add(sett,'scroll_offset', 30 );
     gui.add(sett,'update')
+    */
 
     // Fetch all genitalias
     fetch_genitalias_db();
