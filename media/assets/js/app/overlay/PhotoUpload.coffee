@@ -1,6 +1,7 @@
 class PhotoUploadOvr
     constructor: (@parent, @el) ->
         
+
     start: => 
         # Setup dropzone
         $jQ('#photo-submit',@el).dropzone({
@@ -10,7 +11,7 @@ class PhotoUploadOvr
             createImageThumbnails: true,
             thumbnailWidth:  300,
             thumbnailHeight: 450,
-            #previewTemplate: "<div class\"preview file-preview\"><div class=\"details\"></div></div>",
+            previewTemplate: "<div class\"preview file-preview\"></div>",
             parallelUploads: 1,
             acceptedFiles: 'image/*'
         });
@@ -33,17 +34,16 @@ class PhotoUploadOvr
         return
 
     on_show_complete: =>
-        console.log("Uepa, show")
+        #$jQ('').removeClass('plus').addClass('')
         return;
 
     on_hide_complete: =>
+        #$jQ('').removeClass('plus').addClass('')
         console.log("Uepa, hide!")
         return;
     
     setupEvents: ->
         $jQ('#photo-submit #bt-file').bind 'click', (ev) =>
-            console.log(this)
-            console.log("send it")
             @showDialog();
 
         $jQ('#bt-cancel-photo',@el).on 'click', (ev) =>
@@ -86,16 +86,19 @@ class PhotoUploadOvr
     # Show file preview
     thumbnail: (file,dataUrl) =>
         # Clean message
-        $jQ('div','#photo-submit').remove();
+        $jQ('.message','#photo-submit').hide();
 
         img = new Image;
         img.src = dataUrl;
+        $jQ(img).bind 'click', @showDialog
+
 
         if($jQ('img','#photo-submit').length)
             $jQ('img','#photo-submit').attr  {'src': dataUrl};
-            $jQ('img', '#photo-submit').bind 'click' , @showDialog
+            #$jQ('img', '#photo-submit').bind 'click' , @showDialog
         else
             $jQ('#photo-submit').append(img);
+            #$jQ('img', '#photo-submit').bind 'click' , @showDialog
 
 
     submitPicture: (ev) =>
@@ -113,12 +116,11 @@ class PhotoUploadOvr
         xhr.onload = (e) =>
             response = xhr.responseText;
 
-            if(xhr.getResponseHeader("content-type").indexOf("application/json"))
-                response = JSON.parse(response)
+            response = JSON.parse(response)
 
-            if(response['status'] == 'OK')
+            if(response.status == "OK")
                 @photoSubmitSuccess(response)
-            else                                    
+            else
                 @photoSubmitError(response)
 
         xhr.setRequestHeader("Accept", "application/json");
@@ -133,7 +135,6 @@ class PhotoUploadOvr
 
     photoSubmitSuccess: (data) =>
         overlay.hide()
-
 
     photoSubmitError: (data) =>
         $jQ('#photo-submit').css({'border-color': '#ff0000'})
