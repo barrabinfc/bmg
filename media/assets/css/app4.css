@@ -281,8 +281,9 @@ p {
 }
 
 #photo-submit {
-    width: 300px;
-    height: 460px;
+    position: relative;
+    width:  320px;
+    height: 470px;
     cursor: pointer;
     border: 2px dashed #fff;
     text-align: center;
@@ -304,6 +305,9 @@ p {
  *  Thumbnail
  */
 #photo-submit img {
+    position: absolute; 
+    top:  10px;
+    left: 10px;
   /* width: 300px; */
   /* height: 450px; */
 }
@@ -452,6 +456,11 @@ p {
        -moz-transition-property: transform, -webkit-transform;
          -o-transition-property: transform, -webkit-transform;
             transition-property: transform, -webkit-transform;
+
+    -webkit-box-shadow:  0px 0px 20px #000;
+        -moz-box-shadow: 0px 0px 20px #000;
+        -o-box-shadow: 0px 0px 20px #000;
+           box-shadow: 0px 0px 20px #000;
 }
 
 .tile img:hover {

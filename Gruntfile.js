@@ -10,7 +10,7 @@ module.exports = function(grunt) {
     coffee: {
         compile: {
             files: {
-                'media/assets/js/package.js': 'media/assets/js/app/*.coffee'
+                'media/assets/js/package_grunt.js': 'media/assets/js/app/*.coffee'
             }
         }
     },
