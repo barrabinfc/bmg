@@ -31,6 +31,7 @@ def deploy():
 def remote_fetch_app():
     with cd(REMOTE_PROJECT_ROOT):
         run('cd app && git pull origin master')
+        run('cp -R app/static/* static/')
 
 def remote_restart_uwsgi():
     run("uwsgi --reload /var/www/genitalia.me/reload")

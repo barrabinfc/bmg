@@ -72,7 +72,7 @@ MEDIA_URL = 'http://genitalia.me/media/'
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = "%s/static/" % (PROJECT_ROOT)
-STATIC_URL = 'http:/genitalia.me/static/'
+STATIC_URL = 'http://genitalia.me/static/'
 
 STATICFILES_DIRS = (
     '%s/app/media/assets' % (PROJECT_ROOT),
