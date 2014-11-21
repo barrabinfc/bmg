@@ -1,13 +1,13 @@
 class PhotoUploadOvr
     constructor: (@parent, @el) ->
-        
 
-    start: => 
+
+    start: =>
         # Setup dropzone
         $jQ('#photo-submit',@el).dropzone({
             url: window.API_VERIFY_PHOTO,
             paramName: 'photo',
-            
+
             createImageThumbnails: true,
             thumbnailWidth:  300,
             thumbnailHeight: 450,
@@ -17,18 +17,21 @@ class PhotoUploadOvr
         });
 
         @dropzone = $jQ('#photo-submit').data('dropzone')
-        
+
         # Show a sign while Dragging
         #@dropzone.on("addedfile", @createThumb );
         @dropzone.on("dragenter", @dragEnter );
         @dropzone.on("dragleave", @dragLeave );
         @dropzone.on("drop", @dragLeave );
-        
+
         # Show the thumbnail of picture
         @dropzone.on('thumbnail', @thumbnail )
-        
+
         # Setup click handlers
         @setupEvents()
+
+        # True if uploading a file
+        @upload_in_progress=false
 
     stop: =>
         return
@@ -41,7 +44,7 @@ class PhotoUploadOvr
         #$jQ('').removeClass('plus').addClass('')
         console.log("Uepa, hide!")
         return;
-    
+
     setupEvents: ->
         $jQ('#photo-submit #bt-file').bind 'click', (ev) =>
             @showDialog();
@@ -50,7 +53,9 @@ class PhotoUploadOvr
             overlay.hide()
             ev.stopPropagation()
 
-        $jQ('#bt-submit-photo').on 'click' , @submitPicture 
+        $jQ('#bt-submit-photo').on 'click' , (ev) =>
+          returnif @upload_in_progress
+          @submitPicture
         # console.log("Saving picture, woha!")
 
 
@@ -102,6 +107,7 @@ class PhotoUploadOvr
 
 
     submitPicture: (ev) =>
+
         # Send photo by hand... weirdo
         files = $jQ('#photo-submit').data('dropzone').files
         file  = files[ files.length - 1];
@@ -115,9 +121,9 @@ class PhotoUploadOvr
         that = @
         xhr.onload = (e) =>
             response = xhr.responseText;
-
             response = JSON.parse(response)
 
+            @upload_in_progress = false;
             if(response.status == "OK")
                 @photoSubmitSuccess(response)
             else
@@ -128,6 +134,7 @@ class PhotoUploadOvr
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         xhr.setRequestHeader("X-File-Name", file.name);
 
+        @upload_in_progress = true;
         xhr.send(photo);
 
         return false

@@ -18,8 +18,8 @@ urlpatterns = patterns('',
     url(r'^grappelli/', include('grappelli.urls')),
 )
 
-print settings.ON_PRODUCTION
 # Include static and media urls
+print "DJANGO Serving static URLs? %s " % settings.ON_PRODUCTION
 if not settings.ON_PRODUCTION:
     urlpatterns += patterns('',
         url(r'^media/(?P<path>.*)$',  'django.views.static.serve', {
@@ -40,5 +40,4 @@ if not settings.ON_PRODUCTION:
         url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.STATICFILES_DIRS[0]
         })
-
     )

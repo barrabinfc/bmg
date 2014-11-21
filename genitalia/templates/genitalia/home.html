@@ -1,52 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<!--
+  Fuck it.
+   __      __         ___
+  /\ \    /\ \      /'___\
+  \ \ \___\ \ \____/\ \__/  ___
+   \ \ '__`\ \ '__`\ \ ,__\/'___\
+    \ \ \L\ \ \ \L\ \ \ \_/\ \__/
+     \ \_,__/\ \_,__/\ \_\\ \____\
+      \/___/  \/___/  \/_/ \/____/.net
+
+-->
+
     <meta charset="utf-8">
     <title>Banco mundial da genitalia</title>
-    
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Banco genital">
     <meta name="author" content="Caroline Barrueco, Luiza Só, Vitor Faleiros">
-    
+
     <meta property="og:title" content="Banco Mundial da Genitália" >
     <meta property="og:description" content="Banco Mundial da Genitália" >
     <meta property="og:image" content="thumbnail_image" >
 
-    <link rel="image_src" href="http://genitalia.me/fb_logo.jpg" > 
+    <link rel="image_src" href="http://genitalia.me/fb_logo.jpg" >
     <link rel="shortcut icon" href="{{ STATIC_URL }}img/genitalia_logo3.jpg">
 
     <!--
     <link href='http://fonts.googleapis.com/css?family=Domine:400,700|EB+Garamond&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-<<<<<<< HEAD
     <link href='http://fonts.googleapis.com/css?family=Arvo:400,700,400italic,700italic|Nova+Square|Bevan' rel='stylesheet' type='text/css'>               -->
 
-    <link href="{{ STATIC_URL }}css/bootstrap/bootstrap.min.css" rel="stylesheet" media="screen">      
-    <link href="{{ STATIC_URL }}css/font-awesome.css" rel="stylesheet">    
+    <link href="{{ STATIC_URL }}css/bootstrap/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="{{ STATIC_URL }}css/font-awesome.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}css/app4.css?version=0.2" rel="stylesheet">
-    
+
+    <script src="http://underscorejs.org/underscore-min.js" charset="utf-8"></script>
+    <script src="{{ STATIC_URL }}js/mootools/mootools-core-1.3.2.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}js/mootools/mootools-core-1.3.2.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}js/mootools/mootools-more-1.3.2.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}js/mootools/wall.js" type="text/javascript" charset="utf-8"></script>
-    
+
     <script src="{{ STATIC_URL }}js/jquery/jquery.min.js" type="text/javascript" charset="utf-8" ></script>
     <script src="{{ STATIC_URL }}js/jquery/jquery.transit.js" type="text/javascript" charset="utf-8" ></script>
     <script src="{{ STATIC_URL }}js/bootstrap/bootstrap.min.js"></script>
 
     <!--
-    <script src="{{ STATIC_URL }}js/jquery/jquery-ui.min.js" type="text/javascript" charset="utf-8" ></script> -->
+    <script src="{{ STATIC_URL }}js/jquery/jquery-ui.min.js" type="text/javascript" charset="utf-8" ></script>
+    -->
     <script src="{{ STATIC_URL }}js/jquery/jquery.zoomooz.js" type="text/javascript" charset="utf-8" ></script>
-    <script src="{{ STATIC_URL }}js/jquery/jquery.imagesloaded.js" type="text/javascript" charset="utf-8" ></script>    
-    <script src="{{ STATIC_URL }}js/jquery/jquery.smartscroll.js" type="text/javascript" charset="utf-8" ></script>    
+    <script src="{{ STATIC_URL }}js/jquery/jquery.imagesloaded.js" type="text/javascript" charset="utf-8" ></script>
+    <script src="{{ STATIC_URL }}js/jquery/jquery.smartscroll.js" type="text/javascript" charset="utf-8" ></script>
 
     <script src="{{ STATIC_URL }}js/swfobject.js" type="text/javascript" charset="utf-8" ></script>
     <script src="{{ STATIC_URL }}js/jquery/dropzone.js" type="text/javascript" charset="utf-8" ></script>
 
     <script src="{{ STATIC_URL }}js/package.js?version=1.2" type="text/javascript" charset="utf-8" ></script>
-    
+
     <script type="text/javascript">
         var MEDIA_URL  = "{{ MEDIA_URL }}";
         var STATIC_URL = "{{ STATIC_URL }}";
-        
+
         window.API_URL = '/photos/json';
         window.API_SUBMIT_PHOTO = '/photos/upload';
         window.API_VERIFY_PHOTO = '/photos/verify';
@@ -61,8 +76,8 @@
         document.addEventListener('DOMContentLoaded', function(){
             require('index').init();
         })
-        
-        // This function cannot be renamed. 
+
+        // This function cannot be renamed.
         // OpenBooth will always automatically call "onFlashReady" upon initializing itself.
         function onFlashReady() {
             console.log("Openbooth loaded");
@@ -99,24 +114,24 @@
             </div>
                 -->
         </div>
-        
+
         <!-- SIMPLE UPLOAD -->
         <div id="mostraoteu" class="infoscreen">
                 <div class="top">
                     <form action="/photo/verify" method="POST" enctype="multipart/form-data" id="photo-submit" class="square">
                         <input name="photo" type="file" style="display: none;">
-                        
+
                         <div class="message">
                            <a id="bt-file">
                                 <i class="icon-plus icon-4x"></i>
-                            </a>                                
+                            </a>
                         </div>
                     </form>
                 </div>
                 <div class="bottom">
 <!--                         <a href="javascript: return false;" class="squarebuttons" id="bt-submit-photo">
                             <i class="icon-arrow-left icon-2x"></i>
-                        </a>           
+                        </a>
  -->                        <a href="#" class="squarebuttons" id="bt-submit-photo">
                             <i class="icon-arrow-right icon-2x"></i>
                         </a>
@@ -125,7 +140,7 @@
                 <div class="hidden" id="uploadSuccessMessage">
                 </div>
         </div>
-        
+
         <!-- TAKE PICTURE -->
         <div id="photobooth" class="infoscreen">
             <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="459" height="344" id="openbooth">
@@ -141,12 +156,12 @@
                     <!--<![endif]-->
               </object>
         </div>
-        
-        
+
+
     </div>
-    
-    
-    
+
+
+
     <div id="viewport" class="unselectable">
         <div id="menu">
             <ul>
