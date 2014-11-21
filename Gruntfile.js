@@ -1,45 +1,48 @@
-// Gruntfile with the configuration of grunt-express and grunt-open. No livereload yet!
 module.exports = function(grunt) {
-
-  // Load Grunt tasks declared in the package.json file
-  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
-
-  // Configure Grunt
-  grunt.initConfig({
-
-    coffee: {
-        compile: {
-            files: {
-                'media/assets/js/package_grunt.js': 'media/assets/js/app/*.coffee'
+    
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        stitch_extra: {
+            options: {},
+            app: {
+            files: [
+                {
+                    dest: 'media/assets/js/package.js',
+                    paths: [__dirname + '/media/assets/js/app']
+                }
+            ]
             }
-        }
-    },
-
-    watch: {
-        all: {
-            files: ['genitalia/templates/**/*.html',
-                     'media/assets/css/**/*.css',
-                     'media/assets/js/package.js',
-                     'media/assets/js/app/**/*.js'],
+        },
+        concat: {
             options: {
-                livereload: true
+                separator: ';'
+            },
+            dist: {
+                src: ['media/assets/js/app/*.js','media/assets/js/app/*.coffee'],
+                dest: 'media/assets/js/app_concat.js'
             }
+        },
+        uglify: {
+            options: {
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+            },
+            dist: {
+                    files: {
+                        'media/assets/js/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+                    }
+                }
+        },
+        watch: {
+            files: ['<%= concat.dist.src %>'],
+            tasks: ['concat', 'uglify']
         }
-    },
+    });
 
-    // grunt-open will open your browser at the project's URL
-    open: {
-      all: {
-        // Gets the port from the connect configuration
-        path: 'http://localhost:8080'
-      }
-    }
-  });
 
-  // Creates the `server` task
-  grunt.registerTask('vaifilhao', [
-    'coffee',
-    'open',
-    'watch'
-  ]);
-};
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-stitch-extra');
+
+    grunt.registerTask('default',['stitch_extra']);
+}
