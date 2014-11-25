@@ -3,7 +3,6 @@
 <head>
 
 <!--
-  Fuck it.
    __      __         ___
   /\ \    /\ \      /'___\
   \ \ \___\ \ \____/\ \__/  ___
@@ -32,90 +31,25 @@
     <link href='http://fonts.googleapis.com/css?family=Domine:400,700|EB+Garamond&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Arvo:400,700,400italic,700italic|Nova+Square|Bevan' rel='stylesheet' type='text/css'>               -->
 
-    <link href="{{ STATIC_URL }}css/bootstrap/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="{{ STATIC_URL }}css/font-awesome.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}css/app4.css?version=0.2" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/app.min.css" rel="stylesheet" media="screen">
 
-    <script src="http://underscorejs.org/underscore-min.js" charset="utf-8"></script>
-    <script src="{{ STATIC_URL }}js/mootools/mootools-core-1.3.2.js" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ STATIC_URL }}js/mootools/mootools-core-1.3.2.js" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ STATIC_URL }}js/mootools/mootools-more-1.3.2.js" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ STATIC_URL }}js/mootools/wall.js" type="text/javascript" charset="utf-8"></script>
-
-    <script src="{{ STATIC_URL }}js/jquery/jquery.min.js" type="text/javascript" charset="utf-8" ></script>
-    <script src="{{ STATIC_URL }}js/jquery/jquery.transit.js" type="text/javascript" charset="utf-8" ></script>
-    <script src="{{ STATIC_URL }}js/bootstrap/bootstrap.min.js"></script>
-
-    <!--
-    <script src="{{ STATIC_URL }}js/jquery/jquery-ui.min.js" type="text/javascript" charset="utf-8" ></script>
-    -->
-    <script src="{{ STATIC_URL }}js/jquery/jquery.zoomooz.js" type="text/javascript" charset="utf-8" ></script>
-    <script src="{{ STATIC_URL }}js/jquery/jquery.imagesloaded.js" type="text/javascript" charset="utf-8" ></script>
-    <script src="{{ STATIC_URL }}js/jquery/jquery.smartscroll.js" type="text/javascript" charset="utf-8" ></script>
-
-    <script src="{{ STATIC_URL }}js/swfobject.js" type="text/javascript" charset="utf-8" ></script>
-    <script src="{{ STATIC_URL }}js/jquery/dropzone.js" type="text/javascript" charset="utf-8" ></script>
-
-    <script src="{{ STATIC_URL }}js/package.js?version=1.2" type="text/javascript" charset="utf-8" ></script>
 
     <script type="text/javascript">
         var MEDIA_URL  = "{{ MEDIA_URL }}";
         var STATIC_URL = "{{ STATIC_URL }}";
-
-        window.API_URL = '/photos/json';
-        window.API_SUBMIT_PHOTO = '/photos/upload';
-        window.API_VERIFY_PHOTO = '/photos/verify';
-
-        window.WIDTH  = window.innerWidth;
-        window.HEIGHT = window.innerHeight;
-        window.PHOTO_TILING = 'sequential';
-
-        var $jQ = $;
-        $.noConflict();
-
-        document.addEventListener('DOMContentLoaded', function(){
-            require('index').init();
-        })
-
-        // This function cannot be renamed.
-        // OpenBooth will always automatically call "onFlashReady" upon initializing itself.
-        function onFlashReady() {
-            console.log("Openbooth loaded");
-        	setTimeout(function() {
-                window.overlay.getController('photobooth').embedComplete()
-            }, 500 );
-        }
     </script>
+    <script src="{{ STATIC_URL }}js/vendors.min.js" type="text/javascript" charset="utf-8" ></script>
+    <script src="{{ STATIC_URL }}js/app.js" type="text/javascript" charset="utf-8" ></script>
 </head>
 
 <body>
     <div id="overlay" class="unselectable">
         <div id="startmessage" class="infoscreen">
             <!--
-            <div class="left">
-                <a href="#">
-                    <img src="{{STATIC_URL}}img/genitalia_logo2.png" class="logo">
-                </a>
-            </div>
-            <div class="right">
-                <div class="top">
-                    <h1>BMG</h1>
-                    <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vestibulum laoreet erat, eget scelerisque felis sollicitudin non. Integer accumsan, magna at dignissim aliquam, nunc enim semper felis</p>
-
-
-                    <p>Pellentesque eu mattis leo. Curabitur ante quam, feugiat vitae aliquam sit amet, mollis sed arcu. Pellentesque vitae ultricies lacus. Praesent venenatis sodales urna vel eleifend. Sed ut leo a est </p>
-
-                </div>
-
-                <div class="bottom">
-                    <a href="javascript: return false;" class="squarebuttons" id="enter-site">bora!</a>
-                </div>
-            </div>
                 -->
         </div>
 
-        <!-- SIMPLE UPLOAD -->
+        <!-- upload -->
         <div id="mostraoteu" class="infoscreen">
                 <div class="top">
                     <form action="/photo/verify" method="POST" enctype="multipart/form-data" id="photo-submit" class="square">

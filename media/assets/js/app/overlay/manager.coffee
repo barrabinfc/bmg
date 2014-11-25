@@ -1,5 +1,5 @@
-PhotoUpload = require('overlay/PhotoUpload')
-Photobooth = require('overlay/Photobooth')
+PhotoUpload = require('./PhotoUpload.coffee')
+Photobooth = require('./Photobooth.coffee')
 
 class OverlayManager
     constructor: (el) ->

@@ -1,6 +1,7 @@
 # 
-OverlayManager  = require('overlay/manager')
-App             = require('app4')
+App             = require('./app4.coffee')
+OverlayManager  = require('./overlay/manager.coffee')
+
 
 init = ->
     # Show the /etc/motd
@@ -33,10 +34,38 @@ init = ->
                             ev.stopPropagation()
                             return false
 
-    # GLOBAL VARS
+    # GLOBAL VARj
     window.overlay = overlay
     window.banco   = banco
     window.menu    = menu
     window.$jQ     = $jQ
 
+
 module.exports.init = init
+
+
+
+window.API_URL = '/photos/json';
+window.API_SUBMIT_PHOTO = '/photos/upload';
+window.API_VERIFY_PHOTO = '/photos/verify';
+
+window.WIDTH  = window.innerWidth;
+window.HEIGHT = window.innerHeight;
+window.PHOTO_TILING = 'sequential';
+
+document.addEventListener 'DOMContentLoaded', ->
+    window.$jQ = $;
+    $.noConflict();
+
+    init()
+
+
+###
+ This function cannot be renamed.
+ OpenBooth will always automatically call "onFlashReady" upon initializing itself.
+###
+onFlashready = -> 
+    console.log("Openbooth loaded")
+    setTimeout( ->
+        window.overlay.getController('photobooth').embedComplete()
+    , 500 )
