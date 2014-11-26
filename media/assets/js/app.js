@@ -223,6 +223,8 @@ PhotoUploadOvr = (function() {
     this.photoSubmitError = __bind(this.photoSubmitError, this);
     this.photoSubmitSuccess = __bind(this.photoSubmitSuccess, this);
     this.photoSubmitProgress = __bind(this.photoSubmitProgress, this);
+    this.stopProgressBar = __bind(this.stopProgressBar, this);
+    this.startProgressBar = __bind(this.startProgressBar, this);
     this.submitPicture = __bind(this.submitPicture, this);
     this.thumbnail = __bind(this.thumbnail, this);
     this.createThumb = __bind(this.createThumb, this);
@@ -230,6 +232,10 @@ PhotoUploadOvr = (function() {
     this.on_show_complete = __bind(this.on_show_complete, this);
     this.stop = __bind(this.stop, this);
     this.start = __bind(this.start, this);
+    this.delta = 1000.0 / 4;
+    this.opts = ['8=>         ', '8==>        ', '8===>       ', '8=====>     ', '8=======>  o', '8======>    ', '8===>       ', '8==>        ', '8>          '];
+    this.idx = 0;
+    window.upinterval = null;
   }
 
   PhotoUploadOvr.prototype.start = function() {
@@ -248,7 +254,8 @@ PhotoUploadOvr = (function() {
     this.dropzone.on("dragleave", this.dragLeave);
     this.dropzone.on("drop", this.dragLeave);
     this.dropzone.on('thumbnail', this.thumbnail);
-    return this.setupEvents();
+    this.setupEvents();
+    return this.photoSubmitProgress('start');
   };
 
   PhotoUploadOvr.prototype.stop = function() {};
@@ -283,7 +290,6 @@ PhotoUploadOvr = (function() {
   };
 
   PhotoUploadOvr.prototype.showDialog = function(ev) {
-    this.photoSubmitProgress('end');
     return $jQ('#photo-submit').click();
   };
 
@@ -364,44 +370,41 @@ PhotoUploadOvr = (function() {
     return false;
   };
 
+  PhotoUploadOvr.prototype.startProgressBar = function() {
+    $jQ('#bt-submit-photo').addClass('upprogress');
+    window.upinterval = setInterval((function(_this) {
+      return function() {
+        var txt;
+        _this.idx = (_this.idx + 1) % _this.opts.length;
+        txt = _this.opts[_this.idx];
+        return $jQ('#bt-submit-photo').text(txt);
+      };
+    })(this), this.delta);
+    return console.log(window.upinterval);
+  };
+
+  PhotoUploadOvr.prototype.stopProgressBar = function() {
+    clearInterval(window.upinterval);
+    $jQ('#bt-submit-photo').text('ok :D');
+    return setTimeout(function() {
+      return $jQ('#bt-submit-photo').removeClass('upprogress').text('upload');
+    }, 3000);
+  };
+
   PhotoUploadOvr.prototype.photoSubmitProgress = function(eof) {
-    var delta, idx, opts, start_interval, stop_interval;
-    delta = 1000.0 / 4;
-    opts = ['8=>         ', '8==>        ', '8===>       ', '8=====>     ', '8=======>  o', '8======>    ', '8===>       ', '8==>        ', '8>          '];
-    idx = 0;
-    this.int = null;
-    start_interval = (function(_this) {
-      return function() {
-        return _this.int = setInterval(function() {
-          var txt;
-          console.log("interval...");
-          idx = (idx + 1) % opts.length;
-          txt = opts[idx];
-          return $jQ('#bt-submit-photo').text(txt);
-        }, delta);
-      };
-    })(this);
-    stop_interval = (function(_this) {
-      return function() {
-        console.log("cleared...");
-        return clearInterval(_this.int);
-      };
-    })(this);
     if (eof === 'start') {
       this.upprogress = true;
-      $jQ('#bt-submit-photo').text('upload');
-      $jQ('#bt-submit-photo').addClass('upprogress');
-      return start_interval();
+      return this.startProgressBar();
     } else if (eof === 'end') {
       this.upprogress = false;
-      stop_interval();
-      $jQ('#bt-submit-photo').text('ok :D');
-      return $jQ('#bt-submit-photo').removeClass('upprogress');
+      return this.stopProgressBar();
     }
   };
 
   PhotoUploadOvr.prototype.photoSubmitSuccess = function(data) {
-    return overlay.hide();
+    return setTimeout(function() {
+      return overlay.hide(0);
+    }, 1000);
   };
 
   PhotoUploadOvr.prototype.photoSubmitError = function(data) {

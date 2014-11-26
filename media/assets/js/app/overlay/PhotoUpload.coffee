@@ -1,6 +1,17 @@
 class PhotoUploadOvr
     constructor: (@parent, @el) ->
-
+        @delta    = 1000.0/4
+        @opts  = [ '8=>         ',
+                  '8==>        ', 
+                  '8===>       ',  
+                  '8=====>     ', 
+                  '8=======>  o', 
+                  '8======>    ',
+                  '8===>       ',
+                  '8==>        ', 
+                  '8>          ']
+        @idx  = 0
+        window.upinterval  = null
 
     start: =>
         # Setup dropzone
@@ -30,14 +41,16 @@ class PhotoUploadOvr
         # Setup click handlers
         @setupEvents()
 
+        @photoSubmitProgress('start')
+
     stop: =>
         return
 
     on_show_complete: =>
-        return;
+        return
 
     on_hide_complete: =>
-        return;
+        return
 
     setupEvents: ->
         $jQ('#photo-submit #bt-file').bind 'click', (ev) =>
@@ -56,7 +69,6 @@ class PhotoUploadOvr
 
     # Choose file dialog
     showDialog: (ev) ->
-        @photoSubmitProgress('end')
         $jQ('#photo-submit').click()
 
     # Show a sign while draggning
@@ -135,46 +147,36 @@ class PhotoUploadOvr
 
         return false
 
+    startProgressBar:  =>
+        $jQ('#bt-submit-photo').addClass('upprogress')
+
+        window.upinterval = setInterval( =>
+            @idx = (@idx + 1)  % @opts.length
+            txt  = @opts[@idx]
+            $jQ('#bt-submit-photo').text(txt)
+        , @delta)
+        console.log(window.upinterval)
+
+    stopProgressBar: =>
+        clearInterval(window.upinterval)
+
+        $jQ('#bt-submit-photo').text('ok :D')
+        setTimeout( ->
+            $jQ('#bt-submit-photo').removeClass('upprogress').text('upload')
+        , 3000 )
+
     photoSubmitProgress: (eof) =>
-        delta    = 1000.0/4
-        opts  = [ '8=>         ',
-                  '8==>        ', 
-                  '8===>       ',  
-                  '8=====>     ', 
-                  '8=======>  o', 
-                  '8======>    ',
-                  '8===>       ',
-                  '8==>        ', 
-                  '8>          ']
-        idx  = 0
-        @int  = null
-
-        start_interval = =>
-            @int = setInterval( =>
-                console.log("interval...")
-                idx = (idx + 1)  % opts.length
-                txt  = opts[idx]
-                $jQ('#bt-submit-photo').text(txt)
-            , delta)
-        
-
-        stop_interval = =>
-            console.log("cleared...")
-            clearInterval(@int)
-
         if eof is 'start'
             @upprogress = true
-            $jQ('#bt-submit-photo').text('upload')
-            $jQ('#bt-submit-photo').addClass('upprogress')
-            start_interval()
+            @startProgressBar()
         else if eof is 'end'
             @upprogress = false
-            stop_interval()
-            $jQ('#bt-submit-photo').text('ok :D')
-            $jQ('#bt-submit-photo').removeClass('upprogress')
+            @stopProgressBar()
 
     photoSubmitSuccess: (data) =>
-        overlay.hide()
+        setTimeout( ->
+            overlay.hide(0)
+        , 1000 )
 
     photoSubmitError: (data) =>
         $jQ('#photo-submit').css({'border-color': '#ff0000'})
