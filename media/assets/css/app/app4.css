@@ -216,8 +216,9 @@ p {
     position: absolute;
     z-index: 1000;
     overflow: hidden;
-    opacity: 0.9;
-    background: transparent -webkit-gradient(radial, center center, 1000, center center, 0, from(transparent), to(#000000));
+    background-color: rgba(0,0,0,0.95);
+    background: transparent -webkit-gradient(radial, center center, 3000, center center, 0, from(transparent), to(#000000));
+    -webkit-backface-visibility: hidden;
 }
 
 .infoscreen {
@@ -266,6 +267,7 @@ p {
 #mostraoteu .squarebuttons {
     float: left;
     margin-left: 5px;
+    line-height: 2.5em;
 }
 
 #fileupload-dropzone {
@@ -333,6 +335,19 @@ p {
 #bt-submit-photo {
     margin: 0px auto;
     width: 100%;
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
+}
+
+#bt-submit-photo.upprogress {
+    background-color: rgba(0, 255, 187, 0.43);
+}
+
+#bt-submit-photo.upprogress:hover {
+    border: 2px solid transparent;
 }
 
 #fileupload-dropzone label {
@@ -406,14 +421,15 @@ p {
 
    background-image: url(../img/broken_noise.png);
    background-repeat: repeat;
+
+    -webkit-backface-visibility: hidden;
 }
 
 
 
 
 #wall {
-    perspective: 1px;
-    transform: translateZ(-0.25em);
+    -webkit-backface-visibility: hidden;
 }
 
 .tile img {

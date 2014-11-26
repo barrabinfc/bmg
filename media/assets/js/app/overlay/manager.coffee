@@ -22,11 +22,9 @@ class OverlayManager
         return @controllers[ @pages.lastIndexOf( @cpage_name ) ]
 
     setPage: (new_page) =>
-        @cpage.hide() if(@cpage)
+        @cpage.hide()       if(@cpage)
         @cpage = $jQ('#' + new_page)
 
-        console.log(@cobj);
-        
         @cpage_name = new_page
         @cobj = @controllers[ @pages.lastIndexOf( new_page ) ]
         if not @init
@@ -34,18 +32,21 @@ class OverlayManager
             @init = true
 
     show: =>
-        @el.fadeIn('fast', @cobj.on_show_complete)
+        @el.show().transition({opacity: 1})
         @cpage.show()
         @on = true
-        
+
     hide: =>
         if(@cobj)
-            @el.fadeOut('slow', @cobj.on_hide_complete )
+            @el.transition({opacity: 0}).queue( ->
+                $jQ(this).hide().dequeue()
+                @cobj?.on_hide_complete?()
+            )
         else
-            @el.fadeOut('slow')
-
+            @el.transition({opacity: 0}).queue( ->
+                $jQ(this).hide().dequeue()
+            )
         @on = false
-        
         @cobj.stop() if @cobj
 
 module.exports = OverlayManager

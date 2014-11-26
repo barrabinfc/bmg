@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponse
 
@@ -27,6 +27,10 @@ def home(request):
 
 def home2(request):
     return render_to_response( 'genitalia/home2.html', context_instance=RequestContext(request))
+
+def cache_clear(request):
+    cache.clear()
+    return redirect('/')
 
 @csrf_exempt
 def photos_verify(request):

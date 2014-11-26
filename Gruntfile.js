@@ -9,8 +9,8 @@ module.exports = function(grunt) {
             },
             css: {
                 src: [
-                        'media/assets/css/libs/fa/font-awesome.min.css',
-                        'media/assets/css/libs/bootstrap/bootstrap.min.css',
+                        'media/assets/css/libs/fa/font-awesome.css',
+                        'media/assets/css/libs/bootstrap/bootstrap.css',
                         'media/assets/css/app/app4.css'
                     ],
                 dest: 'media/assets/css/app.css'
@@ -25,7 +25,7 @@ module.exports = function(grunt) {
                       'media/assets/js/jquery/jquery.transit.js',
                       'media/assets/js/jquery/dropzone.js',
 
-                      'media/assets/js/bootstrap/bootstrap.min.js',
+                      'media/assets/js/bootstrap/bootstrap.js',
 
                       //mootools
                       'media/assets/js/mootools/mootools-core-1.3.2.js',

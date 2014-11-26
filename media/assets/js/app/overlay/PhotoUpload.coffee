@@ -14,15 +14,15 @@ class PhotoUploadOvr
             previewTemplate: "<div class\"preview file-preview\"></div>",
             parallelUploads: 1,
             acceptedFiles: 'image/*'
-        });
+        })
 
         @dropzone = $jQ('#photo-submit').data('dropzone')
 
         # Show a sign while Dragging
         #@dropzone.on("addedfile", @createThumb );
-        @dropzone.on("dragenter", @dragEnter );
-        @dropzone.on("dragleave", @dragLeave );
-        @dropzone.on("drop", @dragLeave );
+        @dropzone.on("dragenter",   @dragEnter )
+        @dropzone.on("dragleave",   @dragLeave )
+        @dropzone.on("drop",        @dragLeave )
 
         # Show the thumbnail of picture
         @dropzone.on('thumbnail', @thumbnail )
@@ -30,37 +30,34 @@ class PhotoUploadOvr
         # Setup click handlers
         @setupEvents()
 
-        # True if uploading a file
-        @upload_in_progress=false
-
     stop: =>
         return
 
     on_show_complete: =>
-        #$jQ('').removeClass('plus').addClass('')
         return;
 
     on_hide_complete: =>
-        #$jQ('').removeClass('plus').addClass('')
-        console.log("Uepa, hide!")
         return;
 
     setupEvents: ->
         $jQ('#photo-submit #bt-file').bind 'click', (ev) =>
-            @showDialog();
+            @showDialog()
 
         $jQ('#bt-cancel-photo',@el).on 'click', (ev) =>
             overlay.hide()
             ev.stopPropagation()
 
         $jQ('#bt-submit-photo').on 'click' , (ev) =>
-          return if @upload_in_progress
-          @submitPicture
-        # console.log("Saving picture, woha!")
+            return if @upprogress
+            if $jQ('#photo-submit').data('dropzone').files.length == 0
+                @showDialog()
+            @submitPicture()
 
 
+    # Choose file dialog
     showDialog: (ev) ->
-        $jQ('#photo-submit').click();
+        @photoSubmitProgress('end')
+        $jQ('#photo-submit').click()
 
     # Show a sign while draggning
     dragEnter: (ev) ->
@@ -99,18 +96,16 @@ class PhotoUploadOvr
 
 
         if($jQ('img','#photo-submit').length)
-            $jQ('img','#photo-submit').attr  {'src': dataUrl};
-            #$jQ('img', '#photo-submit').bind 'click' , @showDialog
+            $jQ('img','#photo-submit').attr  {'src': dataUrl}
         else
-            $jQ('#photo-submit').append(img);
-            #$jQ('img', '#photo-submit').bind 'click' , @showDialog
+            $jQ('#photo-submit').append(img)
 
 
     submitPicture: (ev) =>
 
         # Send photo by hand... weirdo
         files = $jQ('#photo-submit').data('dropzone').files
-        file  = files[ files.length - 1];
+        file  = files[ files.length - 1]
 
         photo = new FormData()
         photo.append('photo',  file)
@@ -120,32 +115,63 @@ class PhotoUploadOvr
 
         that = @
         xhr.onload = (e) =>
-            response = xhr.responseText;
+            response = xhr.responseText
             response = JSON.parse(response)
 
-            @upload_in_progress = false;
             @photoSubmitProgress('end')
+
             if(response.status == "OK")
                 @photoSubmitSuccess(response)
             else
                 @photoSubmitError(response)
 
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Cache-Control", "no-cache");
-        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xhr.setRequestHeader("X-File-Name", file.name);
+        xhr.setRequestHeader("Accept", "application/json")
+        xhr.setRequestHeader("Cache-Control", "no-cache")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        xhr.setRequestHeader("X-File-Name", file.name)
 
-        @upload_in_progress = true;
         @photoSubmitProgress('start')
-        xhr.send(photo);
+        xhr.send(photo)
 
         return false
 
     photoSubmitProgress: (eof) =>
+        delta    = 1000.0/4
+        opts  = [ '8=>         ',
+                  '8==>        ', 
+                  '8===>       ',  
+                  '8=====>     ', 
+                  '8=======>  o', 
+                  '8======>    ',
+                  '8===>       ',
+                  '8==>        ', 
+                  '8>          ']
+        idx  = 0
+        @int  = null
+
+        start_interval = =>
+            @int = setInterval( =>
+                console.log("interval...")
+                idx = (idx + 1)  % opts.length
+                txt  = opts[idx]
+                $jQ('#bt-submit-photo').text(txt)
+            , delta)
+        
+
+        stop_interval = =>
+            console.log("cleared...")
+            clearInterval(@int)
+
         if eof is 'start'
-            $('#bt-submit-photo').text('submiting 8=>');
+            @upprogress = true
+            $jQ('#bt-submit-photo').text('upload')
+            $jQ('#bt-submit-photo').addClass('upprogress')
+            start_interval()
         else if eof is 'end'
-            $('#bt-submit-photo').text('ok :D')
+            @upprogress = false
+            stop_interval()
+            $jQ('#bt-submit-photo').text('ok :D')
+            $jQ('#bt-submit-photo').removeClass('upprogress')
 
     photoSubmitSuccess: (data) =>
         overlay.hide()

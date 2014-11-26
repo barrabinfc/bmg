@@ -21,8 +21,7 @@ class App
         @imgCounter = Math.floor( Math.random() * (@photoJSONList.length - 1) )
         
         # Setup Events
-        #window.addEventListener('resize', @onResize, false)
-        items_cache = []
+        window.addEventListener('resize', $jQ.debounce( 100, @onResize ), false)
         
         @wall = new Wall("wall", {
                         "draggable":true,
@@ -46,7 +45,8 @@ class App
                         callOnMouseDown:    @onWallMouseDown,
                         callOnMouseUp:      @onWallMouseUp
                         })
-                        #callOnMouseDragged: @onWallMouseDragged })
+
+        $jQ('.tile').bind('click', @onPhotoClick )
 
         # Init Wall
         @wall.initWall()
