@@ -15,7 +15,7 @@ time, mark, audio, video {
   font-size: 100%;
   font: inherit;
   /*vertical-align: baseline;*/
-  font-family: 'Arvo', serif;
+  font-family: 'Monaco', serif;
 }
 
 article, aside, details, figcaption, figure,
@@ -26,7 +26,7 @@ footer, header, hgroup, menu, nav, section {
 a {
     text-decoration: none;
     color: #ededed;
-    font-family: 'Arvo', serif;
+    font-family: 'Monaco', serif;
     font-size: 24px;
     text-transform: uppercase;
     font-weight: bold;
@@ -51,7 +51,7 @@ li {
 }
 
 body {
-  font: 16px 'Arvo', serif;
+  font: 16px 'Monaco', serif;
   -webkit-font-smoothing: antialiased;
 
   background: #D8D5D2;
@@ -63,7 +63,7 @@ body {
 
 h1 {
     /*font-family: "helvetica neue", helvetica, arial, verdana, sans-serif;*/
-    font-family: 'Arvo', serif;
+    font-family: 'Monaco', serif;
     font-size: 31px;
     font-weight: bold;
     text-transform: uppercase;
@@ -92,7 +92,7 @@ p {
     display: block;
     text-align: center;
     text-decoration: none;
-    font-family: 'Arvo', serif;
+    font-family: 'Monaco', serif;
     font-size: 36px;
     text-transform: lowercase;
     font-weight: bold;
@@ -161,7 +161,7 @@ p {
     display: block;
     text-align: center;
     text-decoration: none;
-    font-family: 'Arvo', serif;
+    font-family: 'Monaco', serif;
     font-size: 24px;
     text-transform: uppercase;
     font-weight: bold;
@@ -213,15 +213,15 @@ p {
 #overlay {
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: absolute;
     z-index: 1000;
     overflow: hidden;
     opacity: 0.9;
-    background: transparent -webkit-gradient(radial, center center, 3000, center center, 0, from(transparent), to(#000000));
+    background: transparent -webkit-gradient(radial, center center, 1000, center center, 0, from(transparent), to(#000000));
 }
 
 .infoscreen {
-    margin: 5% auto;
+    margin: 15% auto;
     width: 100%;
     height: 100%;
 
@@ -298,7 +298,19 @@ p {
 }
 
 #photo-submit .message {
-  margin-top: 150px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+
+/*
+ *  Centralize bt-file on .message div
+ */
+#photo-submit .message #bt-file {
+    position: relative;
+    top: 45%;
+    left: -5%;
 }
 
 /*
@@ -308,6 +320,12 @@ p {
     position: absolute;
     top:  10px;
     left: 10px;
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
+
   /* width: 300px; */
   /* height: 450px; */
 }
@@ -380,9 +398,8 @@ p {
 #viewport {
    width:100%;
    height: 100%;
-   position:relative;
+   position: absolute;
    overflow: hidden;
-   overflow-x: hidden;
 
    margin:0 auto;
    background:#212121;
@@ -394,58 +411,20 @@ p {
 
 
 
-
-
-.wall-item {
-    width: 150px;
-    height: 225px;
-
-    float: left;
-    margin: 2px;
-    overflow: hidden;
-    opacity: 1;
+#wall {
+    perspective: 1px;
+    transform: translateZ(-0.25em);
 }
-
-.wall-item:hover{
-
-}
-
-.wall-item img {
-    width: 150px;
-    height: 225px;
-    opacity: 1;
-
-    -webkit-transition-duration: 0.25s;
-       -moz-transition-duration: 0.25s;
-         -o-transition-duration: 0.25s;
-            transition-duration: 0.25s;
-
-    -webkit-transition-property: height, width, opacity, border-radius, transform, -webkit-transform;
-       -moz-transition-property: height, width, opacity, border-radius;
-         -o-transition-property: height, width, opacity, border-radius;
-            transition-property: height, width, opacity, border-radius;
-}
-
-
-
-
-
-
-
-.tile {
-    z-index: 10;
-}
-.tile:hover {
-    z-index: 15;
-}
-
-
 
 .tile img {
+    position: absolute;
+    width: 150px;
+    height: 180px;
+
+    /*
     width: 150px;
     height: 225px;
-
-    z-index: 10;
+    */
 
     -webkit-transition-duration: 0.25s;
        -moz-transition-duration: 0.25s;

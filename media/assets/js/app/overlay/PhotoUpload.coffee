@@ -54,7 +54,7 @@ class PhotoUploadOvr
             ev.stopPropagation()
 
         $jQ('#bt-submit-photo').on 'click' , (ev) =>
-          returnif @upload_in_progress
+          return if @upload_in_progress
           @submitPicture
         # console.log("Saving picture, woha!")
 
@@ -124,6 +124,7 @@ class PhotoUploadOvr
             response = JSON.parse(response)
 
             @upload_in_progress = false;
+            @photoSubmitProgress('end')
             if(response.status == "OK")
                 @photoSubmitSuccess(response)
             else
@@ -135,10 +136,16 @@ class PhotoUploadOvr
         xhr.setRequestHeader("X-File-Name", file.name);
 
         @upload_in_progress = true;
+        @photoSubmitProgress('start')
         xhr.send(photo);
 
         return false
 
+    photoSubmitProgress: (eof) =>
+        if eof is 'start'
+            $('#bt-submit-photo').text('submiting 8=>');
+        else if eof is 'end'
+            $('#bt-submit-photo').text('ok :D')
 
     photoSubmitSuccess: (data) =>
         overlay.hide()

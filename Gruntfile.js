@@ -19,6 +19,7 @@ module.exports = function(grunt) {
                 src: [
                       // jquery js 
                       'media/assets/js/jquery/jquery.min.js',
+                      'media/assets/js/jquery/jquery.throttle.min.js',
                       'media/assets/js/jquery/jquery.zoomooz.js',
                       'media/assets/js/jquery/jquery.imagesloaded.js',
                       'media/assets/js/jquery/jquery.transit.js',
@@ -73,8 +74,16 @@ module.exports = function(grunt) {
             }
         },
         watch: {
-            files: ['<%= concat.dist.src %>'],
-            tasks: ['browserify',]
+            css: {
+                files: ['media/assets/css/app/*'],
+                tasks: ['concat:css',]
+
+            },
+            js: {
+                files: ['media/assets/js/app/*',
+                        'media/assets/js/app/**/*'],
+                tasks: ['browserify',]
+            }
         },
         clean: {
             dist: [ 'media/assets/js/vendors.*',
@@ -94,6 +103,10 @@ module.exports = function(grunt) {
     //grunt.registerTask('default',['concat','browserify']);
     grunt.registerTask('css_minify', ['concat:css','cssmin'])
     grunt.registerTask('js_build',['concat:js_vendors','browserify','uglify'])
+
+    grunt.registerTask('default',['css_minify',
+                                  'js_build',
+                                  'uglify'])
 
     grunt.registerTask('clean',['clean',]);
 }

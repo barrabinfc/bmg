@@ -1,4 +1,4 @@
-#
+# 
 # Banco Genitalia App
 #
 
@@ -21,24 +21,35 @@ class App
         @imgCounter = Math.floor( Math.random() * (@photoJSONList.length - 1) )
         
         # Setup Events
-        window.addEventListener('resize', @onResize, false)
+        #window.addEventListener('resize', @onResize, false)
+        items_cache = []
         
         @wall = new Wall("wall", {
                         "draggable":true,
-                        "width":    155,
-                        "height":   230,
-                        "inertia": true,
-                        "inertiaSpeed": 0.92,
+                        "width":    150,
+                        "height":   180,
+                        "speed":    800,
+                        "inertia":  true,
+                        "inertiaSpeed": 0.93,
                         "printCoordinates":false,
-                        "rangex":   [-300,300],
-                        "rangey":   [-300,300],
-                        callOnUpdate:  (items) => @createDOMPhotos(items),
+                        "rangex":   [-100,100],
+                        "rangey":   [-100,100],
+
+                        callOnUpdate:  (items) =>
+                            return if items.length == 0
+
+                            #if items_cache.length > 10
+                            console.log("fired...launching #{items.length} dicks")
+                            @createDOMPhotos( items )
+                            #    items_cache = []
+
                         callOnMouseDown:    @onWallMouseDown,
-                        callOnMouseUp:      @onWallMouseUp,
-                        callOnMouseDragged: @onWallMouseDragged })
+                        callOnMouseUp:      @onWallMouseUp
+                        })
+                        #callOnMouseDragged: @onWallMouseDragged })
 
         # Init Wall
-        @wall.initWall();
+        @wall.initWall()
 
 
     # Called when there are photo tiles to be created.
@@ -53,20 +64,17 @@ class App
             
             currPhoto = @photoJSONList[@imgCounter]
 
-            $jQ(e.node).text("")
+            #$jQ(e.node).text("")
             img = new Element("img[src='#{currPhoto.url_small}']")
-            img.inject(e.node).fade("hide").fade("in");
+            img.inject(e.node) #.fade("hide").fade("in");
             
             $jQ(img).data('photo_info', currPhoto)
-            $jQ(img).mouseup(@onPhotoClick)
+            #$jQ(img).mouseup(@onPhotoClick)
         )
-        
+
     onWallMouseDown: (e) =>
-        if @inZoom
-            e.stop()
 
     onWallMouseUp: (e) =>
-        @dragged = false
     
     onWallMouseDragged: (delta,e) =>
         if(Math.abs(delta[0]) > 5 or Math.abs(delta[1]) > 5)
@@ -94,29 +102,29 @@ class App
         @inZoom = true
         
         pos = $jQ(photo_el).offset()
-        pos.left = pos.left - 40;
-        pos.top = pos.top - 40;
+        pos.left = pos.left - 40
+        pos.top = pos.top - 40
                 
         #clone = $jQ(photo_el).clone()
         #clone.attr('src', $jQ(photo_el).data('photo_info').url)
         #clone.appendTo( $jQ(photo_el).parent() )
         
+        # TODO:
+        #  Load & Make a transition
         $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url )
 
         #$jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url)
         #$jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600})
         $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600})
 
-        #items = @wall.updateWall()
-        #@createDOMPhotos(items)
-
     zoomOut: =>
         @inZoom = false
-        $jQ('body').zoomTo({targetSize: 0.75, duration: 600})        
+        $jQ('body').zoomTo({targetSize: 0.75, duration: 600})
 
     onResize: =>
         [WIDTH,HEIGHT] = [window.innerWidth, window.innerHeight]
         $jQ(@container).css({width: WIDTH, height: HEIGHT});
         $jQ('#overlay').css({width: WIDTH, height: HEIGHT});
+
 
 module.exports = App
