@@ -4,7 +4,6 @@ OverlayManager  = require('./overlay/manager.coffee')
 
 Loader          = require('./loader.coffee')
 
-
 init = ->
     # Show the /etc/motd
     overlay = new OverlayManager('#overlay')
@@ -60,7 +59,7 @@ window.API_VERIFY_PHOTO = '/photos/verify'
 
 window.WIDTH  = window.innerWidth
 window.HEIGHT = window.innerHeight
-window.PHOTO_TILING = 'random'
+window.PHOTO_TILING = 'sequential'
 
 document.addEventListener 'DOMContentLoaded', ->
     window.$jQ = $

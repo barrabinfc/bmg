@@ -2,7 +2,6 @@
 # Banco Genitalia App
 #
 
-
 class App
     constructor: (viewport,size) ->
         @size   = size
@@ -32,9 +31,9 @@ class App
                         "speed":    800,
                         "inertia":  true,
                         "inertiaSpeed": 0.93,
-                        "printCoordinates": true,
-                        "rangex":   [-100,100],
-                        "rangey":   [-100,100],
+                        "printCoordinates": false,
+                        "rangex":   [-50,50],
+                        "rangey":   [-50,50],
 
                         callOnUpdate:  (items) =>
                             return if items.length == 0
@@ -62,7 +61,11 @@ class App
             #$jQ(e.node).text("")
             img = new Element("img[src='#{currPhoto.url_small}']")
             img.inject(e.node)
-            
+
+            $jQ(e.node).imagesLoaded( (elem,cb)->
+                $jQ(img).addClass('loaded')
+            )
+
             $jQ(img).data('photo_info', currPhoto)
         )
 
@@ -97,21 +100,18 @@ class App
         @prevTarget = @cTarget
         @inZoom = true
         
-        pos = $jQ(photo_el).offset()
-
         # TODO:
         #  Load & Make a transition
         $jQ(photo_el).imagesLoaded( ->
-            #$jQ(photo_el).css({'transition': 'scale(1.02,1.02)'})
+            #$jQ(photo_el).css({'transform': 'scale(1.3,1.3)'})
         )
         $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url )
 
         #$jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url)
         #$jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600})
-        $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600, \
-                             animationendcallback: ->
-            $jQ(photo_el).css({'transition': 'scale(1.02,1.02)'})
-        })
+        $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600 })
+            #$jQ(photo_el).css({'z-index': })
+        #})
         #$jQ(photo_el).zoomTarget()
 
     zoomOut: =>

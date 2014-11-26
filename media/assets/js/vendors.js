@@ -6646,9 +6646,7 @@ var Wall = new Class({
                             this.yspeed *= this.options.inertiaSpeed;
                             
                             // Aggiorna Wall
-                            if((++i%8) == 0)
-                                this.options.callOnUpdate(this.updateWall());
-                                i = 0
+                            this.options.callOnUpdate(this.updateWall());
 
                             // Interrompe spostamento se prossimo a 0.6
                             if (Math.abs(this.xspeed) < 2 && Math.abs(this.yspeed) < 2) {
@@ -6697,7 +6695,7 @@ var Wall = new Class({
             this.wall.setStyles({
                                     "cursor":"default",
                                     "position":"absolute"
-                                });            
+                                });
         }
 
         // Imposta posizione iniziale

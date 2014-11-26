@@ -158,10 +158,10 @@ class PhotoUploadOvr
     stopProgressBar: =>
         clearInterval(window.upinterval)
 
-        $jQ('#bt-submit-photo').text('ok :D')
+        $jQ('#bt-submit-photo').text('ok \\o/')
         setTimeout( ->
             $jQ('#bt-submit-photo').removeClass('upprogress').text('upload')
-        , 3000 )
+        , 1500 )
 
     photoSubmitProgress: (eof) =>
         if eof is 'start'

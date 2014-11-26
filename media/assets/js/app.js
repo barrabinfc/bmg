@@ -36,9 +36,9 @@ App = (function() {
       "speed": 800,
       "inertia": true,
       "inertiaSpeed": 0.93,
-      "printCoordinates": true,
-      "rangex": [-100, 100],
-      "rangey": [-100, 100],
+      "printCoordinates": false,
+      "rangex": [-50, 50],
+      "rangey": [-50, 50],
       callOnUpdate: (function(_this) {
         return function(items) {
           if (items.length === 0) {
@@ -66,6 +66,9 @@ App = (function() {
         currPhoto = _this.photoJSONList[_this.imgCounter];
         img = new Element("img[src='" + currPhoto.url_small + "']");
         img.inject(e.node);
+        $jQ(e.node).imagesLoaded(function(elem, cb) {
+          return $jQ(img).addClass('loaded');
+        });
         return $jQ(img).data('photo_info', currPhoto);
       };
     })(this));
@@ -101,20 +104,13 @@ App = (function() {
   };
 
   App.prototype.zoomIn = function(photo_el) {
-    var pos;
     this.prevTarget = this.cTarget;
     this.inZoom = true;
-    pos = $jQ(photo_el).offset();
     $jQ(photo_el).imagesLoaded(function() {});
     $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url);
     return $jQ(photo_el).zoomTo({
       targetSize: 0.75,
-      duration: 600,
-      animationendcallback: function() {
-        return $jQ(photo_el).css({
-          'transition': 'scale(1.02,1.02)'
-        });
-      }
+      duration: 600
     });
   };
 
@@ -202,7 +198,7 @@ window.WIDTH = window.innerWidth;
 
 window.HEIGHT = window.innerHeight;
 
-window.PHOTO_TILING = 'random';
+window.PHOTO_TILING = 'sequential';
 
 document.addEventListener('DOMContentLoaded', function() {
   window.$jQ = $;
@@ -433,10 +429,10 @@ PhotoUploadOvr = (function() {
 
   PhotoUploadOvr.prototype.stopProgressBar = function() {
     clearInterval(window.upinterval);
-    $jQ('#bt-submit-photo').text('ok :D');
+    $jQ('#bt-submit-photo').text('ok \\o/');
     return setTimeout(function() {
       return $jQ('#bt-submit-photo').removeClass('upprogress').text('upload');
-    }, 3000);
+    }, 1500);
   };
 
   PhotoUploadOvr.prototype.photoSubmitProgress = function(eof) {
