@@ -30,6 +30,20 @@ Now create a mysql DB with the same config listed in `settings.py`
 	    'PASSWORD': '*******',                  
 	}
 
+## Generate front-end code
+
+First you need to install the tools to minify/concat the front-end code.
+
+    $ npm install package.json
+
+Now you can run just grunt to compile js and css
+
+    $ grunt 
+
+And for development purposes, you may use the `watch` function
+
+    $ grunt watch
+
 
 ## Restoring the backup/shit
 
