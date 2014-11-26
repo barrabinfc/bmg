@@ -23,11 +23,18 @@ App = (function() {
     this.onResize();
   }
 
-  App.prototype.setup = function(photoList) {
+  App.prototype.setup = function(photoList, loading_cb, loaded_cb) {
+    var loadingImages;
     this.photoJSONList = photoList;
     this.imgCounter = Math.floor(Math.random() * (this.photoJSONList.length - 1));
     window.addEventListener('resize', $jQ.debounce(100, this.onResize), false);
-    $jQ('#wall').on('dblclick', '.tile', this.onPhotoClick);
+    $jQ('#wall').on('mouseup', '.tile', (function(_this) {
+      return function(ev, e) {
+        if (!_this.dragged) {
+          return _this.onPhotoClick(ev, e);
+        }
+      };
+    })(this));
     this.wall = new Wall("wall", {
       "draggable": true,
       "scrollable": true,
@@ -51,7 +58,14 @@ App = (function() {
       callOnMouseUp: this.onWallMouseUp,
       callOnMouseDragged: this.onWallMouseDragged
     });
-    return this.wall.initWall();
+    this.wall.initWall();
+    loading_cb = loading_cb != null ? loading_cb : $jQ.noop;
+    loaded_cb = loaded_cb != null ? loaded_cb : $jQ.noop;
+    return loadingImages = $jQ('#wall').imagesLoaded().always(function(instance, images) {
+      return loaded_cb(instance, images);
+    }).progress(function(instance, images) {
+      return loading_cb(instance, images);
+    });
   };
 
   App.prototype.createDOMPhotos = function(items) {
@@ -79,6 +93,7 @@ App = (function() {
   };
 
   App.prototype.onWallMouseUp = function(e) {
+    this.dragged = false;
     return false;
   };
 
@@ -153,7 +168,7 @@ OverlayManager = require('./overlay/manager.coffee');
 Loader = require('./loader.coffee');
 
 init = function() {
-  var banco, menu, mloader, overlay;
+  var banco, menu, mloader, onLoadProgress, onLoadedComplete, overlay, prefetch;
   overlay = new OverlayManager('#overlay');
   overlay.hide();
   mloader = new Loader('#loading');
@@ -161,12 +176,18 @@ init = function() {
   banco = new App('#viewport', [window.innerWidth, window.innerHeight]);
   menu = $jQ('#menu');
   menu.show();
+  prefetch = 50;
+  onLoadProgress = function(instance, img) {
+    if (img.length > prefetch) {
+      return onLoadedComplete(instance, img);
+    }
+  };
+  onLoadedComplete = function(instance, img) {
+    return setTimeout(mloader.complete, 600);
+  };
   $jQ.getJSON(API_URL, (function(_this) {
     return function(data) {
-      banco.setup(data);
-      return setTimeout(function() {
-        return mloader.complete();
-      }, 500);
+      return banco.setup(data, onLoadProgress, onLoadedComplete);
     };
   })(this));
   $jQ('#menu-mostraoteu').on('click', function(ev) {
@@ -200,6 +221,8 @@ window.HEIGHT = window.innerHeight;
 
 window.PHOTO_TILING = 'sequential';
 
+$.fx.speeds._default = 500;
+
 document.addEventListener('DOMContentLoaded', function() {
   window.$jQ = $;
   $.noConflict();
@@ -213,7 +236,6 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 
 onFlashready = function() {
-  console.log("Openbooth loaded");
   return setTimeout(function() {
     return window.overlay.getController('photobooth').embedComplete();
   }, 500);
@@ -228,25 +250,45 @@ var Loader,
 Loader = (function() {
   function Loader(el) {
     this.complete = __bind(this.complete, this);
+    this.loading = __bind(this.loading, this);
     this.el = $jQ(el);
   }
 
   Loader.prototype.loading = function() {
     return $jQ(this.el).css({
       opacity: 0.8
-    }).show().queue(function() {
-      return $jQ(this).transition({
-        opacity: 1
-      }).dequeue();
-    });
+    }).show().queue((function(_this) {
+      return function() {
+        _this.loadingAnimation();
+        return $jQ(_this.el).transition({
+          opacity: 1
+        }).dequeue();
+      };
+    })(this));
+  };
+
+  Loader.prototype.loadingAnimation = function() {
+    var cycle, i;
+    cycle = ['Loading /¯\\_/', 'Loading _/¯\\_', 'Loading \\_/¯\\', 'Loading /¯\\_/', 'Loading _/¯\\_', 'Loading \\_/¯\\', 'Loading /¯\\_/', 'Loading _/¯\\_', 'Loading \\_/¯\\'];
+    i = 0;
+    return this.load_id = setInterval((function(_this) {
+      return function() {
+        i = (++i) % cycle.length;
+        console.log(cycle[i]);
+        return $jQ(_this.el).children('p').text(cycle[i]);
+      };
+    })(this), 1000 / 4);
   };
 
   Loader.prototype.complete = function() {
+    clearInterval(this.load_id);
     return $jQ(this.el).transition({
       opacity: 0
-    }).queue(function() {
-      return $jQ(this).hide().dequeue();
-    });
+    }).queue((function(_this) {
+      return function() {
+        return $jQ(_this.el).hide().dequeue();
+      };
+    })(this));
   };
 
   return Loader;

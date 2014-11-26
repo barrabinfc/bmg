@@ -1928,14 +1928,15 @@ table .span24 {
   width: 1884px;
   margin-left: 0;
 }
+
 [class^="icon-"],
 [class*=" icon-"] {
   display: inline-block;
   width: 14px;
   height: 14px;
-  line-height: 14px;
+  line-height: 14pxk
   vertical-align: text-top;
-  background-image: url("../img/bootstrap/glyphicons-halflings.png");
+  /*background-image: url("../img/bootstrap/glyphicons-halflings.png");*/
   background-position: 14px 14px;
   background-repeat: no-repeat;
   *margin-right: .3em;
@@ -1945,7 +1946,7 @@ table .span24 {
   *margin-left: 0;
 }
 .icon-white {
-  background-image: url("../img/bootstrap/glyphicons-halflings-white.png");
+/*  background-image: url("../img/bootstrap/glyphicons-halflings-white.png");*/
 }
 .icon-glass {
   background-position: 0      0;
@@ -4581,8 +4582,11 @@ body {
 
   background: #D8D5D2;
   color: #ededed;
-  line-height: 1.6em;
   display: block;
+
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 
     -webkit-backface-visibility: hidden;
       -moz-backface-visibility: hidden;
@@ -4599,7 +4603,6 @@ html {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    height: 100%;
 }
 
 h1 {
@@ -4640,12 +4643,12 @@ p {
     color: #fff;
     background-color: #1f1f1f;
     opacity: 0.7;
-    line-height: 115px;
 
     border: 2px solid rgba(0,0,0,0);
 
     margin: 0px auto;
     height: 90px;
+    vertical-align: text-bottom;
 
     -webkit-transition: all .150s ease-out;
        -moz-transition: all .150s ease-out;
@@ -4664,8 +4667,9 @@ p {
     text-align: center;
     text-transform: lowercase;
     width: 100px;
-    line-height: 52px;
     padding-top: 10px;
+
+    /*line-height: 52px;*/
 
     -webkit-transition: all .150s ease-out;
        -moz-transition: all .150s ease-out;
@@ -4697,19 +4701,6 @@ p {
     background-color: #FF452E;
 }
 
-
-.menubuttons {
-    display: block;
-    text-align: center;
-    text-decoration: none;
-    font-family: 'Monaco', serif;
-    font-size: 24px;
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #fff;
-    line-height: 52px;
-    padding-top: 10px;
-}
 
 
 
@@ -4754,19 +4745,19 @@ p {
     width: 100%;
     height: 100%;
     position: absolute;
-    overflow: hidden;
-    background-color: rgba(255,255,255,0.8);
-    z-index: 1010;
+    margin: 0 auto;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 1020;
 }
 
 #loading p {
-    color: #000;
-    margin: 15% auto;
+    color: #fff;
+    margin: 25% 40%;
     text-transform: lowercase;
     font-weight: bold;
-    font-size: 64px;
+    font-size: 76px;
     width: 40%;
-    text-align: center;
+    text-align: left;
 }
 
 
@@ -4778,11 +4769,20 @@ p {
     overflow: hidden;
     background-color: rgba(0,0,0,0.95);
     background: transparent -webkit-gradient(radial, center center, 3000, center center, 0, from(transparent), to(#000000));
+
     -webkit-backface-visibility: hidden;
+      -moz-backface-visibility: hidden;
+        -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transform-style: preserve-3d;
 }
 
 .infoscreen {
-    margin: 15% auto;
+    margin: 10% auto;
     width: 100%;
     height: 100%;
 
@@ -4827,7 +4827,7 @@ p {
 #mostraoteu .squarebuttons {
     float: left;
     margin-left: 5px;
-    line-height: 2.5em;
+    /*line-height: 2.5em;*/
 }
 
 #fileupload-dropzone {
@@ -4935,16 +4935,11 @@ p {
 
 #menu {
     position: fixed;
-    height: 52px;
+    height: 90px;
     width: 100%;
     top: 0px;
     right: 15px;
     z-index: 1010;
-    display: none;
-}
-
-#menu ul {
-    height: 52px;
 }
 
 #menu ul li {

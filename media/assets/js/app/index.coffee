@@ -20,13 +20,19 @@ init = ->
     menu  = $jQ('#menu')
     menu.show()
 
+    prefetch = 50
+    onLoadProgress = (instance, img) ->
+        if (img.length > prefetch)
+            onLoadedComplete(instance,img)
+
+    # Plz wait 600 ms before finishing
+    onLoadedComplete = (instance, img) ->
+        setTimeout( mloader.complete , 600 )
+
     # Get genitalia pictures, and start feeding it!
     $jQ.getJSON API_URL , (data) =>
-        banco.setup data
+        banco.setup data, onLoadProgress, onLoadedComplete
 
-        setTimeout( ->
-            mloader.complete()
-        , 500)
 
     ###############
     # User Events #
@@ -61,6 +67,8 @@ window.WIDTH  = window.innerWidth
 window.HEIGHT = window.innerHeight
 window.PHOTO_TILING = 'sequential'
 
+$.fx.speeds._default = 500
+
 document.addEventListener 'DOMContentLoaded', ->
     window.$jQ = $
     $.noConflict()
@@ -75,7 +83,6 @@ document.addEventListener 'DOMContentLoaded', ->
  OpenBooth will always automatically call "onFlashReady" upon initializing itself.
 ###
 onFlashready = -> 
-    console.log("Openbooth loaded")
     setTimeout( ->
         window.overlay.getController('photobooth').embedComplete()
     , 500 )

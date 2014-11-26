@@ -14,15 +14,18 @@ class App
         @container = $jQ(viewport)
         @onResize()
         
-    setup: (photoList) =>
+    setup: (photoList, loading_cb, loaded_cb) =>
         @photoJSONList    = photoList
         
         @imgCounter = Math.floor( Math.random() * (@photoJSONList.length - 1) )
         
         # Setup Events
         window.addEventListener('resize', $jQ.debounce( 100, @onResize ), false)
-        $jQ('#wall').on('dblclick', '.tile', @onPhotoClick )
-        
+        $jQ('#wall').on('mouseup', '.tile', (ev,e ) =>
+            @onPhotoClick(ev,e) if not @dragged
+        )
+
+        # start wall
         @wall = new Wall("wall", {
                         "draggable": true,
                         "scrollable": true,
@@ -43,8 +46,19 @@ class App
                         callOnMouseUp:          @onWallMouseUp,
                         callOnMouseDragged:     @onWallMouseDragged })
 
-        # Init Wall
         @wall.initWall()
+
+        # Callbacks for loading
+        loading_cb    = loading_cb ? $jQ.noop
+        loaded_cb     = loaded_cb ? $jQ.noop
+
+        loadingImages = $jQ('#wall').imagesLoaded() \
+        .always( (instance, images) ->
+            loaded_cb( instance, images ) 
+        ) \
+        .progress( (instance, images) ->
+            loading_cb( instance, images )
+        )
 
 
     # Called when there are photo tiles to be created.
@@ -74,6 +88,7 @@ class App
         return
 
     onWallMouseUp: (e) =>
+        @dragged = false
         return false
     
     onWallMouseDragged: (delta,e) =>
@@ -86,7 +101,6 @@ class App
     # Someone clicked on the photo.
     onPhotoClick: (ev,e) =>
         # Dont zoom if dragging
-
         @cTarget = $jQ(ev.target)
         if not @inZoom
             @zoomIn( @cTarget )
@@ -100,23 +114,15 @@ class App
         @prevTarget = @cTarget
         @inZoom = true
         
-        # TODO:
-        #  Load & Make a transition
         $jQ(photo_el).imagesLoaded( ->
-            #$jQ(photo_el).css({'transform': 'scale(1.3,1.3)'})
+            return
         )
         $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url )
 
-        #$jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url)
-        #$jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600})
-        $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600 })
-            #$jQ(photo_el).css({'z-index': })
-        #})
-        #$jQ(photo_el).zoomTarget()
+        $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600 }) 
 
     zoomOut: =>
         @inZoom = false
-        #$jQ(photo_el).zoomTarget()
         $jQ('body').zoomTo({targetSize: 0.75, duration: 600, })
 
     onResize: =>
