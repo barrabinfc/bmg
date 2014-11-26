@@ -26,8 +26,8 @@ class App
         
         @wall = new Wall("wall", {
                         "draggable":true,
-                        "width":    150,
-                        "height":   180,
+                        "width":    115,
+                        "height":   170,
                         "speed":    800,
                         "inertia":  true,
                         "inertiaSpeed": 0.93,

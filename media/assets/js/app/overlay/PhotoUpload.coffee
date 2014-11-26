@@ -41,8 +41,6 @@ class PhotoUploadOvr
         # Setup click handlers
         @setupEvents()
 
-        @photoSubmitProgress('start')
-
     stop: =>
         return
 

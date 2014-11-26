@@ -30,8 +30,8 @@ App = (function() {
     $jQ('#wall').on('dblclick', '.tile', this.onPhotoClick);
     this.wall = new Wall("wall", {
       "draggable": true,
-      "width": 150,
-      "height": 180,
+      "width": 115,
+      "height": 170,
       "speed": 800,
       "inertia": true,
       "inertiaSpeed": 0.93,
@@ -254,8 +254,7 @@ PhotoUploadOvr = (function() {
     this.dropzone.on("dragleave", this.dragLeave);
     this.dropzone.on("drop", this.dragLeave);
     this.dropzone.on('thumbnail', this.thumbnail);
-    this.setupEvents();
-    return this.photoSubmitProgress('start');
+    return this.setupEvents();
   };
 
   PhotoUploadOvr.prototype.stop = function() {};
