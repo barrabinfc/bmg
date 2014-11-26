@@ -22,6 +22,7 @@ class App
         
         # Setup Events
         window.addEventListener('resize', $jQ.debounce( 100, @onResize ), false)
+        $jQ('#wall').on('dblclick', '.tile', @onPhotoClick )
         
         @wall = new Wall("wall", {
                         "draggable":true,
@@ -36,17 +37,12 @@ class App
 
                         callOnUpdate:  (items) =>
                             return if items.length == 0
-
-                            #if items_cache.length > 10
-                            console.log("fired...launching #{items.length} dicks")
                             @createDOMPhotos( items )
-                            #    items_cache = []
 
-                        callOnMouseDown:    @onWallMouseDown,
-                        callOnMouseUp:      @onWallMouseUp
+                        callOnMouseDown:        @onWallMouseDown,
+                        callOnMouseUp:          @onWallMouseUp,
+                        callOnMouseDragged:     @onWallMouseDragged,
                         })
-
-        $jQ('.tile').bind('click', @onPhotoClick )
 
         # Init Wall
         @wall.initWall()
@@ -54,7 +50,6 @@ class App
 
     # Called when there are photo tiles to be created.
     createDOMPhotos: (items) =>
-        #console.log("Items len is -->", items.length )
         items.each( (e,i) =>
             
             if PHOTO_TILING == 'random'
@@ -69,24 +64,25 @@ class App
             img.inject(e.node) #.fade("hide").fade("in");
             
             $jQ(img).data('photo_info', currPhoto)
-            #$jQ(img).mouseup(@onPhotoClick)
         )
 
     onWallMouseDown: (e) =>
+        @dragged = false
+        return
 
     onWallMouseUp: (e) =>
+        return false
     
     onWallMouseDragged: (delta,e) =>
         if(Math.abs(delta[0]) > 5 or Math.abs(delta[1]) > 5)
             @dragged = true
-        
-        if @inZoom
-            e.stop()
+            return true
+
+        return false
 
     # Someone clicked on the photo.
-    onPhotoClick: (ev) =>
+    onPhotoClick: (ev,e) =>
         # Dont zoom if dragging
-        return if @dragged
 
         @cTarget = $jQ(ev.target)
         if not @inZoom

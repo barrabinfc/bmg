@@ -27,6 +27,7 @@ App = (function() {
     this.photoJSONList = photoList;
     this.imgCounter = Math.floor(Math.random() * (this.photoJSONList.length - 1));
     window.addEventListener('resize', $jQ.debounce(100, this.onResize), false);
+    $jQ('#wall').on('dblclick', '.tile', this.onPhotoClick);
     this.wall = new Wall("wall", {
       "draggable": true,
       "width": 150,
@@ -42,14 +43,13 @@ App = (function() {
           if (items.length === 0) {
             return;
           }
-          console.log("fired...launching " + items.length + " dicks");
           return _this.createDOMPhotos(items);
         };
       })(this),
       callOnMouseDown: this.onWallMouseDown,
-      callOnMouseUp: this.onWallMouseUp
+      callOnMouseUp: this.onWallMouseUp,
+      callOnMouseDragged: this.onWallMouseDragged
     });
-    $jQ('.tile').bind('click', this.onPhotoClick);
     return this.wall.initWall();
   };
 
@@ -70,23 +70,23 @@ App = (function() {
     })(this));
   };
 
-  App.prototype.onWallMouseDown = function(e) {};
+  App.prototype.onWallMouseDown = function(e) {
+    this.dragged = false;
+  };
 
-  App.prototype.onWallMouseUp = function(e) {};
+  App.prototype.onWallMouseUp = function(e) {
+    return false;
+  };
 
   App.prototype.onWallMouseDragged = function(delta, e) {
     if (Math.abs(delta[0]) > 5 || Math.abs(delta[1]) > 5) {
       this.dragged = true;
+      return true;
     }
-    if (this.inZoom) {
-      return e.stop();
-    }
+    return false;
   };
 
-  App.prototype.onPhotoClick = function(ev) {
-    if (this.dragged) {
-      return;
-    }
+  App.prototype.onPhotoClick = function(ev, e) {
     this.cTarget = $jQ(ev.target);
     if (!this.inZoom) {
       return this.zoomIn(this.cTarget);
@@ -189,7 +189,7 @@ window.WIDTH = window.innerWidth;
 
 window.HEIGHT = window.innerHeight;
 
-window.PHOTO_TILING = 'sequential';
+window.PHOTO_TILING = 'random';
 
 document.addEventListener('DOMContentLoaded', function() {
   window.$jQ = $;

@@ -45,19 +45,21 @@ module.exports.init = init
 
 
 
-window.API_URL = '/photos/json';
-window.API_SUBMIT_PHOTO = '/photos/upload';
-window.API_VERIFY_PHOTO = '/photos/verify';
+window.API_URL = '/photos/json'
+window.API_SUBMIT_PHOTO = '/photos/upload'
+window.API_VERIFY_PHOTO = '/photos/verify'
 
-window.WIDTH  = window.innerWidth;
-window.HEIGHT = window.innerHeight;
-window.PHOTO_TILING = 'sequential';
+window.WIDTH  = window.innerWidth
+window.HEIGHT = window.innerHeight
+window.PHOTO_TILING = 'random'
 
 document.addEventListener 'DOMContentLoaded', ->
-    window.$jQ = $;
-    $.noConflict();
+    window.$jQ = $
+    $.noConflict()
 
     init()
+
+
 
 
 ###

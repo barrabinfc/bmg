@@ -106,6 +106,9 @@ You **should** also serve this paths directly, without django:
 	/static/  			->  		PROJECT_ROOT/static
 	/media/photos/  	-> 			PROJECT_ROOT/media/photos/
 
+And run `./manage collectstatic` to fetch all files from `media/` to `static/`, otherwise,
+`static/` will be empty.
+
 ## Making Backup
 
 	$ cd $PROJECT_ROOT/app
