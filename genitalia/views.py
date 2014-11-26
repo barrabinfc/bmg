@@ -6,7 +6,7 @@ from django.core.cache import cache
 
 from django.views.decorators.csrf import csrf_exempt
 
-from django.conf.settings import THUMBS_SIZE, STATIC_ROOT
+from django.conf import settings 
 from genitalia.models import Genitalia
 from genitalia.forms import GenitaliaForm, SinglePhotoForm
 
@@ -15,11 +15,11 @@ import json, random
 
 
 def small_photo(photo):
-    choice = THUMBS_SIZE[0]
+    choice = settings.THUMBS_SIZE[0]
     return {'url': getattr(photo.image, 'url_%sx%s' % (choice[0],choice[1])), 'size': choice }
 
 def big_photo(photo):
-    choice = THUMBS_SIZE[-1]
+    choice = settings.THUMBS_SIZE[-1]
     return {'url': getattr(photo.image, 'url_%sx%s' % (choice[0],choice[1])), 'size': choice }
 
 

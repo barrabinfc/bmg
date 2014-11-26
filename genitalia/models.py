@@ -5,7 +5,7 @@ import uuid,os
 
 from thumbs import ImageWithThumbsField
 
-from django.conf.settings import THUMBS_SIZE
+from django.conf import settings 
 
 def photo_hash(instance,filename):
     path = 'photos/'
@@ -20,7 +20,7 @@ class Genitalia(models.Model):
     updated_at       = models.DateTimeField(auto_now=True)
     created_at       = models.DateTimeField(auto_now_add=True)
 
-    image            = ImageWithThumbsField(upload_to=photo_hash, sizes=THUMBS_SIZE )
+    image            = ImageWithThumbsField(upload_to=photo_hash, sizes=settings.THUMBS_SIZE )
     hash             = models.CharField(max_length=255, editable=False,unique=False)
     approved         = models.BooleanField(default=False)
 
