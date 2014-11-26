@@ -6,7 +6,7 @@ from django.core.cache import cache
 
 from django.views.decorators.csrf import csrf_exempt
 
-from settings import THUMBS_SIZE, STATIC_ROOT
+from django.conf.settings import THUMBS_SIZE, STATIC_ROOT
 from genitalia.models import Genitalia
 from genitalia.forms import GenitaliaForm, SinglePhotoForm
 

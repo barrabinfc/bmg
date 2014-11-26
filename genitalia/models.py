@@ -5,7 +5,7 @@ import uuid,os
 
 from thumbs import ImageWithThumbsField
 
-from settings import THUMBS_SIZE
+from django.conf.settings import THUMBS_SIZE
 
 def photo_hash(instance,filename):
     path = 'photos/'
