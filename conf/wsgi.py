@@ -13,9 +13,11 @@ middleware here, or combine a Django application with an application of another
 framework.
 
 """
-import os
+import os,sys
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "conf.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
+
+print sys.path
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
