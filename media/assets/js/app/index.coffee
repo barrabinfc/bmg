@@ -2,13 +2,18 @@
 App             = require('./app4.coffee')
 OverlayManager  = require('./overlay/manager.coffee')
 
+Loader          = require('./loader.coffee')
+
 
 init = ->
     # Show the /etc/motd
     overlay = new OverlayManager('#overlay')
-    #overlay.setPage('overlay')
     overlay.hide()
-    
+
+    # Mloader
+    mloader = new Loader('#loading')
+    mloader.loading()
+
     # Start the genitalia wall
     banco = new App( '#viewport', [window.innerWidth, window.innerHeight] )
 
@@ -19,6 +24,10 @@ init = ->
     # Get genitalia pictures, and start feeding it!
     $jQ.getJSON API_URL , (data) =>
         banco.setup data
+
+    setTimeout( ->
+        mloader.complete()
+    , 5000)
 
     ###############
     # User Events #
@@ -35,6 +44,7 @@ init = ->
                             return false
 
     # GLOBAL VARj
+    window.loader  = mloader
     window.overlay = overlay
     window.banco   = banco
     window.menu    = menu

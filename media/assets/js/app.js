@@ -143,16 +143,20 @@ module.exports = App;
 
 
 },{}],2:[function(require,module,exports){
-var App, OverlayManager, init, onFlashready;
+var App, Loader, OverlayManager, init, onFlashready;
 
 App = require('./app4.coffee');
 
 OverlayManager = require('./overlay/manager.coffee');
 
+Loader = require('./loader.coffee');
+
 init = function() {
-  var banco, menu, overlay;
+  var banco, menu, mloader, overlay;
   overlay = new OverlayManager('#overlay');
   overlay.hide();
+  mloader = new Loader('#loading');
+  mloader.loading();
   banco = new App('#viewport', [window.innerWidth, window.innerHeight]);
   menu = $jQ('#menu');
   menu.show();
@@ -161,6 +165,9 @@ init = function() {
       return banco.setup(data);
     };
   })(this));
+  setTimeout(function() {
+    return mloader.complete();
+  }, 5000);
   $jQ('#menu-mostraoteu').on('click', function(ev) {
     if (overlay.on) {
       overlay.hide();
@@ -171,6 +178,7 @@ init = function() {
     ev.stopPropagation();
     return false;
   });
+  window.loader = mloader;
   window.overlay = overlay;
   window.banco = banco;
   window.menu = menu;
@@ -212,7 +220,43 @@ onFlashready = function() {
 
 
 
-},{"./app4.coffee":1,"./overlay/manager.coffee":5}],3:[function(require,module,exports){
+},{"./app4.coffee":1,"./loader.coffee":3,"./overlay/manager.coffee":6}],3:[function(require,module,exports){
+var Loader,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+Loader = (function() {
+  function Loader(el) {
+    this.complete = __bind(this.complete, this);
+    this.el = $jQ(el);
+  }
+
+  Loader.prototype.loading = function() {
+    return $jQ(this.el).css({
+      opacity: 0.8
+    }).show().queue(function() {
+      return $jQ(this).transition({
+        opacity: 1
+      }).dequeue();
+    });
+  };
+
+  Loader.prototype.complete = function() {
+    return $jQ(this.el).transition({
+      opacity: 0
+    }).queue(function() {
+      return $jQ(this).hide().dequeue();
+    });
+  };
+
+  return Loader;
+
+})();
+
+module.exports = Loader;
+
+
+
+},{}],4:[function(require,module,exports){
 var PhotoUploadOvr,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -420,7 +464,7 @@ module.exports = PhotoUploadOvr;
 
 
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var PhotoboothOvr,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -507,7 +551,7 @@ module.exports = PhotoboothOvr;
 
 
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var OverlayManager, PhotoUpload, Photobooth,
   __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -590,4 +634,4 @@ module.exports = OverlayManager;
 
 
 
-},{"./PhotoUpload.coffee":3,"./Photobooth.coffee":4}]},{},[2]);
+},{"./PhotoUpload.coffee":4,"./Photobooth.coffee":5}]},{},[2]);

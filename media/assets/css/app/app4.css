@@ -1,5 +1,4 @@
 /**** Base styles ****/
-
 html, body, div, span, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp,
@@ -14,7 +13,7 @@ time, mark, audio, video {
   border: 0;
   font-size: 100%;
   font: inherit;
-  /*vertical-align: baseline;*/
+  vertical-align: baseline;
   font-family: 'Monaco', serif;
 }
 
@@ -54,6 +53,13 @@ body {
   color: #ededed;
   line-height: 1.6em;
   display: block;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    height: 100%;
 }
 
 h1 {
@@ -200,9 +206,28 @@ p {
 }
 
 .hidden {
-    display: none;
+    visibility: hidden;
 }
 
+
+#loading {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    background-color: rgba(255,255,255,0.8);
+    z-index: 1010;
+}
+
+#loading p {
+    color: #000;
+    margin: 15% auto;
+    text-transform: lowercase;
+    font-weight: bold;
+    font-size: 64px;
+    width: 40%;
+    text-align: center;
+}
 
 
 #overlay {
