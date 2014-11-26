@@ -4,12 +4,11 @@ import os
 try:
     import uwsgi
 
-    PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.abspath( os.path.join( os.getcwd() , '..' ) )
+    PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.abspath( os.getcwd() )
     DEBUG = (uwsgi.opt['DJANGO_DEBUG'] == 'no' ) or True
 except:
-    PROJECT_ROOT = os.path.abspath( os.path.join( os.getcwd(), '..' ) )
+    PROJECT_ROOT = os.path.abspath( os.getcwd() )
     DEBUG = True
-
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -178,7 +177,6 @@ ON_PRODUCTION = False
 
 THUMBS_SIZE = (
     (150,225),
-    (300,450),
     (600,900)
 )
 
