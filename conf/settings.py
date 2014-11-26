@@ -4,10 +4,10 @@ import os
 try:
     import uwsgi
 
-    PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.abspath( os.path.join( os.getcwd() , '' ) )
+    PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.abspath( os.getcwd() )
     DEBUG = (uwsgi.opt['DJANGO_DEBUG'] == 'no' ) or True
 except:
-    PROJECT_ROOT = os.path.abspath( os.path.join( os.getcwd(), '' ) )
+    PROJECT_ROOT = os.path.abspath( os.getcwd() )
     DEBUG = True
 
 TEMPLATE_DEBUG = DEBUG
@@ -19,7 +19,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-'default': {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',                 # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME':     'bancogenital',                      # Or path to database file if using sqlite3.
         'USER':     'bancogenital',                      # Not used with sqlite3.
@@ -52,14 +52,14 @@ SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
+USE_I18N = False
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
-USE_L10N = True
+USE_L10N = False
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -91,6 +91,7 @@ SECRET_KEY = 'ok-g5u5og5%b(vgr!uz$q8mz^#t7(g$eempo_eg=40tx&amp;rq47u'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+#     'django.template.loaders.eggs.Loader',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -134,7 +135,6 @@ INSTALLED_APPS = (
     'grappelli.dashboard',
     'grappelli',
     'django.contrib.admin',
-    'django_extensions',
 
     'dbbackup',
     'genitalia'
@@ -170,7 +170,7 @@ LOGGING = {
 }
 
 DBBACKUP_STORAGE='dbbackup.storage.filesystem_storage'
-DBBACKUP_FILESYSTEM_DIRECTORY=('%s/backups/' % PROJECT_ROOT)
+DBBACKUP_FILESYSTEM_DIRECTORY=('%s/backups' % PROJECT_ROOT)
 DBBACKUP_MEDIA_PATH='%s/photos' % (MEDIA_ROOT)
 
 ON_PRODUCTION = False

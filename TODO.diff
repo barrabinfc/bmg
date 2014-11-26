@@ -1,9 +1,11 @@
-+ Carregar o backup de fotos
 + Adicionar transição suave no clique da genitalia.
-+ Adicionar botao de UPLOAD
 + Corrigir Crop no Upload
+- Carregar o backup de fotos
+- Adicionar botao de UPLOAD
+- Adicionar upload progresso
 
-+ Adicionar build de coffee via Grunt
+- Adicionar build de coffee via Grunt
+- Fazer concat+minify
 
 - Mostrar mensagem de sucesso, genitalia enviada.
 - Mostrar mensagem de erro, genitalia enviada.
@@ -14,9 +16,6 @@
 
 - Corrigir zoom quando clica em genitalias vizinhas?
     - Forcar Reflow??
-
-
-Home2 / Masonry (Celular)
 
 - Adicionar zoom no clique.
 
