@@ -37,9 +37,8 @@ init = ->
                                 overlay.hide()
                             else
                                 overlay.setPage('mostraoteu')
-                                #overlay.setPage('photobooth')
                                 overlay.show()
-    
+
                             ev.stopPropagation()
                             return false
 

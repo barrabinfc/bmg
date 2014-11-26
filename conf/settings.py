@@ -177,7 +177,6 @@ ON_PRODUCTION = False
 
 THUMBS_SIZE = (
     (150,225),
-    (300,450),
     (600,900)
 )
 

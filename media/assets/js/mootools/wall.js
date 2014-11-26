@@ -300,7 +300,7 @@ var Wall = new Class({
             this.wall.setStyles({
                                     "cursor":"default",
                                     "position":"absolute"
-                                });            
+                                });
         }
 
         // Imposta posizione iniziale

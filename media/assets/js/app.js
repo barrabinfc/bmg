@@ -31,8 +31,8 @@ App = (function() {
     this.wall = new Wall("wall", {
       "draggable": true,
       "scrollable": true,
-      "width": 115,
-      "height": 170,
+      "width": 120,
+      "height": 180,
       "speed": 800,
       "inertia": true,
       "inertiaSpeed": 0.93,
@@ -105,12 +105,16 @@ App = (function() {
     this.prevTarget = this.cTarget;
     this.inZoom = true;
     pos = $jQ(photo_el).offset();
-    pos.left = pos.left - 40;
-    pos.top = pos.top - 40;
+    $jQ(photo_el).imagesLoaded(function() {});
     $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url);
     return $jQ(photo_el).zoomTo({
       targetSize: 0.75,
-      duration: 600
+      duration: 600,
+      animationendcallback: function() {
+        return $jQ(photo_el).css({
+          'transition': 'scale(1.02,1.02)'
+        });
+      }
     });
   };
 

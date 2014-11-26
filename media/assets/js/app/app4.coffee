@@ -27,8 +27,8 @@ class App
         @wall = new Wall("wall", {
                         "draggable": true,
                         "scrollable": true,
-                        "width":    115,
-                        "height":   170,
+                        "width":    120,
+                        "height":   180,
                         "speed":    800,
                         "inertia":  true,
                         "inertiaSpeed": 0.93,
@@ -61,7 +61,7 @@ class App
 
             #$jQ(e.node).text("")
             img = new Element("img[src='#{currPhoto.url_small}']")
-            img.inject(e.node) #.fade("hide").fade("in");
+            img.inject(e.node)
             
             $jQ(img).data('photo_info', currPhoto)
         )
@@ -98,24 +98,26 @@ class App
         @inZoom = true
         
         pos = $jQ(photo_el).offset()
-        pos.left = pos.left - 40
-        pos.top = pos.top - 40
-                
-        #clone = $jQ(photo_el).clone()
-        #clone.attr('src', $jQ(photo_el).data('photo_info').url)
-        #clone.appendTo( $jQ(photo_el).parent() )
-        
+
         # TODO:
         #  Load & Make a transition
+        $jQ(photo_el).imagesLoaded( ->
+            #$jQ(photo_el).css({'transition': 'scale(1.02,1.02)'})
+        )
         $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url )
 
         #$jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url)
         #$jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600})
-        $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600})
+        $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600, \
+                             animationendcallback: ->
+            $jQ(photo_el).css({'transition': 'scale(1.02,1.02)'})
+        })
+        #$jQ(photo_el).zoomTarget()
 
     zoomOut: =>
         @inZoom = false
-        $jQ('body').zoomTo({targetSize: 0.75, duration: 600})
+        #$jQ(photo_el).zoomTarget()
+        $jQ('body').zoomTo({targetSize: 0.75, duration: 600, })
 
     onResize: =>
         [WIDTH,HEIGHT] = [window.innerWidth, window.innerHeight]
