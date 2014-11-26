@@ -6685,7 +6685,7 @@ var Wall = new Class({
                 }.bind( this )
             });
             // Imposta Cursore
-            this.wall.setStyle("cursor", "move");
+            // this.wall.setStyle("cursor", "move");
             // Scarica Prediodical
             this.wallDrag.addEvent("mousedown", function(e){
                 e.stop();

@@ -14,10 +14,13 @@ from utils.utils import qs_to_json
 import json, random
 
 
-def randomize_url(photo):
+def small_photo(photo):
     choice = THUMBS_SIZE[0]
     return {'url': getattr(photo.image, 'url_%sx%s' % (choice[0],choice[1])), 'size': choice }
 
+def big_photo(photo):
+    choice = THUMBS_SIZE[-1]
+    return {'url': getattr(photo.image, 'url_%sx%s' % (choice[0],choice[1])), 'size': choice }
 
 
 # Create your views here.
@@ -66,10 +69,11 @@ def photos_json(request):
     if not data:
         for photo in Genitalia.objects.filter(approved=True).reverse():
         #for photo in Genitalia.objects.filter(approved=True):
-            small = randomize_url(photo)
+            small = small_photo(photo)
+            big   = big_photo(photo)
             data.append({
                     'id':           photo.id,
-                    'url':          photo.image.url,
+                    'url':           big['url'],
                     'url_small':    small['url'],
                     'type':         'size-%dx%d' % small['size']
                 })

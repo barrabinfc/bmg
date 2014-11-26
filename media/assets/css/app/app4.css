@@ -457,16 +457,13 @@ p {
     height: 170px;
 
     -webkit-backface-visibility: hidden;
+    background-size: cover;
 }
 
 .tile img {
     position: absolute;
     -webkit-backface-visibility: hidden;
-
-    /*
-    width: 150px;
-    height: 180px;
-    */
+    background-size: cover;
 
     width: 110px;
     height: 165px;

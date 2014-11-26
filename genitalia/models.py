@@ -29,6 +29,7 @@ class Genitalia(models.Model):
 
     def as_thumb(self):
         return u"<img src=\"%s\"/>" % getattr(self.image,'url_150x225')
+
     as_thumb.short_description = 'Thumbnail'
     as_thumb.allow_tags  =  True
     as_thumb.admin_order_field = 'admin_thumbnail'
@@ -36,6 +37,7 @@ class Genitalia(models.Model):
 
     def as_link(self):
         return u'<a href="%s">%s</a>' % (self.image.url , self.image)
+
     as_link.short_description = "PHOTO URL"
     as_link.allow_tags = True
 
