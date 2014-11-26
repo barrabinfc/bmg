@@ -25,13 +25,14 @@ class App
         $jQ('#wall').on('dblclick', '.tile', @onPhotoClick )
         
         @wall = new Wall("wall", {
-                        "draggable":true,
+                        "draggable": true,
+                        "scrollable": true,
                         "width":    115,
                         "height":   170,
                         "speed":    800,
                         "inertia":  true,
                         "inertiaSpeed": 0.93,
-                        "printCoordinates":false,
+                        "printCoordinates": true,
                         "rangex":   [-100,100],
                         "rangey":   [-100,100],
 
@@ -41,8 +42,7 @@ class App
 
                         callOnMouseDown:        @onWallMouseDown,
                         callOnMouseUp:          @onWallMouseUp,
-                        callOnMouseDragged:     @onWallMouseDragged,
-                        })
+                        callOnMouseDragged:     @onWallMouseDragged })
 
         # Init Wall
         @wall.initWall()

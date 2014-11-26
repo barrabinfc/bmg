@@ -25,9 +25,9 @@ init = ->
     $jQ.getJSON API_URL , (data) =>
         banco.setup data
 
-    setTimeout( ->
-        mloader.complete()
-    , 5000)
+        setTimeout( ->
+            mloader.complete()
+        , 500)
 
     ###############
     # User Events #

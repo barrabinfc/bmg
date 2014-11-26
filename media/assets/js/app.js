@@ -30,12 +30,13 @@ App = (function() {
     $jQ('#wall').on('dblclick', '.tile', this.onPhotoClick);
     this.wall = new Wall("wall", {
       "draggable": true,
+      "scrollable": true,
       "width": 115,
       "height": 170,
       "speed": 800,
       "inertia": true,
       "inertiaSpeed": 0.93,
-      "printCoordinates": false,
+      "printCoordinates": true,
       "rangex": [-100, 100],
       "rangey": [-100, 100],
       callOnUpdate: (function(_this) {
@@ -162,12 +163,12 @@ init = function() {
   menu.show();
   $jQ.getJSON(API_URL, (function(_this) {
     return function(data) {
-      return banco.setup(data);
+      banco.setup(data);
+      return setTimeout(function() {
+        return mloader.complete();
+      }, 500);
     };
   })(this));
-  setTimeout(function() {
-    return mloader.complete();
-  }, 5000);
   $jQ('#menu-mostraoteu').on('click', function(ev) {
     if (overlay.on) {
       overlay.hide();

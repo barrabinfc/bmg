@@ -73,6 +73,7 @@ var Wall = new Class({
         transition       : Fx.Transitions.Quad.easeOut,
         autoposition     : false,             // Autoposizionamento wall
         draggable        : true,              // Abilita drag
+        scrollable       : true,
         inertia          : false,             // Abilita inertia
         inertiaSpeed     : 0.9,
         invert           : false,             // Inverte direzione drag
@@ -153,6 +154,30 @@ var Wall = new Class({
             // Reset Movement
             this.moved = 0;
         }.bind( this ))
+
+        if(this.options.scrollable == true){
+            document.id(this.__target).addEvent(['scroll','mousewheel'], function(el, e){
+                console.log("scrolling")
+                this.xspeed = e.page.x - this.xPos; // x mouse speed
+                this.yspeed = e.page.y - this.yPos; // y mouse speed
+                this.xPos   = e.page.x;
+                this.yPos   = e.page.y;
+
+                console.log("x")
+                
+                this.options.callOnMouseDragged( [this.startX - this.xPos, 
+                                                    this.startY - this.yPos] , e)
+                //
+                e.stopPropagation();
+                // Interrompe Slideshow
+                this.clearSlideShow();
+                // Tronca transizione se riparte il drag
+                if( this.wallFX ) this.wallFX.cancel();
+                this.options.callOnUpdate(this.updateWall());
+                // Considera movimento
+                this.moved++;
+            });
+        }
         
         // Definisce oggetto draggabile
         if( this.options.draggable == true ){
@@ -167,7 +192,6 @@ var Wall = new Class({
                     clearTimeout(this.periodicalID);
                     // Reset Movement
                     this.moved = 0;
-                    
                     
                     this.startX = e.page.x;
                     this.startY = e.page.y;
@@ -202,8 +226,12 @@ var Wall = new Class({
                     e.preventDefault();
                     // Verifica inertia
                     if( this.options.inertia == true ){
+
+                        var i = 0;
+
                         // START Inertia
                         this.periodicalID = (function(){ 
+
                             if( this.options.invert == true ){
                                 var finX = this.wall.getStyle("left").toInt() - this.xspeed;
                                 var finY = this.wall.getStyle("top").toInt()  - this.yspeed;
@@ -221,7 +249,10 @@ var Wall = new Class({
                             this.yspeed *= this.options.inertiaSpeed;
                             
                             // Aggiorna Wall
-                            this.options.callOnUpdate(this.updateWall());
+                            if((++i%8) == 0)
+                                this.options.callOnUpdate(this.updateWall());
+                                i = 0
+
                             // Interrompe spostamento se prossimo a 0.6
                             if (Math.abs(this.xspeed) < 2 && Math.abs(this.yspeed) < 2) {
                                 // Attiva elemento del coda, se presente
@@ -236,6 +267,7 @@ var Wall = new Class({
                                 // Clear Periodical
                                 clearTimeout(this.periodicalID);
                             }
+
                         }).periodical(20, this);
                         // END Inertia
                     }

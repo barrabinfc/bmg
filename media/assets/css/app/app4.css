@@ -431,7 +431,7 @@ p {
 
 
 #viewport {
-   width:100%;
+   width: 100%;
    height: 100%;
    position: absolute;
    overflow: hidden;
@@ -455,10 +455,14 @@ p {
 .title {
     width: 115px;
     height: 170px;
+
+    -webkit-backface-visibility: hidden;
 }
 
 .tile img {
     position: absolute;
+    -webkit-backface-visibility: hidden;
+
     /*
     width: 150px;
     height: 180px;
