@@ -11,3 +11,5 @@ dropbox==1.5.1
 simples3==1.0
 wsgiref==0.1.2
 yolk==0.4.3
+dj-database-url==0.3.0
+dj-static==0.0.6

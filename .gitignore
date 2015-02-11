@@ -1,6 +1,8 @@
 .DS_Store
 *.pyc
+reload
 media/photos
+node_modules
 mockdata
 static/
 venv/
