@@ -1,0 +1,6 @@
+# Provide the path to your manage.py file
+MANAGE_FILE_PATH: ./manage.py
+
+# Provide the path to your requirements file, if not provided
+#then heroku will try to find it in the root directory.
+REQUIREMENTS_PATH: ./requirements.txt
