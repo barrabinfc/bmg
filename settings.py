@@ -182,3 +182,8 @@ THUMBS_SIZE = (
 
 GRAPPELLI_ADMIN_TITLE='BMG - Banco MUNDIAL da genitalia'
 GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
+
+try:
+    from local_settings import *
+except:
+    pass
