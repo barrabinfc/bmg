@@ -29,6 +29,15 @@ DATABASES = {
     }
 }
 
+# Parse database configuration from $DATABASE_URL
+try:
+    import dj_database_url
+    DATABASES['default'] =  dj_database_url.config()
+    print 'DATABASE read from env DATABASE_URL: %s' % DATABASES['default']
+except:
+    print 'DATABASE read settings.py'
+
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
@@ -183,7 +192,7 @@ THUMBS_SIZE = (
 GRAPPELLI_ADMIN_TITLE='BMG - Banco MUNDIAL da genitalia'
 GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 
-try:
-    from local_settings import *
-except:
-    print 'Fuck it...'
+#try:
+from local_settings import *
+#except:
+#    print 'Fuck it...'
