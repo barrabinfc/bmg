@@ -186,4 +186,4 @@ GRAPPELLI_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 try:
     from local_settings import *
 except:
-    pass
+    print 'Fuck it...'
