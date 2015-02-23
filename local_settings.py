@@ -19,9 +19,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-# 
-
-# Parse database configuration from $DATABASE_URL
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -37,7 +34,7 @@ STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    '%s/media/assets' % (BASE_DIR),
 )
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
