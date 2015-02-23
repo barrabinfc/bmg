@@ -6,9 +6,6 @@ try:
 
     PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.abspath( os.path.join( os.getcwd() , '..' ) )
     DEBUG = (uwsgi.opt['DJANGO_DEBUG'] == 'no' ) or True
-
-    import os
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 except:
     PROJECT_ROOT = os.path.abspath( os.path.join( os.getcwd(), '..' ) )
     DEBUG = True
@@ -37,6 +34,7 @@ ALLOWED_HOSTS = ['*']
 # Static asset configuration
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
