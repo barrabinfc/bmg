@@ -4,7 +4,7 @@ server {
   server_name ${SERVER_NAME};
 
   location ~ ^/(media|photos)/  {
-    root /home/dokku/app/media/photos;
+    root /app/media/photos;
     expires max;
     break;
   }
