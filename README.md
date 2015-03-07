@@ -60,6 +60,16 @@ And for development purposes, you may use the `watch` function
 		$ cd ../app
 		$ ./manage dbrestore
 
+    In some cases, like with docker, you may have to `dbrestore`
+    manually:
+
+        $ docker run ./manage.py diffsettings
+
+        ... DATABASE_URL ...
+
+        $ docker run apt-get install mariadb-client-core-5.5
+        $ docker run mysql -uwww -P 3306 --protocol=tcp --host=172.17.0.57 -poy58ayVv7PY90LDF banco-www < /tmp/bancogenital-2014-11-26-053737.mysql
+
 4. Collect staticfiles to their proper location (PROJECT_ROOT/static)
 
 		$ ./manage collectstatic
