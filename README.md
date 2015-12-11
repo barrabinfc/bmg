@@ -134,12 +134,3 @@ Photos
 
 Source code already has backup via ```git```.
 
-## Default credentials
-
-**django admin**
-
-	admin / vovozinho
-
-**database**
-
-	bancogenital / vovozinho
