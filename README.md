@@ -2,7 +2,9 @@
 
 Install basic deps
 
-    $ sudo apt-get install pip python python-dev virtualenv git mysql mysql-server mysql-client mysql-common
+If you are using MariaDB, ignore the mysql packages below and install only ```libmysqlclient-dev```
+
+    $ sudo apt-get install python-pip python python-dev virtualenv git mysql mysql-server mysql-client mysql-common
 
 Create the project structure
 
@@ -39,6 +41,8 @@ First you need to install the tools to minify/concat the front-end code.
 Now you can run just grunt to compile js and css
 
     $ grunt 
+    
+(grunt need to be installed globally. if it isn't, run ```npm install -g grunt``` before)
 
 And for development purposes, you may use the `watch` function
 
