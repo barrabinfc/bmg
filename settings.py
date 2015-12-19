@@ -30,12 +30,12 @@ DATABASES = {
 }
 
 # Parse database configuration from $DATABASE_URL
-try:
-    import dj_database_url
-    DATABASES['default'] =  dj_database_url.config()
-    print 'DATABASE read from env DATABASE_URL: %s' % DATABASES['default']
-except:
-    print 'DATABASE read settings.py'
+# try:
+#     import dj_database_url
+#     DATABASES['default'] =  dj_database_url.config()
+#     print 'DATABASE read from env DATABASE_URL: %s' % DATABASES['default']
+# except:
+#     print 'DATABASE read settings.py'
 
 
 CACHES = {
