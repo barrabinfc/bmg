@@ -4819,7 +4819,7 @@ p {
 
 #mostraoteu .top {
     height: 300px; /* fallback for browsers without support for calc() */
-    height: calc(100% - 180px);
+    height: calc(90% - 170px);
     max-height: 500px;
 }
 
