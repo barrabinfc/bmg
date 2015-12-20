@@ -7099,13 +7099,14 @@ var Wall = new Class({
     
     /**
      * @PRIVATE
-     * Esegue Detect di device iPad, iPod, iPhone
+     * Esegue Detect di device mobile
      * @return boolean
      */
     detectMobile: function(){
-        var ua = navigator.userAgent;
-        var isiPad = /iPad/i.test(ua) || /iPhone OS 3_1_2/i.test(ua) || /iPhone OS 3_2_2/i.test(ua) || /iPhone/i.test(ua) || /iPod/i.test(ua)
-        return isiPad;
+        //var ua = navigator.userAgent;
+        //var isiPad = /iPad/i.test(ua) || /iPhone OS 3_1_2/i.test(ua) || /iPhone OS 3_2_2/i.test(ua) || /iPhone/i.test(ua) || /iPod/i.test(ua)
+        //return isiPad;
+        return 'ontouchstart' in window || navigator.msMaxTouchPoints;
     },
     
     /**
