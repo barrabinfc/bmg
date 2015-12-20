@@ -4817,7 +4817,11 @@ p {
 }
 
 
-
+#mostraoteu .top {
+    height: 300px; /* fallback for browsers without support for calc() */
+    height: calc(100% - 180px);
+    max-height: 500px;
+}
 
 #mostraoteu .bottom {
     margin: 30px auto;
@@ -4845,7 +4849,7 @@ p {
 #photo-submit {
     position: relative;
     width:  320px;
-    height: 470px;
+    height: 100%;
     cursor: pointer;
     border: 2px dashed #fff;
     text-align: center;
@@ -4871,7 +4875,8 @@ p {
  */
 #photo-submit .message #bt-file {
     position: relative;
-    top: 45%;
+    top: 45%; /* fallback for browsers without support for calc() */
+    top: calc(50% - 40px);
     left: -5%;
 }
 
