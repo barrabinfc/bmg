@@ -81,7 +81,7 @@ MEDIA_URL = 'https://genitalia.me/media/'
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 #STATIC_ROOT = "%s/static/" % BASE_DIR
-#STATIC_URL = 'http://genitalia.me/static/'
+#STATIC_URL = 'https://genitalia.me/static/'
 
 # List of finder classes that know how to find static files in
 # various locations.
