@@ -1,24 +1,25 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var App,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 App = (function() {
   function App(viewport, size) {
-    this.onResize = __bind(this.onResize, this);
-    this.zoomOut = __bind(this.zoomOut, this);
-    this.zoomIn = __bind(this.zoomIn, this);
-    this.onPhotoClick = __bind(this.onPhotoClick, this);
-    this.onWallMouseDragged = __bind(this.onWallMouseDragged, this);
-    this.onWallMouseUp = __bind(this.onWallMouseUp, this);
-    this.onWallMouseDown = __bind(this.onWallMouseDown, this);
-    this.createDOMPhotos = __bind(this.createDOMPhotos, this);
-    this.setup = __bind(this.setup, this);
-    var HEIGHT, WIDTH, _ref;
+    this.onResize = bind(this.onResize, this);
+    this.zoomOut = bind(this.zoomOut, this);
+    this.zoomIn = bind(this.zoomIn, this);
+    this.onPhotoClick = bind(this.onPhotoClick, this);
+    this.onWallMouseDragged = bind(this.onWallMouseDragged, this);
+    this.onWallMouseUp = bind(this.onWallMouseUp, this);
+    this.onWallMouseDown = bind(this.onWallMouseDown, this);
+    this.createDOMPhotos = bind(this.createDOMPhotos, this);
+    this.setup = bind(this.setup, this);
+    var HEIGHT, WIDTH, ref;
     this.size = size;
-    _ref = [this.size[0], this.size[1]], WIDTH = _ref[0], HEIGHT = _ref[1];
+    ref = [this.size[0], this.size[1]], WIDTH = ref[0], HEIGHT = ref[1];
     this.photoJSONList = [];
     this.photosDOMList = [];
     this.inZoom = false;
+    console.log("Hello world");
     this.container = $jQ(viewport);
     this.onResize();
   }
@@ -138,8 +139,8 @@ App = (function() {
   };
 
   App.prototype.onResize = function() {
-    var HEIGHT, WIDTH, _ref;
-    _ref = [window.innerWidth, window.innerHeight], WIDTH = _ref[0], HEIGHT = _ref[1];
+    var HEIGHT, WIDTH, ref;
+    ref = [window.innerWidth, window.innerHeight], WIDTH = ref[0], HEIGHT = ref[1];
     $jQ(this.container).css({
       width: WIDTH,
       height: HEIGHT
@@ -155,7 +156,6 @@ App = (function() {
 })();
 
 module.exports = App;
-
 
 
 },{}],2:[function(require,module,exports){
@@ -242,15 +242,14 @@ onFlashready = function() {
 };
 
 
-
 },{"./app4.coffee":1,"./loader.coffee":3,"./overlay/manager.coffee":6}],3:[function(require,module,exports){
 var Loader,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 Loader = (function() {
   function Loader(el) {
-    this.complete = __bind(this.complete, this);
-    this.loading = __bind(this.loading, this);
+    this.complete = bind(this.complete, this);
+    this.loading = bind(this.loading, this);
     this.el = $jQ(el);
   }
 
@@ -274,7 +273,6 @@ Loader = (function() {
     return this.load_id = setInterval((function(_this) {
       return function() {
         i = (++i) % cycle.length;
-        console.log(cycle[i]);
         return $jQ(_this.el).children('p').text(cycle[i]);
       };
     })(this), 1000 / 4);
@@ -298,27 +296,23 @@ Loader = (function() {
 module.exports = Loader;
 
 
-
 },{}],4:[function(require,module,exports){
 var PhotoUploadOvr,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 PhotoUploadOvr = (function() {
   function PhotoUploadOvr(parent, el) {
     this.parent = parent;
     this.el = el;
-    this.photoSubmitError = __bind(this.photoSubmitError, this);
-    this.photoSubmitSuccess = __bind(this.photoSubmitSuccess, this);
-    this.photoSubmitProgress = __bind(this.photoSubmitProgress, this);
-    this.stopProgressBar = __bind(this.stopProgressBar, this);
-    this.startProgressBar = __bind(this.startProgressBar, this);
-    this.submitPicture = __bind(this.submitPicture, this);
-    this.thumbnail = __bind(this.thumbnail, this);
-    this.createThumb = __bind(this.createThumb, this);
-    this.on_hide_complete = __bind(this.on_hide_complete, this);
-    this.on_show_complete = __bind(this.on_show_complete, this);
-    this.stop = __bind(this.stop, this);
-    this.start = __bind(this.start, this);
+    this.photoSubmitError = bind(this.photoSubmitError, this);
+    this.photoSubmitSuccess = bind(this.photoSubmitSuccess, this);
+    this.photoSubmitComplete = bind(this.photoSubmitComplete, this);
+    this.thumbnail = bind(this.thumbnail, this);
+    this.drop = bind(this.drop, this);
+    this.on_hide_complete = bind(this.on_hide_complete, this);
+    this.on_show_complete = bind(this.on_show_complete, this);
+    this.stop = bind(this.stop, this);
+    this.start = bind(this.start, this);
     this.delta = 1000.0 / 4;
     this.opts = ['8=>         ', '8==>        ', '8===>       ', '8=====>     ', '8=======>  o', '8======>    ', '8===>       ', '8==>        ', '8>          '];
     this.idx = 0;
@@ -327,53 +321,37 @@ PhotoUploadOvr = (function() {
 
   PhotoUploadOvr.prototype.start = function() {
     $jQ('#photo-submit', this.el).dropzone({
-      url: window.API_VERIFY_PHOTO,
+      url: window.API_SUBMIT_PHOTO,
       paramName: 'photo',
       createImageThumbnails: true,
       thumbnailWidth: 300,
       thumbnailHeight: 450,
       previewTemplate: "<div class\"preview file-preview\"></div>",
       parallelUploads: 1,
-      acceptedFiles: 'image/*'
+      maxFilesize: 2,
+      acceptedFiles: 'image/*',
+      autoProcessQueue: false
     });
     this.dropzone = $jQ('#photo-submit').data('dropzone');
     this.dropzone.on("dragenter", this.dragEnter);
     this.dropzone.on("dragleave", this.dragLeave);
-    this.dropzone.on("drop", this.dragLeave);
+    this.dropzone.on("drop", this.drop);
     this.dropzone.on('thumbnail', this.thumbnail);
+    this.dropzone.on('success', this.photoSubmitSuccess);
+    this.dropzone.on('error', this.photoSubmitError);
+    this.dropzone.on('complete', this.photoSubmitComplete);
     return this.setupEvents();
   };
 
   PhotoUploadOvr.prototype.stop = function() {};
 
-  PhotoUploadOvr.prototype.on_show_complete = function() {};
+  PhotoUploadOvr.prototype.on_show_complete = function() {
+    console.log('Hello upload', this.dropzone);
+  };
 
   PhotoUploadOvr.prototype.on_hide_complete = function() {};
 
-  PhotoUploadOvr.prototype.setupEvents = function() {
-    $jQ('#photo-submit #bt-file').bind('click', (function(_this) {
-      return function(ev) {
-        return _this.showDialog();
-      };
-    })(this));
-    $jQ('#bt-cancel-photo', this.el).on('click', (function(_this) {
-      return function(ev) {
-        overlay.hide();
-        return ev.stopPropagation();
-      };
-    })(this));
-    return $jQ('#bt-submit-photo').on('click', (function(_this) {
-      return function(ev) {
-        if (_this.upprogress) {
-          return;
-        }
-        if ($jQ('#photo-submit').data('dropzone').files.length === 0) {
-          _this.showDialog();
-        }
-        return _this.submitPicture();
-      };
-    })(this));
-  };
+  PhotoUploadOvr.prototype.setupEvents = function() {};
 
   PhotoUploadOvr.prototype.showDialog = function(ev) {
     return $jQ('#photo-submit').click();
@@ -387,32 +365,16 @@ PhotoUploadOvr = (function() {
     return $jQ('#photo-submit').removeClass('drag');
   };
 
-  PhotoUploadOvr.prototype.createThumb = function(file) {
-    var fileReader;
-    fileReader = new FileReader;
-    fileReader.onload = (function(_this) {
-      return function() {
-        var img;
-        img = new Image;
-        img.onload = function() {
-          var canvas, ctx, h, thumb, w;
-          canvas = document.createElement("canvas");
-          ctx = canvas.getContext("2d");
-          w = img.width;
-          h = img.height;
-          ctx.drawImage(img, 0, 0, w, h, 0, 0, w, h);
-          thumb = canvas.toDataURL("image/png");
-          return _this.dropzone.emit('thumbnail', file, thumb);
-        };
-        return img.src = fileReader.result;
-      };
-    })(this);
-    return fileReader.readAsDataURL(file);
+  PhotoUploadOvr.prototype.drop = function() {
+    $jQ('.info').html('');
+    $jQ('#photo-submit').css({
+      'border-color': '#ffffff'
+    });
+    return this.dragLeave();
   };
 
   PhotoUploadOvr.prototype.thumbnail = function(file, dataUrl) {
     var img;
-    $jQ('.message', '#photo-submit').hide();
     img = new Image;
     img.src = dataUrl;
     $jQ(img).bind('click', this.showDialog);
@@ -425,75 +387,28 @@ PhotoUploadOvr = (function() {
     }
   };
 
-  PhotoUploadOvr.prototype.submitPicture = function(ev) {
-    var file, files, photo, that, xhr;
-    files = $jQ('#photo-submit').data('dropzone').files;
-    file = files[files.length - 1];
-    photo = new FormData();
-    photo.append('photo', file);
-    xhr = new XMLHttpRequest();
-    xhr.open('POST', window.API_SUBMIT_PHOTO, true);
-    that = this;
-    xhr.onload = (function(_this) {
-      return function(e) {
-        var response;
-        response = xhr.responseText;
-        response = JSON.parse(response);
-        _this.photoSubmitProgress('end');
-        if (response.status === "OK") {
-          return _this.photoSubmitSuccess(response);
-        } else {
-          return _this.photoSubmitError(response);
-        }
-      };
-    })(this);
-    xhr.setRequestHeader("Accept", "application/json");
-    xhr.setRequestHeader("Cache-Control", "no-cache");
-    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-    xhr.setRequestHeader("X-File-Name", file.name);
-    this.photoSubmitProgress('start');
-    xhr.send(photo);
-    return false;
-  };
+  PhotoUploadOvr.prototype.photoSubmitComplete = function(file, data) {};
 
-  PhotoUploadOvr.prototype.startProgressBar = function() {
-    $jQ('#bt-submit-photo').addClass('upprogress');
-    window.upinterval = setInterval((function(_this) {
-      return function() {
-        var txt;
-        _this.idx = (_this.idx + 1) % _this.opts.length;
-        txt = _this.opts[_this.idx];
-        return $jQ('#bt-submit-photo').text(txt);
-      };
-    })(this), this.delta);
-    return console.log(window.upinterval);
-  };
-
-  PhotoUploadOvr.prototype.stopProgressBar = function() {
-    clearInterval(window.upinterval);
-    $jQ('#bt-submit-photo').text('ok \\o/');
+  PhotoUploadOvr.prototype.photoSubmitSuccess = function(file, data) {
+    $jQ('.info').removeClass('label-warning').addClass('label-success').html(" Thanks ! Obrigado ! Merci !  Arigatō ! أوبريغادو 👏 👏 ");
     return setTimeout(function() {
-      return $jQ('#bt-submit-photo').removeClass('upprogress').text('upload');
-    }, 1500);
+      if (overlay.on) {
+        return overlay.hide(0);
+      }
+    }, 5000);
   };
 
-  PhotoUploadOvr.prototype.photoSubmitProgress = function(eof) {
-    if (eof === 'start') {
-      this.upprogress = true;
-      return this.startProgressBar();
-    } else if (eof === 'end') {
-      this.upprogress = false;
-      return this.stopProgressBar();
+  PhotoUploadOvr.prototype.photoSubmitError = function(file, data) {
+    var error, error1, json_response;
+    try {
+      json_response = JSON.parse(data);
+    } catch (error1) {
+      error = error1;
+      json_response = {
+        'error': data
+      };
     }
-  };
-
-  PhotoUploadOvr.prototype.photoSubmitSuccess = function(data) {
-    return setTimeout(function() {
-      return overlay.hide(0);
-    }, 1000);
-  };
-
-  PhotoUploadOvr.prototype.photoSubmitError = function(data) {
+    $jQ('.info').removeClass('label-success').addClass('label-warning').html('💩 ' + json_response.error);
     return $jQ('#photo-submit').css({
       'border-color': '#ff0000'
     });
@@ -506,23 +421,22 @@ PhotoUploadOvr = (function() {
 module.exports = PhotoUploadOvr;
 
 
-
 },{}],5:[function(require,module,exports){
 var PhotoboothOvr,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 PhotoboothOvr = (function() {
   function PhotoboothOvr(parent, el) {
     this.parent = parent;
     this.el = el;
-    this.stop = __bind(this.stop, this);
-    this.previewCanceled = __bind(this.previewCanceled, this);
-    this.previewComplete = __bind(this.previewComplete, this);
-    this.uploadedError = __bind(this.uploadedError, this);
-    this.uploadedSuccessful = __bind(this.uploadedSuccessful, this);
-    this.initComplete = __bind(this.initComplete, this);
-    this.embedComplete = __bind(this.embedComplete, this);
-    this.start = __bind(this.start, this);
+    this.stop = bind(this.stop, this);
+    this.previewCanceled = bind(this.previewCanceled, this);
+    this.previewComplete = bind(this.previewComplete, this);
+    this.uploadedError = bind(this.uploadedError, this);
+    this.uploadedSuccessful = bind(this.uploadedSuccessful, this);
+    this.initComplete = bind(this.initComplete, this);
+    this.embedComplete = bind(this.embedComplete, this);
+    this.start = bind(this.start, this);
   }
 
   PhotoboothOvr.prototype.start = function() {
@@ -593,10 +507,9 @@ PhotoboothOvr = (function() {
 module.exports = PhotoboothOvr;
 
 
-
 },{}],6:[function(require,module,exports){
 var OverlayManager, PhotoUpload, Photobooth,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 PhotoUpload = require('./PhotoUpload.coffee');
 
@@ -604,9 +517,9 @@ Photobooth = require('./Photobooth.coffee');
 
 OverlayManager = (function() {
   function OverlayManager(el) {
-    this.hide = __bind(this.hide, this);
-    this.show = __bind(this.show, this);
-    this.setPage = __bind(this.setPage, this);
+    this.hide = bind(this.hide, this);
+    this.show = bind(this.show, this);
+    this.setPage = bind(this.setPage, this);
     this.el = $jQ(el);
     this.pages = ['photobooth', 'mostraoteu'];
     this.controllers = [new Photobooth(this, this.el), new PhotoUpload(this, this.el)];
@@ -616,6 +529,7 @@ OverlayManager = (function() {
     });
     this.on = false;
     this.init = false;
+    $jQ('.overlay-close').on('click', this.hide);
   }
 
   OverlayManager.prototype.getController = function(page_name) {
@@ -640,6 +554,7 @@ OverlayManager = (function() {
   };
 
   OverlayManager.prototype.show = function() {
+    $jQ('#menu-mostraoteu').addClass('closebtn');
     this.el.show().transition({
       opacity: 1
     });
@@ -652,9 +567,9 @@ OverlayManager = (function() {
       this.el.transition({
         opacity: 0
       }).queue(function() {
-        var _ref;
+        var ref;
         $jQ(this).hide().dequeue();
-        return (_ref = this.cobj) != null ? typeof _ref.on_hide_complete === "function" ? _ref.on_hide_complete() : void 0 : void 0;
+        return (ref = this.cobj) != null ? typeof ref.on_hide_complete === "function" ? ref.on_hide_complete() : void 0 : void 0;
       });
     } else {
       this.el.transition({
@@ -665,8 +580,9 @@ OverlayManager = (function() {
     }
     this.on = false;
     if (this.cobj) {
-      return this.cobj.stop();
+      this.cobj.stop();
     }
+    return $jQ('#menu-mostraoteu').removeClass('closebtn');
   };
 
   return OverlayManager;
@@ -674,7 +590,6 @@ OverlayManager = (function() {
 })();
 
 module.exports = OverlayManager;
-
 
 
 },{"./PhotoUpload.coffee":4,"./Photobooth.coffee":5}]},{},[2]);

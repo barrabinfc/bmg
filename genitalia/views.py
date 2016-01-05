@@ -6,11 +6,11 @@ from django.core.cache import cache
 
 from django.views.decorators.csrf import csrf_exempt
 
-from django.conf import settings 
+from django.conf import settings
 from genitalia.models import Genitalia
 from genitalia.forms import GenitaliaForm, SinglePhotoForm
 
-from utils.utils import qs_to_json
+from utils.utils import qs_to_json , json_response
 import json, random
 
 
@@ -22,14 +22,11 @@ def big_photo(photo):
     choice = settings.THUMBS_SIZE[-1]
     return {'url': getattr(photo.image, 'url_%sx%s' % (choice[0],choice[1])), 'size': choice }
 
-
 # Create your views here.
 def home(request):
     """ Index View """
     return render_to_response('genitalia/home.html', context_instance=RequestContext(request) )
 
-def home2(request):
-    return render_to_response( 'genitalia/home2.html', context_instance=RequestContext(request))
 
 def cache_clear(request):
     cache.clear()
@@ -39,16 +36,14 @@ def cache_clear(request):
 def photos_verify(request):
     """ Just verify if picture is valid """
     if request.method == 'GET':
-        return HttpResponse( json.dumps({'status': 'FAIL'}), mimetype='application/json' )
+        return json_response({'status': 'FAIL'}, 403)
     elif request.method == 'POST':
         photo = SinglePhotoForm(request.POST, request.FILES)
         if photo.is_valid():
-            return HttpResponse( json.dumps({'status': 'OK'}), mimetype='application/json')
+            return json_response({'status': 'OK'})
         else:
-            for field in photo:
-                print field.name, field.errors
+            return json_response({'status': 'FAIL'}, 403)
 
-            return HttpResponse( json.dumps({'status': 'FAIL'}), mimetype='application/json' )
 
 def photos_upload(request):
     """ Upload photos """
@@ -56,10 +51,17 @@ def photos_upload(request):
         photo = SinglePhotoForm(request.POST, request.FILES)
         if photo.is_valid():
             genitalia = Genitalia(name='',image=request.FILES['photo'])
-            genitalia.save()
-            return HttpResponse( json.dumps({'status': 'OK'}), mimetype='application/json' )
+            already_uploaded = Genitalia.objects.filter(hash=genitalia.get_hash())
+            if not already_uploaded:
+                genitalia.save()
+                return json_response({'status': 'OK'})
+            else:
+                return json_response({'status': 'FAIL','error': 'Picture already uploaded'}, 403)
         else:
-            return HttpResponse( json.dumps({'status': 'FAIL'}), mimetype='application/json' )
+            return json_response({'status': 'FAIL','error': 'Not a valid picture'}, 403)
+
+    return json_response({'status': 'FAIL'}, 403)
+
 
 def photos_json(request):
     """ Server the photos as a JSON """
@@ -79,5 +81,4 @@ def photos_json(request):
                 })
         cache.set('photos_json', data, 1200*10 )
 
-    return HttpResponse( json.dumps(data), mimetype='application/json')
-
+    return json_response( data )

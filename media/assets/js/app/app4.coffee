@@ -1,4 +1,4 @@
-# 
+#
 # Banco Genitalia App
 #
 
@@ -11,14 +11,15 @@ class App
         @photosDOMList  = []
         @inZoom         = false
 
+        console.log( "Hello world")
         @container = $jQ(viewport)
         @onResize()
-        
+
     setup: (photoList, loading_cb, loaded_cb) =>
         @photoJSONList    = photoList
-        
+
         @imgCounter = Math.floor( Math.random() * (@photoJSONList.length - 1) )
-        
+
         # Setup Events
         window.addEventListener('resize', $jQ.debounce( 100, @onResize ), false)
         $jQ('#wall').on('mouseup', '.tile', (ev,e ) =>
@@ -54,7 +55,7 @@ class App
 
         loadingImages = $jQ('#wall').imagesLoaded() \
         .always( (instance, images) ->
-            loaded_cb( instance, images ) 
+            loaded_cb( instance, images )
         ) \
         .progress( (instance, images) ->
             loading_cb( instance, images )
@@ -64,15 +65,14 @@ class App
     # Called when there are photo tiles to be created.
     createDOMPhotos: (items) =>
         items.each( (e,i) =>
-            
+
             if PHOTO_TILING == 'random'
                 @imgCounter = Math.floor( Math.random() * @photoJSONList.length )
             else if PHOTO_TILING == 'sequential'
                 @imgCounter = (@photoJSONList.length-1 + @imgCounter++) % @photoJSONList.length
-            
+
             currPhoto = @photoJSONList[@imgCounter]
 
-            #$jQ(e.node).text("")
             img = new Element("img[src='#{currPhoto.url_small}']")
             img.inject(e.node)
 
@@ -90,7 +90,7 @@ class App
     onWallMouseUp: (e) =>
         @dragged = false
         return false
-    
+
     onWallMouseDragged: (delta,e) =>
         if(Math.abs(delta[0]) > 5 or Math.abs(delta[1]) > 5)
             @dragged = true
@@ -104,7 +104,7 @@ class App
         @cTarget = $jQ(ev.target)
         if not @inZoom
             @zoomIn( @cTarget )
-        else            
+        else
             if @cTarget.attr('src') == @prevTarget.attr('src')
                 @zoomOut()
             else
@@ -113,13 +113,13 @@ class App
     zoomIn: (photo_el) =>
         @prevTarget = @cTarget
         @inZoom = true
-        
+
         $jQ(photo_el).imagesLoaded( ->
             return
         )
         $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url )
 
-        $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600 }) 
+        $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600 })
 
     zoomOut: =>
         @inZoom = false

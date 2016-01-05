@@ -1,30 +1,30 @@
-+ Adicionar transição suave no clique da genitalia.
-+ Corrigir Crop no Upload
-- Carregar o backup de fotos
-- Adicionar botao de UPLOAD
-- Adicionar upload progresso
+- [ ] Adicionar transição suave no clique da genitalia.
+- [ ] Corrigir Crop no Upload
+- [X] Carregar o backup de fotos
+- [X] Adicionar botao de UPLOAD
+- [X] Adicionar upload progresso
 
-- Adicionar build de coffee via Grunt
-- Fazer concat+minify
+- [X] Adicionar build de coffee via Grunt
+- [X] Fazer concat- [X]minify
 
-- Mostrar mensagem de sucesso, genitalia enviada.
-- Mostrar mensagem de erro, genitalia enviada.
-- Corrigir icone/interacao de dragging que esta errado.
+- [X] Mostrar mensagem de sucesso, genitalia enviada.
+- [X] Mostrar mensagem de erro, genitalia enviada.
+- [X] Corrigir icone/interacao de dragging que esta errado.
 
-- Corrigir imagens .TIFF que nao estao carregando.
-- Adicionar tracking Google ?
+- [X] Corrigir imagens .TIFF que nao estao carregando.
+- [X] Adicionar tracking Google ?
 
-- Corrigir zoom quando clica em genitalias vizinhas?
-    - Forcar Reflow??
+- [X] Corrigir zoom quando clica em genitalias vizinhas?
+    - [ ] Forcar Reflow??
 
-- Adicionar zoom no clique.
+- [X] Adicionar zoom no clique.
 
-- Trocar foto por de maior qualidade ao dar zoom na foto.
-- Adicionar animacao de troca de foto.
+- [X] Trocar foto por de maior qualidade ao dar zoom na foto.
+- [X] Adicionar animacao de troca de foto.
 
-- Adicionar botao de UPLOAD
-- Adicionar tela de UPLOAD
+- [X] Adicionar botao de UPLOAD
+- [X] Adicionar tela de UPLOAD
 
-- Fazer status de sucesso/erro no upload.
+- [X] Fazer status de sucesso/erro no upload.
 
-- Fazer  Widget Drag/drop
+- [X] Fazer  Widget Drag/drop

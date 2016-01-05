@@ -56,24 +56,15 @@
         <!-- upload -->
         <div id="mostraoteu" class="infoscreen">
                 <div class="top">
+                    <h3><div class="info label-warning"></div></h3>
                     <form action="/photo/verify" method="POST" enctype="multipart/form-data" id="photo-submit" class="square">
                         <input name="photo" type="file" style="display: none;">
-
-                        <div class="message">
-                           <a id="bt-file">
-                                <i class="icon-plus icon-4x"></i>
-                            </a>
-                        </div>
                     </form>
                 </div>
                 <div class="bottom">
-<!--                         <a href="javascript: return false;" class="squarebuttons" id="bt-submit-photo">
-                            <i class="icon-arrow-left icon-2x"></i>
-                        </a>
- -->                        <a href="#" class="squarebuttons" id="bt-submit-photo">
-                            upload
-                            </a>
-                </div>
+
+                      <div class="progressbar"><div class="bar"></div></div>
+                 </div>
 
                 <div class="hidden" id="uploadSuccessMessage">
                 </div>
@@ -98,14 +89,15 @@
 
     </div>
 
-        <div id="menu">
-            <ul>
-                <li class="right">
-                    <a id="menu-mostraoteu" href="/upload" class="squarebuttons s100">
-                        <i class="icon-plus icon-2x"></i></a>
-                </li>
-            </ul>
-        </div>
+      <div id="menu">
+          <ul>
+              <li class="right">
+                  <a id="menu-mostraoteu" href="/upload" class="squarebuttons s100">
+                      <i class="icon-plus icon-2x" style="vertical-align: middle;"></i>
+                  </a>
+              </li>
+          </ul>
+      </div>
 
 
 

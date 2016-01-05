@@ -5,7 +5,7 @@ import uuid,os
 
 from thumbs import ImageWithThumbsField
 
-from django.conf import settings 
+from django.conf import settings
 
 def photo_hash(instance,filename):
     path = 'photos/'
@@ -41,11 +41,19 @@ class Genitalia(models.Model):
     as_link.short_description = "PHOTO URL"
     as_link.allow_tags = True
 
-    def save(self, *args, **kwargs):
+    def get_hash(self):
         """ Generate hash of the image """
+        # Force a seek to avoid empty read()
+        self.image.seek(0)
+
         h = sha512()
         h.update(self.image.read())
         self.hash = h.hexdigest()
+
+        return self.hash
+
+    def save(self, *args, **kwargs):
+        self.get_hash()
         return super(Genitalia, self).save(self,*args,**kwargs)
 
     def __unicode__(self):

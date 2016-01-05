@@ -8,7 +8,6 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'^$',               'genitalia.views.home',            name='home'),
-    url(r'^ng$',               'genitalia.views.home2',         name='home'),
 
     url(r'^photos/cacheclear', 'genitalia.views.cache_clear'),
     url(r'^photos/json$',    'genitalia.views.photos_json',     name='photos_json'),

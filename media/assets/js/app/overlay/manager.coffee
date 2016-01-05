@@ -6,14 +6,12 @@ class OverlayManager
         @el = $jQ(el)
         @pages = ['photobooth','mostraoteu']
         @controllers   = [new Photobooth(this,@el),new PhotoUpload(this,@el)]
-        
+
         @el.css({width: WIDTH, height: HEIGHT})
         @on = false
         @init = false
-        
-        #@cobj = @pages[0]
-        #@cpage_name = @pages[0]
-        #@cpage = @pages[0]
+
+        $jQ('.overlay-close').on('click', @hide)
 
     getController: (page_name) ->
         return @controllers[ @pages.lastIndexOf( page_name ) ]
@@ -32,6 +30,7 @@ class OverlayManager
             @init = true
 
     show: =>
+        $jQ('#menu-mostraoteu').addClass('closebtn')
         @el.show().transition({opacity: 1})
         @cpage.show()
         @on = true
@@ -48,5 +47,8 @@ class OverlayManager
             )
         @on = false
         @cobj.stop() if @cobj
+
+        $jQ('#menu-mostraoteu').removeClass('closebtn')
+
 
 module.exports = OverlayManager

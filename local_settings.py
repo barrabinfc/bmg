@@ -74,14 +74,14 @@ USE_TZ = False
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = "%s/media/" % BASE_DIR
-MEDIA_URL = 'https://genitalia.me/media/'
+MEDIA_URL = 'http://localhost:8000/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 #STATIC_ROOT = "%s/static/" % BASE_DIR
-#STATIC_URL = 'https://genitalia.me/static/'
+#STATIC_URL = 'http://localhost:8000/static/'
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -175,7 +175,7 @@ LOGGING = {
 
 # CORS Enable (for the mobile site)
 XS_SHARING_ALLOWED_ORIGINS = '*'
-XS_SHARING_ALLOWED_METHODS = ['GET']
+XS_SHARING_ALLOWED_METHODS = ['GET','POST']
 XS_SHARING_ALLOWED_HEADERS = []
 
 DBBACKUP_STORAGE='dbbackup.storage.filesystem_storage'

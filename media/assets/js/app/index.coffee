@@ -1,4 +1,4 @@
-# 
+#
 App             = require('./app4.coffee')
 OverlayManager  = require('./overlay/manager.coffee')
 
@@ -82,7 +82,7 @@ document.addEventListener 'DOMContentLoaded', ->
  This function cannot be renamed.
  OpenBooth will always automatically call "onFlashReady" upon initializing itself.
 ###
-onFlashready = -> 
+onFlashready = ->
     setTimeout( ->
         window.overlay.getController('photobooth').embedComplete()
     , 500 )

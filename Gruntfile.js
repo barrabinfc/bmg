@@ -11,13 +11,13 @@ module.exports = function(grunt) {
                 src: [
                         'media/assets/css/libs/fa/font-awesome.css',
                         'media/assets/css/libs/bootstrap/bootstrap.css',
-                        'media/assets/css/app/app4.css'
+                        'media/assets/css/app/app.css'
                     ],
                 dest: 'media/assets/css/app.css'
             },
             js_vendors: {
                 src: [
-                      // jquery js 
+                      // jquery js
                       'media/assets/js/jquery/jquery.min.js',
                       'media/assets/js/jquery/jquery.throttle.min.js',
                       'media/assets/js/jquery/jquery.zoomooz.js',
@@ -32,7 +32,7 @@ module.exports = function(grunt) {
                       'media/assets/js/mootools/mootools-more-1.3.2.js',
                       'media/assets/js/mootools/wall.js',
 
-                      // swfobject 
+                      // swfobject
                       'media/assets/js/misc/swfobject.js'
                       ],
                 dest: 'media/assets/js/vendors.js'
@@ -69,7 +69,7 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'media/assets/js/app.js': ['./media/assets/js/app/index.coffee',]
-                
+
                 }
             }
         },
@@ -87,7 +87,7 @@ module.exports = function(grunt) {
         },
         clean: {
             dist: [ 'media/assets/js/vendors.*',
-                    'media/assets/js/app.*', 
+                    'media/assets/js/app.*',
                     'media/assets/css/app.min.css']
         }
     });

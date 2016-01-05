@@ -14,8 +14,7 @@ class Loader
                  'Loading /¯\\_/', 'Loading _/¯\\_', 'Loading \\_/¯\\', ]
         i = 0
         @load_id = setInterval( =>
-            i = (++i) % cycle.length 
-            console.log( cycle[i] )
+            i = (++i) % cycle.length
             $jQ(@el).children('p').text( cycle[i] )
         , 1000/4 )
 
