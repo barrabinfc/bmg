@@ -73,7 +73,7 @@ USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = "%s/media/" % BASE_DIR 
+MEDIA_ROOT = "%s/media/" % BASE_DIR
 MEDIA_URL = 'https://genitalia.me/media/'
 
 # Absolute path to the directory static files should be collected to.
@@ -117,6 +117,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 
+    'genitalia.middleware.crossdomainxhr.XsSharing'
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -171,6 +172,11 @@ LOGGING = {
         },
     }
 }
+
+# CORS Enable (for the mobile site)
+XS_SHARING_ALLOWED_ORIGINS = '*'
+XS_SHARING_ALLOWED_METHODS = ['GET']
+XS_SHARING_ALLOWED_HEADERS = []
 
 DBBACKUP_STORAGE='dbbackup.storage.filesystem_storage'
 DBBACKUP_FILESYSTEM_DIRECTORY=('%s/backups' % BASE_DIR)
