@@ -474,6 +474,9 @@ p {
     opacity: 0.8;
     z-index: 10;
 
+    filter: grayscale(1);
+    -webkit-filter: grayscale(1);
+
     -webkit-backface-visibility: hidden;
       -moz-backface-visibility: hidden;
         -ms-backface-visibility: hidden;
@@ -512,6 +515,9 @@ p {
     opacity: 1;
     left: 0px;
     top: 0px;
+
+    filter: grayscale();
+    -webkit-filter: grayscale(0);
 }
 
 .tile img:hover {
