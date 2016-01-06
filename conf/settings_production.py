@@ -4,11 +4,12 @@ import os
 try:
     import uwsgi
 
-    PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.abspath( os.getcwd() )
+    PROJECT_ROOT = uwsgi.opt['mypath'] or os.path.abspath( os.path.join( os.getcwd() , '..' ) )
     DEBUG = (uwsgi.opt['DJANGO_DEBUG'] == 'no' ) or True
 except:
-    PROJECT_ROOT = os.path.abspath( os.getcwd() )
-    DEBUG = True
+    PROJECT_ROOT = os.path.abspath( os.path.join( os.getcwd(), '..' ) )
+    DEBUG = False
+
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -18,16 +19,25 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',                 # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME':     'bancogenital',                      # Or path to database file if using sqlite3.
-        'USER':     'bancogenital',                      # Not used with sqlite3.
-        'PASSWORD': 'hotlineblaft',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
+
+# Static asset configuration
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    '%s/media/assets' % (BASE_DIR),
+)
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 CACHES = {
     'default': {
@@ -63,19 +73,15 @@ USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = "%s/app/media/" % PROJECT_ROOT
-MEDIA_URL = 'http://genitalia.me/media/'
+MEDIA_ROOT = "%s/media/" % BASE_DIR
+#MEDIA_URL = 'https://genitalia.me/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = "%s/static/" % (PROJECT_ROOT)
-STATIC_URL = 'http://genitalia.me/static/'
-
-STATICFILES_DIRS = (
-    '%s/app/media/assets' % (PROJECT_ROOT),
-)
+#STATIC_ROOT = "%s/static/" % BASE_DIR
+#STATIC_URL = 'http://localhost:8000/static/'
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -85,7 +91,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'ok-g5u5og5%b(vgr!uz$q8mz^#t7(g$eempo_eg=40tx&amp;rq47u'
+SECRET_KEY = 'ok-g5u5og5%b(vasdasdasdq12312318mz^#t7(g$eempo_eg=40tx&amp;rq47u'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -111,6 +117,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 
+    'genitalia.middleware.crossdomainxhr.XsSharing'
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -119,9 +126,6 @@ ROOT_URLCONF = 'urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'wsgi.application'
-
-TEMPLATE_DIRS = (
-)
 
 INSTALLED_APPS = (
     # Core part
@@ -169,14 +173,20 @@ LOGGING = {
     }
 }
 
+# CORS Enable (for the mobile site)
+XS_SHARING_ALLOWED_ORIGINS = '*'
+XS_SHARING_ALLOWED_METHODS = ['GET','POST']
+XS_SHARING_ALLOWED_HEADERS = []
+
 DBBACKUP_STORAGE='dbbackup.storage.filesystem_storage'
-DBBACKUP_FILESYSTEM_DIRECTORY=('%s/backups' % PROJECT_ROOT)
+DBBACKUP_FILESYSTEM_DIRECTORY=('%s/backups' % BASE_DIR)
 DBBACKUP_MEDIA_PATH='%s/photos' % (MEDIA_ROOT)
 
-ON_PRODUCTION = False
+ON_PRODUCTION = True
 
 THUMBS_SIZE = (
     (150,225),
+    (300,450),
     (600,900)
 )
 

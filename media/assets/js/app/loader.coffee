@@ -9,14 +9,12 @@ class Loader
         )
 
     loadingAnimation: ->
-        cycle = ['Loading /¯\\_/', 'Loading _/¯\\_', 'Loading \\_/¯\\', \
-                 'Loading /¯\\_/', 'Loading _/¯\\_', 'Loading \\_/¯\\', \
-                 'Loading /¯\\_/', 'Loading _/¯\\_', 'Loading \\_/¯\\', ]
+        cycle = [ '.:.:.', ':.:.:', '.:.:.', ]
         i = 0
         @load_id = setInterval( =>
             i = (++i) % cycle.length
             $jQ(@el).children('p').text( cycle[i] )
-        , 1000/4 )
+        , 1000/8 )
 
     complete: =>
         clearInterval(@load_id)

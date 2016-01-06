@@ -27,6 +27,11 @@ def home(request):
     """ Index View """
     return render_to_response('genitalia/home.html', context_instance=RequestContext(request) )
 
+# Create your views here.
+def pugs(request):
+    """ Index View """
+    return render_to_response('genitalia/pugs.html', context_instance=RequestContext(request) )
+
 
 def cache_clear(request):
     cache.clear()
@@ -80,5 +85,13 @@ def photos_json(request):
                     'type':         'size-%dx%d' % small['size']
                 })
         cache.set('photos_json', data, 1200*10 )
+
+    return json_response( data )
+
+def pugs_json(request):
+    from pugs import pugs
+    data = []
+    for i,pug in enumerate(pugs):
+        data.append({'id': i, 'url': pug['url'] , 'url_small': pug['url'], 'type': pug['ratio'] })
 
     return json_response( data )

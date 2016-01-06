@@ -23,6 +23,7 @@ module.exports = function(grunt) {
                       'media/assets/js/jquery/jquery.zoomooz.js',
                       'media/assets/js/jquery/jquery.imagesloaded.js',
                       'media/assets/js/jquery/jquery.transit.js',
+                      'media/assets/js/jquery/jquery.mousewheel.js',
                       'media/assets/js/jquery/dropzone.js',
 
                       'media/assets/js/bootstrap/bootstrap.js',

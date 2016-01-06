@@ -15,7 +15,8 @@ class PhotoUploadOvr
 
     start: =>
         # Setup dropzone
-        $jQ('#photo-submit',@el).dropzone({
+        @dropzone = new Dropzone('#photo-submit', {
+        #$jQ('#photo-submit',@el).dropzone({
             url: window.API_SUBMIT_PHOTO,
             paramName: 'photo',
 
@@ -26,10 +27,10 @@ class PhotoUploadOvr
             parallelUploads: 1,
             maxFilesize: 2,
             acceptedFiles: 'image/*',
-            autoProcessQueue: false,
+            autoProcessQueue: true,
         })
 
-        @dropzone = $jQ('#photo-submit').data('dropzone')
+        #@dropzone = $jQ('#photo-submit').data('dropzone')
 
         # Show a sign while Dragging
         #@dropzone.on("addedfile", @createThumb );
@@ -103,13 +104,12 @@ class PhotoUploadOvr
         , 5000 )
 
     photoSubmitError: (file, data) =>
-        try
-          json_response = JSON.parse(data)
-        catch error
-          json_response = {'error': data}
+        msg = data
+        if(data.hasOwnProperty('error'))
+          msg = data['error']
 
         $jQ('.info').removeClass('label-success').addClass('label-warning')
-                    .html( '💩 ' + json_response.error );
+                    .html( '💩 ' + msg );
         $jQ('#photo-submit').css({'border-color': '#ff0000'})
 
 module.exports = PhotoUploadOvr

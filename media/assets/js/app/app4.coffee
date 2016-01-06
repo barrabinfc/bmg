@@ -2,6 +2,12 @@
 # Banco Genitalia App
 #
 
+window.zoomSettings = {
+    targetsize: 0.9,
+    preservescroll: true,
+    closeclick: true
+}
+
 class App
     constructor: (viewport,size) ->
         @size   = size
@@ -11,7 +17,6 @@ class App
         @photosDOMList  = []
         @inZoom         = false
 
-        console.log( "Hello world")
         @container = $jQ(viewport)
         @onResize()
 
@@ -25,10 +30,12 @@ class App
         $jQ('#wall').on('mouseup', '.tile', (ev,e ) =>
             @onPhotoClick(ev,e) if not @dragged
         )
+        $jQ(document).on('mousewheel', @onScrollStart.bind(this))
+        #$jQ(document).on('mousewheel DOMMouseScroll', @onScrollStop)
 
         # start wall
         @wall = new Wall("wall", {
-                        "draggable": true,
+                        "draggable": false,
                         "scrollable": true,
                         "width":    120,
                         "height":   180,
@@ -36,16 +43,13 @@ class App
                         "inertia":  true,
                         "inertiaSpeed": 0.93,
                         "printCoordinates": false,
-                        "rangex":   [-50,50],
-                        "rangey":   [-50,50],
+                        "rangex":   [-100,100],
+                        "rangey":   [-100,100],
 
                         callOnUpdate:  (items) =>
                             return if items.length == 0
                             @createDOMPhotos( items )
-
-                        callOnMouseDown:        @onWallMouseDown,
-                        callOnMouseUp:          @onWallMouseUp,
-                        callOnMouseDragged:     @onWallMouseDragged })
+                        })
 
         @wall.initWall()
 
@@ -83,25 +87,27 @@ class App
             $jQ(img).data('photo_info', currPhoto)
         )
 
-    onWallMouseDown: (e) =>
-        @dragged = false
-        return
+    onScrollStart: (e) =>
+      xspeed = e.deltaX * e.deltaFactor;
+      yspeed = e.deltaY * e.deltaFactor;
+      finX = @wall.wall.getStyle("left").toInt() + (xspeed*-1);
+      finY = @wall.wall.getStyle("top").toInt() + yspeed;
 
-    onWallMouseUp: (e) =>
-        @dragged = false
-        return false
+      @wall.wall.setStyle("left", finX)
+      @wall.wall.setStyle("top", finY)
 
-    onWallMouseDragged: (delta,e) =>
-        if(Math.abs(delta[0]) > 5 or Math.abs(delta[1]) > 5)
-            @dragged = true
-            return true
+      @wall.moved++;
+      @wall.options.callOnUpdate(@wall.updateWall())
+      e.stopPropagation();
 
-        return false
+      return false;
 
     # Someone clicked on the photo.
     onPhotoClick: (ev,e) =>
         # Dont zoom if dragging
         @cTarget = $jQ(ev.target)
+        if(@cTarget).is('div')
+          @cTarget = @cTarget.children()
         if not @inZoom
             @zoomIn( @cTarget )
         else
@@ -114,16 +120,17 @@ class App
         @prevTarget = @cTarget
         @inZoom = true
 
-        $jQ(photo_el).imagesLoaded( ->
-            return
-        )
         $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url )
+        $jQ(photo_el).imagesLoaded( =>
+            @wall.normalizePosition()
+        )
 
-        $jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600 })
+        $jQ(photo_el).zoomTo(window.zoomSettings)
+        #$jQ(photo_el).zoomTo({targetSize: 0.75, duration: 600 })
 
     zoomOut: =>
         @inZoom = false
-        $jQ('body').zoomTo({targetSize: 0.75, duration: 600, })
+        $jQ('body').zoomTo(window.zoomSettings)
 
     onResize: =>
         [WIDTH,HEIGHT] = [window.innerWidth, window.innerHeight]

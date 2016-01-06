@@ -57,12 +57,6 @@ init = ->
 
 module.exports.init = init
 
-
-
-window.API_URL = '/photos/json'
-window.API_SUBMIT_PHOTO = '/photos/upload'
-window.API_VERIFY_PHOTO = '/photos/verify'
-
 window.WIDTH  = window.innerWidth
 window.HEIGHT = window.innerHeight
 window.PHOTO_TILING = 'sequential'
@@ -81,8 +75,8 @@ document.addEventListener 'DOMContentLoaded', ->
 ###
  This function cannot be renamed.
  OpenBooth will always automatically call "onFlashReady" upon initializing itself.
-###
 onFlashready = ->
     setTimeout( ->
         window.overlay.getController('photobooth').embedComplete()
     , 500 )
+###

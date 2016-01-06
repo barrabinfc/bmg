@@ -2,15 +2,19 @@
 var App,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
+window.zoomSettings = {
+  targetsize: 0.9,
+  preservescroll: true,
+  closeclick: true
+};
+
 App = (function() {
   function App(viewport, size) {
     this.onResize = bind(this.onResize, this);
     this.zoomOut = bind(this.zoomOut, this);
     this.zoomIn = bind(this.zoomIn, this);
     this.onPhotoClick = bind(this.onPhotoClick, this);
-    this.onWallMouseDragged = bind(this.onWallMouseDragged, this);
-    this.onWallMouseUp = bind(this.onWallMouseUp, this);
-    this.onWallMouseDown = bind(this.onWallMouseDown, this);
+    this.onScrollStart = bind(this.onScrollStart, this);
     this.createDOMPhotos = bind(this.createDOMPhotos, this);
     this.setup = bind(this.setup, this);
     var HEIGHT, WIDTH, ref;
@@ -19,7 +23,6 @@ App = (function() {
     this.photoJSONList = [];
     this.photosDOMList = [];
     this.inZoom = false;
-    console.log("Hello world");
     this.container = $jQ(viewport);
     this.onResize();
   }
@@ -36,8 +39,9 @@ App = (function() {
         }
       };
     })(this));
+    $jQ(document).on('mousewheel', this.onScrollStart.bind(this));
     this.wall = new Wall("wall", {
-      "draggable": true,
+      "draggable": false,
       "scrollable": true,
       "width": 120,
       "height": 180,
@@ -45,8 +49,8 @@ App = (function() {
       "inertia": true,
       "inertiaSpeed": 0.93,
       "printCoordinates": false,
-      "rangex": [-50, 50],
-      "rangey": [-50, 50],
+      "rangex": [-100, 100],
+      "rangey": [-100, 100],
       callOnUpdate: (function(_this) {
         return function(items) {
           if (items.length === 0) {
@@ -54,10 +58,7 @@ App = (function() {
           }
           return _this.createDOMPhotos(items);
         };
-      })(this),
-      callOnMouseDown: this.onWallMouseDown,
-      callOnMouseUp: this.onWallMouseUp,
-      callOnMouseDragged: this.onWallMouseDragged
+      })(this)
     });
     this.wall.initWall();
     loading_cb = loading_cb != null ? loading_cb : $jQ.noop;
@@ -89,25 +90,25 @@ App = (function() {
     })(this));
   };
 
-  App.prototype.onWallMouseDown = function(e) {
-    this.dragged = false;
-  };
-
-  App.prototype.onWallMouseUp = function(e) {
-    this.dragged = false;
-    return false;
-  };
-
-  App.prototype.onWallMouseDragged = function(delta, e) {
-    if (Math.abs(delta[0]) > 5 || Math.abs(delta[1]) > 5) {
-      this.dragged = true;
-      return true;
-    }
+  App.prototype.onScrollStart = function(e) {
+    var finX, finY, xspeed, yspeed;
+    xspeed = e.deltaX * e.deltaFactor;
+    yspeed = e.deltaY * e.deltaFactor;
+    finX = this.wall.wall.getStyle("left").toInt() + (xspeed * -1);
+    finY = this.wall.wall.getStyle("top").toInt() + yspeed;
+    this.wall.wall.setStyle("left", finX);
+    this.wall.wall.setStyle("top", finY);
+    this.wall.moved++;
+    this.wall.options.callOnUpdate(this.wall.updateWall());
+    e.stopPropagation();
     return false;
   };
 
   App.prototype.onPhotoClick = function(ev, e) {
     this.cTarget = $jQ(ev.target);
+    if (this.cTarget.is('div')) {
+      this.cTarget = this.cTarget.children();
+    }
     if (!this.inZoom) {
       return this.zoomIn(this.cTarget);
     } else {
@@ -122,20 +123,18 @@ App = (function() {
   App.prototype.zoomIn = function(photo_el) {
     this.prevTarget = this.cTarget;
     this.inZoom = true;
-    $jQ(photo_el).imagesLoaded(function() {});
     $jQ(photo_el).attr('src', $jQ(photo_el).data('photo_info').url);
-    return $jQ(photo_el).zoomTo({
-      targetSize: 0.75,
-      duration: 600
-    });
+    $jQ(photo_el).imagesLoaded((function(_this) {
+      return function() {
+        return _this.wall.normalizePosition();
+      };
+    })(this));
+    return $jQ(photo_el).zoomTo(window.zoomSettings);
   };
 
   App.prototype.zoomOut = function() {
     this.inZoom = false;
-    return $jQ('body').zoomTo({
-      targetSize: 0.75,
-      duration: 600
-    });
+    return $jQ('body').zoomTo(window.zoomSettings);
   };
 
   App.prototype.onResize = function() {
@@ -159,7 +158,7 @@ module.exports = App;
 
 
 },{}],2:[function(require,module,exports){
-var App, Loader, OverlayManager, init, onFlashready;
+var App, Loader, OverlayManager, init;
 
 App = require('./app4.coffee');
 
@@ -209,12 +208,6 @@ init = function() {
 
 module.exports.init = init;
 
-window.API_URL = '/photos/json';
-
-window.API_SUBMIT_PHOTO = '/photos/upload';
-
-window.API_VERIFY_PHOTO = '/photos/verify';
-
 window.WIDTH = window.innerWidth;
 
 window.HEIGHT = window.innerHeight;
@@ -233,13 +226,11 @@ document.addEventListener('DOMContentLoaded', function() {
 /*
  This function cannot be renamed.
  OpenBooth will always automatically call "onFlashReady" upon initializing itself.
+onFlashready = ->
+    setTimeout( ->
+        window.overlay.getController('photobooth').embedComplete()
+    , 500 )
  */
-
-onFlashready = function() {
-  return setTimeout(function() {
-    return window.overlay.getController('photobooth').embedComplete();
-  }, 500);
-};
 
 
 },{"./app4.coffee":1,"./loader.coffee":3,"./overlay/manager.coffee":6}],3:[function(require,module,exports){
@@ -268,14 +259,14 @@ Loader = (function() {
 
   Loader.prototype.loadingAnimation = function() {
     var cycle, i;
-    cycle = ['Loading /¯\\_/', 'Loading _/¯\\_', 'Loading \\_/¯\\', 'Loading /¯\\_/', 'Loading _/¯\\_', 'Loading \\_/¯\\', 'Loading /¯\\_/', 'Loading _/¯\\_', 'Loading \\_/¯\\'];
+    cycle = ['.:.:.', ':.:.:', '.:.:.'];
     i = 0;
     return this.load_id = setInterval((function(_this) {
       return function() {
         i = (++i) % cycle.length;
         return $jQ(_this.el).children('p').text(cycle[i]);
       };
-    })(this), 1000 / 4);
+    })(this), 1000 / 8);
   };
 
   Loader.prototype.complete = function() {
@@ -320,7 +311,7 @@ PhotoUploadOvr = (function() {
   }
 
   PhotoUploadOvr.prototype.start = function() {
-    $jQ('#photo-submit', this.el).dropzone({
+    this.dropzone = new Dropzone('#photo-submit', {
       url: window.API_SUBMIT_PHOTO,
       paramName: 'photo',
       createImageThumbnails: true,
@@ -330,9 +321,8 @@ PhotoUploadOvr = (function() {
       parallelUploads: 1,
       maxFilesize: 2,
       acceptedFiles: 'image/*',
-      autoProcessQueue: false
+      autoProcessQueue: true
     });
-    this.dropzone = $jQ('#photo-submit').data('dropzone');
     this.dropzone.on("dragenter", this.dragEnter);
     this.dropzone.on("dragleave", this.dragLeave);
     this.dropzone.on("drop", this.drop);
@@ -399,16 +389,12 @@ PhotoUploadOvr = (function() {
   };
 
   PhotoUploadOvr.prototype.photoSubmitError = function(file, data) {
-    var error, error1, json_response;
-    try {
-      json_response = JSON.parse(data);
-    } catch (error1) {
-      error = error1;
-      json_response = {
-        'error': data
-      };
+    var msg;
+    msg = data;
+    if (data.hasOwnProperty('error')) {
+      msg = data['error'];
     }
-    $jQ('.info').removeClass('label-success').addClass('label-warning').html('💩 ' + json_response.error);
+    $jQ('.info').removeClass('label-success').addClass('label-warning').html('💩 ' + msg);
     return $jQ('#photo-submit').css({
       'border-color': '#ff0000'
     });
