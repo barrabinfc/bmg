@@ -2,7 +2,7 @@
 
 A infinite all-directions image gallery.
 
-Visit `genitalia.me` for it [live](www.genitalia.me)
+Visit `genitalia.me` to see it [live](www.genitalia.me)
 ![alt tag](https://raw.githubusercontent.com/barrabinfc/bmg/master/media/assets/img/pugs.jpg)
 
 
