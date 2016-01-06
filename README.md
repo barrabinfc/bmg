@@ -1,7 +1,8 @@
 ## About
 
 A infinite all-directions image gallery.
-Visit `genitalia.me` for a [www.genitalia.me](example)
+
+Visit `genitalia.me` for it [live](www.genitalia.me)
 ![alt tag](https://raw.githubusercontent.com/barrabinfc/bmg/master/media/assets/img/pugs.jpg)
 
 
