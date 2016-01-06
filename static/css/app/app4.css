@@ -1,0 +1,526 @@
+/**** Base styles ****/
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  font-family: 'Monaco', serif;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+a {
+    text-decoration: none;
+    color: #ededed;
+    font-family: 'Monaco', serif;
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+a:hover , a:active {
+    text-decoration: none;
+    color: #fff;
+}
+
+ol,ul {
+    list-style: none;
+}
+
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
+body {
+  font: 16px 'Monaco', serif;
+  -webkit-font-smoothing: subpixel-antialiased;
+
+  background: #D8D5D2;
+  color: #ededed;
+  line-height: 1.6em;
+  display: block;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    height: 100%;
+}
+
+h1 {
+    /*font-family: "helvetica neue", helvetica, arial, verdana, sans-serif;*/
+    font-family: 'Monaco', serif;
+    font-size: 31px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #f1f1f1;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+
+*.unselectable {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+
+   /*
+     Introduced in IE 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+   -ms-user-select: none;
+   user-select: none;
+}
+
+.squarebuttons {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Monaco', serif;
+    font-size: 36px;
+    text-transform: lowercase;
+    font-weight: bold;
+    color: #fff;
+    background-color: #1f1f1f;
+    opacity: 0.7;
+    line-height: 115px;
+
+    border: 2px solid rgba(0,0,0,0);
+
+    margin: 0px auto;
+    height: 90px;
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
+}
+.squarebuttons:hover {
+    border: 2px solid #fff;
+    background-color: #1f1f1f;
+    opacity: 0.95;
+}
+
+.iconbutton {
+    display: block;
+    color: #fff;
+    text-align: center;
+    text-transform: lowercase;
+    width: 100px;
+    line-height: 52px;
+    padding-top: 10px;
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
+}
+
+.iconbutton:hover {
+     text-shadow:   0 0 5px #fff,
+                    0 0 10px #fff,
+                    0 0 15px #ff2d95,
+                    0 0 20px #ff2d95,
+                    0 0 30px #ff2d95;
+
+            /*        0 0 40px #ff2d95,
+                    0 0 50px #ff2d95,
+                    0 0 75px #ff2d95; */
+}
+
+.bt-small {
+    width: 140px;
+}
+
+.bt-cancel {
+    background-color: #C22F2D;
+}
+
+.bt-cancel:hover {
+    background-color: #FF452E;
+}
+
+
+.menubuttons {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Monaco', serif;
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #fff;
+    line-height: 52px;
+    padding-top: 10px;
+}
+
+
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.pink {
+    background-color: #EA1592;
+}
+
+.green {
+    background-color: #04EDB3;
+}
+
+.s300 {
+    width: 300px;
+}
+
+.s200 {
+    width: 200px;
+}
+
+.s150 {
+    width: 150px;
+}
+
+.s100 {
+    width: 100px;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+
+#loading {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    background-color: rgba(255,255,255,0.8);
+    z-index: 1010;
+}
+
+#loading p {
+    color: #000;
+    margin: 15% auto;
+    text-transform: lowercase;
+    font-weight: bold;
+    font-size: 64px;
+    width: 40%;
+    text-align: center;
+}
+
+
+#overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1000;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.95);
+    background: transparent -webkit-gradient(radial, center center, 3000, center center, 0, from(transparent), to(#000000));
+    -webkit-backface-visibility: hidden;
+}
+
+.infoscreen {
+    margin: 15% auto;
+    width: 100%;
+    height: 100%;
+
+    /* starts hidden*/
+    display: none;
+}
+
+.infoscreen .left {
+    width: 200px;
+    height: 600px;
+    float: left;
+    position: relative;
+    margin: 0px auto;
+}
+
+.infoscreen .right {
+    width: 200px;
+    height: 600px;
+    float: right;
+}
+
+.infoscreen .left .top ,
+.infoscreen .right .top {
+    margin-top: 60px;
+    display: block;
+}
+
+.infoscreen .left .bottom ,
+.infoscreen .right .bottom {
+    position: relative;
+    bottom: 0px;
+}
+
+
+
+
+#mostraoteu .bottom {
+    margin: 30px auto;
+    width: 300px;
+}
+
+#mostraoteu .squarebuttons {
+    float: left;
+    margin-left: 5px;
+    line-height: 2.5em;
+}
+
+#fileupload-dropzone {
+    width: 500px;
+    height: 400px;
+    border: 2px solid #fff;
+}
+
+#mostraoteu #uploadSuccessMessage {
+    margin: 30px auto;
+    width: 150px;
+    position: absolute;
+}
+
+#photo-submit {
+    position: relative;
+    width:  320px;
+    height: 470px;
+    cursor: pointer;
+    border: 2px dashed #fff;
+    text-align: center;
+    font-weight: bold;
+    margin: 0px auto;
+    overflow: hidden;
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
+}
+
+#photo-submit .message {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+
+/*
+ *  Centralize bt-file on .message div
+ */
+#photo-submit .message #bt-file {
+    position: relative;
+    top: 45%;
+    left: -5%;
+}
+
+/*
+ *  Thumbnail
+ */
+#photo-submit img {
+    position: absolute;
+    top:  10px;
+    left: 10px;
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
+
+  /* width: 300px; */
+  /* height: 450px; */
+}
+
+#bt-submit-photo {
+    margin: 0px auto;
+    width: 100%;
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
+}
+
+#bt-submit-photo.upprogress {
+    background-color: rgba(0, 255, 187, 0.43);
+}
+
+#bt-submit-photo.upprogress:hover {
+    border: 2px solid transparent;
+}
+
+#fileupload-dropzone label {
+    margin: 0px auto;
+}
+
+
+#openbooth {
+    width: 460px;
+    height: 344px;
+    display: block;
+    margin-top: 40px;
+
+    text-align: center;
+}
+
+#openbooth #take-photo-bt {
+
+}
+
+
+
+
+
+
+#menu {
+    position: fixed;
+    height: 52px;
+    width: 100%;
+    top: 0px;
+    right: 15px;
+    z-index: 1010;
+    display: none;
+}
+
+#menu ul {
+    height: 52px;
+}
+
+#menu ul li {
+    /*
+    border: 2px solid rgba(255,255,255,0.0);
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
+    */
+}
+
+
+#menu ul li:hover {
+    /*border: 2px solid #fff;*/
+}
+
+#menu ul li .active {
+    /*border: 2px solid #fff;*/
+}
+
+
+
+
+#viewport {
+   width: 100%;
+   height: 100%;
+   position: absolute;
+   overflow: hidden;
+
+   margin:0 auto;
+   background:#212121;
+
+   background-image: url(../img/broken_noise.png);
+   background-repeat: repeat;
+
+    -webkit-backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+}
+
+
+
+
+#wall {
+    -webkit-backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+}
+
+.title {
+    width: 120px;
+    height: 180px;
+
+    -webkit-backface-visibility: hidden;
+
+    -webkit-transform-origin:       50% 50%;
+        -moz-transform-origin:      50% 50%;
+        -o-transform-origin:        50% 50%;
+          transform-origin:         50% 50%;
+
+    -webkit-transition-duration: 0.25s;
+       -moz-transition-duration: 0.25s;
+         -o-transition-duration: 0.25s;
+            transition-duration: 0.25s;
+
+    -webkit-transition-property: all;
+       -moz-transition-property: all;
+         -o-transition-property: all;
+            transition-property: all;
+
+    background-image: url(../img/shop-spinner.gif);
+    background-size: cover;
+}
+
+.tile img {
+    position: absolute;
+    background-size: cover;
+
+    width: 120px;
+    height: 180px;
+
+    -webkit-backface-visibility: hidden;
+    -webkit-transform-style: preserve-3d;
+
+    -webkit-transform-origin:       50% 50%;
+        -moz-transform-origin:      50% 50%;
+        -o-transform-origin:        50% 50%;
+          transform-origin:         50% 50%;
+
+    -webkit-transition-duration: 0.25s;
+       -moz-transition-duration: 0.25s;
+         -o-transition-duration: 0.25s;
+            transition-duration: 0.25s;
+
+    -webkit-transition-property: transform, -webkit-transform;
+       -moz-transition-property: transform, -webkit-transform;
+         -o-transition-property: transform, -webkit-transform;
+            transition-property: transform, -webkit-transform;
+
+    /*
+    -webkit-box-shadow:  0px 0px 20px #000;
+        -moz-box-shadow: 0px 0px 20px #000;
+        -o-box-shadow: 0px 0px 20px #000;
+           box-shadow: 0px 0px 20px #000;
+           */
+
+    background-image: url(../img/shop-spinner.gif);
+    background-size: cover;
+}
+
+.tile img:hover {
+    perspective: 1000px;
+    z-index: 15;
+
+    transform:          scale(1.2,1.2 );
+    -webkit-transform:  scale(1.2,1.2 );
+    -moz-transform:     scale(1.2,1.2 );
+    -o-transform:       scale(1.2,1.2 );
+}

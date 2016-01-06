@@ -4,7 +4,6 @@ reload
 media/photos
 node_modules
 mockdata
-static/
 venv/
 local_settings.py
 bancogenital

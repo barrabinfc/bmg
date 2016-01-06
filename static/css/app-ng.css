@@ -1,0 +1,243 @@
+* {
+    box-sizing: border-box;
+    font-family: Arvo;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    background: #000;
+    font: 16px 'Arvo', serif;
+  -webkit-font-smoothing: antialiased;
+      color: #ededed;
+      line-height: 1.6em;
+      display: block;
+}
+
+*.unselectable {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+
+   /*
+     Introduced in IE 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+   -ms-user-select: none;
+   user-select: none;
+}
+
+
+.squarebuttons {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Arvo', serif;
+    font-size: 36px;
+    text-transform: lowercase;
+    font-weight: bold;
+    color: #fff;
+    background-color: #1f1f1f;
+    opacity: 0.7;
+    line-height: 115px;
+
+    border: 2px solid rgba(0,0,0,0);
+
+    margin: 0px auto;
+    height: 90px;
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
+}
+.squarebuttons:hover {
+    border: 2px solid #fff;
+    background-color: #1f1f1f;
+    opacity: 0.95;
+}
+
+.iconbutton {
+    display: block;
+    color: #fff;
+    text-align: center;
+    text-transform: lowercase;
+    width: 100px;
+    line-height: 52px;
+    padding-top: 10px;
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
+}
+
+.iconbutton:hover {
+     text-shadow:   0 0 5px #fff,
+                    0 0 10px #fff,
+                    0 0 15px #ff2d95,
+                    0 0 20px #ff2d95,
+                    0 0 30px #ff2d95;
+
+            /*        0 0 40px #ff2d95,
+                    0 0 50px #ff2d95,
+                    0 0 75px #ff2d95; */
+}
+
+.bt-small {
+    width: 140px;
+}
+
+.bt-cancel {
+    background-color: #C22F2D;
+}
+
+.bt-cancel:hover {
+    background-color: #FF452E;
+}
+
+
+.menubuttons {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'Arvo', serif;
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #fff;
+    line-height: 52px;
+    padding-top: 10px;
+}
+
+
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.pink {
+    background-color: #EA1592;
+}
+
+.green {
+    background-color: #04EDB3;
+}
+
+.s300 {
+    width: 300px;
+}
+
+.s200 {
+    width: 200px;
+}
+
+.s150 {
+    width: 150px;
+}
+
+.s100 {
+    width: 100px;
+}
+
+.hidden {
+    display: none;
+}
+
+
+
+
+#genitalia-wall {
+    margin: 0px auto;
+    width: 100%;
+    height: 100%;
+    background: #000;
+
+    perspective: 1200px;
+    transform-style: preserve-3d;
+
+    overflow: hidden;
+    webkit-overflow-scrolling: touch;
+
+}
+
+.item {
+    width: 155px;
+    height: 230px;
+    float: left;
+    /*background: #09F;*/
+    
+    transform: translate3d(0, 0, 0);
+    margin-bottom: 2px;
+}
+
+.item img {
+    display: block;
+    width: 150px;
+    height: 225px;
+
+    transform: translate3d(0, 0, 0);
+
+    -webkit-transition-duration: 0.25s;
+       -moz-transition-duration: 0.25s;
+         -o-transition-duration: 0.25s;
+            transition-duration: 0.25s;
+
+    -webkit-transition-property: transform, -webkit-transform;
+       -moz-transition-property: transform, -webkit-transform;
+         -o-transition-property: transform, -webkit-transform;
+            transition-property: transform, -webkit-transform;
+}
+
+.item img:hover {
+   transform: scale(1.05);
+    -webkit-transform:  scale(1.2) translate(-10px,-10px); 
+    -moz-transform:     scale(1.2) translate(-4px,-5px);  
+    -o-transform:       scale(1.2) translate(-4px,-5px);
+}
+
+
+
+#menu {
+    position: fixed;
+    height: 52px;
+    width: 100%;
+    top: 0px;
+    right: 15px;
+    z-index: 1010;
+    display: none;
+}
+
+#menu ul {
+    height: 52px;
+}
+
+#menu ul li {
+    /*
+    border: 2px solid rgba(255,255,255,0.0);
+
+    -webkit-transition: all .150s ease-out;
+       -moz-transition: all .150s ease-out;
+         -o-transition: all .150s ease-out;
+            transition: all .150s ease-out;
+    */
+}
+
+
+#menu ul li:hover {
+    /*border: 2px solid #fff;*/
+}
+
+#menu ul li .active {
+    /*border: 2px solid #fff;*/
+}
+
+
+
+@-viewport {
+    width: 1200px;
+}
