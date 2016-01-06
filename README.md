@@ -1,3 +1,10 @@
+## About
+
+A infinite all-directions image gallery.
+
+![alt tag](https://raw.githubusercontent.com/barrabinfc/bmg/master/media/assets/img/pugs.jpg)
+
+
 # Installation
 
 Install basic deps
@@ -14,7 +21,7 @@ Create the project structure
 Download source code & backup.
 
 	$ git clone $URL app
-	$ curl DROPBOX_LINK > backups/genitalia_bkp.zip 
+	$ curl DROPBOX_LINK > backups/genitalia_bkp.zip
 
 Setup python env
 
@@ -26,7 +33,7 @@ Setup python env
 Now create a mysql DB with the same config listed in `settings.py`
 
 	'default': {
-	    'ENGINE': 	'django.db.backends.mysql', 
+	    'ENGINE': 	'django.db.backends.mysql',
 	    'NAME':  	'bancogenital',             
 	    'USER':     'bancogenital',             
 	    'PASSWORD': '*******',                  
@@ -40,8 +47,8 @@ First you need to install the tools to minify/concat the front-end code.
 
 Now you can run just grunt to compile js and css
 
-    $ grunt 
-    
+    $ grunt
+
 (grunt need to be installed globally. if it isn't, run ```npm install -g grunt``` before)
 
 And for development purposes, you may use the `watch` function
@@ -56,9 +63,9 @@ And for development purposes, you may use the `watch` function
 		$ cd backups
 
 2. Unzip and import the old photos to the right location:
-	
+
 		$ unzip bancogenital-photos-%DATE%.zip -d ../app/media/photos/
-	
+
 3. Import the database...
 
 		$ cd ../app
@@ -87,26 +94,26 @@ And for development purposes, you may use the `watch` function
 
 ## Production settings
 
-A `UWSGI.production.ini` file is included. Don't forget to change **mypath** 
+A `UWSGI.production.ini` file is included. Don't forget to change **mypath**
 
 	[uwsgi]
-	
+
 	mypath = /Users/frangossauro/work/Projects/bancogenital
-	
+
 	socket = /tmp/genitalia.me.sock
 	chmod-socket = 644
 	processes = 1
 	harakiri = 10
-	
+
 	env = DJANGO_SETTINGS_MODULE=settings
 	module = django.core.handlers.wsgi:WSGIHandler()
 	DJANGO_DEBUG = no
-	
+
 	python-path = %(mypath)/app
 	wsgi-file = %(mypath)/app/wsgi.py
 	virtualenv = %(mypath)/venv
 	callable = "application"
-	
+
 	; disable-logging
 	; vacuum
 	; no-orphans
@@ -131,10 +138,9 @@ Database
 
 	$ ./manage dbbackup		
 
-Photos	
+Photos
 
 	$ zip bancogenital-photos-$(date +"%F").zip ../app/media/photos/*
 
 
 Source code already has backup via ```git```.
-
