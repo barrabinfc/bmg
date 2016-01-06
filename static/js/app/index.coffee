@@ -1,9 +1,8 @@
-# 
+#
 App             = require('./app4.coffee')
 OverlayManager  = require('./overlay/manager.coffee')
 
 Loader          = require('./loader.coffee')
-
 
 init = ->
     # Show the /etc/motd
@@ -21,13 +20,19 @@ init = ->
     menu  = $jQ('#menu')
     menu.show()
 
+    prefetch = 12
+    onLoadProgress = (instance, img) ->
+        if (img.length > prefetch)
+            onLoadedComplete(instance,img)
+
+    # Plz wait 600 ms before finishing
+    onLoadedComplete = (instance, img) ->
+        setTimeout( mloader.complete , 600 )
+
     # Get genitalia pictures, and start feeding it!
     $jQ.getJSON API_URL , (data) =>
-        banco.setup data
+        banco.setup data, onLoadProgress, onLoadedComplete
 
-        setTimeout( ->
-            mloader.complete()
-        , 500)
 
     ###############
     # User Events #
@@ -52,15 +57,11 @@ init = ->
 
 module.exports.init = init
 
-
-
-window.API_URL = '/photos/json'
-window.API_SUBMIT_PHOTO = '/photos/upload'
-window.API_VERIFY_PHOTO = '/photos/verify'
-
 window.WIDTH  = window.innerWidth
 window.HEIGHT = window.innerHeight
-window.PHOTO_TILING = 'random'
+window.PHOTO_TILING = 'sequential'
+
+$.fx.speeds._default = 500
 
 document.addEventListener 'DOMContentLoaded', ->
     window.$jQ = $
@@ -74,9 +75,8 @@ document.addEventListener 'DOMContentLoaded', ->
 ###
  This function cannot be renamed.
  OpenBooth will always automatically call "onFlashReady" upon initializing itself.
-###
-onFlashready = -> 
-    console.log("Openbooth loaded")
+onFlashready = ->
     setTimeout( ->
         window.overlay.getController('photobooth').embedComplete()
     , 500 )
+###

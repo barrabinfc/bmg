@@ -51,9 +51,9 @@ provides:
  * 1.1 - Inserito onResize Windows
  * 1.0 - Inizio implementazione release stabile
  */
- 
- 
- 
+
+
+
 var Wall = new Class({
     __target: undefined,
     init : false,
@@ -89,7 +89,7 @@ var Wall = new Class({
         preload          : false,             // Precarica contenuto
         callOnUpdate     : Function,          // Azione on drag/complete
         callOnChange     : Function,          // Azione scatenata quando viene impostato id elemento attivo
-        callOnMouseDown  : Function,        
+        callOnMouseDown  : Function,
         callOnMouseUp    : Function,
         callOnMouseDragged : Function,
         detectMobile     : true               // Detect mobile device
@@ -103,7 +103,7 @@ var Wall = new Class({
         this.wall       = document.id(this.__target);
         this.viewport   = document.id(this.__target).getParent();
     },
-    
+
     /**
      * Initialize The Wall
      */
@@ -119,7 +119,7 @@ var Wall = new Class({
         this.maxy = bb.maxy;
         this.minx = bb.minx;
         this.miny = bb.miny;
-        
+
         // Verifica Init Class
         if( this.init == false ){
             // Definisce Effetto di spostamento
@@ -127,7 +127,7 @@ var Wall = new Class({
                 duration: this.options.speed,
                 transition: this.options.transition,
                 onStart: function(){
-                  /*periodicalID = (function(){ 
+                  /*periodicalID = (function(){
                       this.options.callOnUpdate(this.updateWall());
                   }).periodical(Math.floor(this.options.speed/4), this);*/
                 }.bind( this ),
@@ -148,6 +148,7 @@ var Wall = new Class({
 
         // Definisce Handler
         var handler = this.options.handle != undefined ? document.id(this.options.handle) : document.id(this.__target);
+
         // Click sul Wall
         document.id(this.__target).addEvent("click", function(e){
             e.stopPropagation();
@@ -157,15 +158,12 @@ var Wall = new Class({
 
         if(this.options.scrollable == true){
             document.id(this.__target).addEvent(['scroll','mousewheel'], function(el, e){
-                console.log("scrolling")
                 this.xspeed = e.page.x - this.xPos; // x mouse speed
                 this.yspeed = e.page.y - this.yPos; // y mouse speed
                 this.xPos   = e.page.x;
                 this.yPos   = e.page.y;
 
-                console.log("x")
-                
-                this.options.callOnMouseDragged( [this.startX - this.xPos, 
+                this.options.callOnMouseDragged( [this.startX - this.xPos,
                                                     this.startY - this.yPos] , e)
                 //
                 e.stopPropagation();
@@ -178,7 +176,7 @@ var Wall = new Class({
                 this.moved++;
             });
         }
-        
+
         // Definisce oggetto draggabile
         if( this.options.draggable == true ){
             this.wallDrag = document.id(this.__target).makeDraggable({
@@ -192,14 +190,14 @@ var Wall = new Class({
                     clearTimeout(this.periodicalID);
                     // Reset Movement
                     this.moved = 0;
-                    
+
                     this.startX = e.page.x;
                     this.startY = e.page.y;
-                    
+
                     // Posizione Inizio Drag
                     this.xPos = e.page.x;
                     this.yPos = e.page.y;
-                    
+
                     this.options.callOnMouseDown(e)
                 }.bind( this ),
                 onDrag: function(el, e){
@@ -207,8 +205,8 @@ var Wall = new Class({
                     this.yspeed = e.page.y - this.yPos; // y mouse speed
                     this.xPos   = e.page.x;
                     this.yPos   = e.page.y;
-                    
-                    this.options.callOnMouseDragged( [this.startX - this.xPos, 
+
+                    this.options.callOnMouseDragged( [this.startX - this.xPos,
                                                      this.startY - this.yPos] , e)
                     //
                     e.stopPropagation();
@@ -221,7 +219,7 @@ var Wall = new Class({
                     this.moved++;
                 }.bind( this ),
                 onComplete: function(el, e){
-                    
+
                     this.options.callOnMouseUp( e )
                     e.preventDefault();
                     // Verifica inertia
@@ -230,7 +228,7 @@ var Wall = new Class({
                         var i = 0;
 
                         // START Inertia
-                        this.periodicalID = (function(){ 
+                        this.periodicalID = (function(){
 
                             if( this.options.invert == true ){
                                 var finX = this.wall.getStyle("left").toInt() - this.xspeed;
@@ -243,15 +241,13 @@ var Wall = new Class({
                             if( finY < 0) this.wall.setStyle("top",  Math.max(this.miny, finY));
                             if( finX > 0) this.wall.setStyle("left", Math.min(this.maxx, finX));
                             if( finY > 0) this.wall.setStyle("top",  Math.min(this.maxy, finY));
-                            
+
                             // Decrementa velocità di spostamento
                             this.xspeed *= this.options.inertiaSpeed;
                             this.yspeed *= this.options.inertiaSpeed;
-                            
+
                             // Aggiorna Wall
-                            if((++i%8) == 0)
-                                this.options.callOnUpdate(this.updateWall());
-                                i = 0
+                            this.options.callOnUpdate(this.updateWall());
 
                             // Interrompe spostamento se prossimo a 0.6
                             if (Math.abs(this.xspeed) < 2 && Math.abs(this.yspeed) < 2) {
@@ -283,7 +279,7 @@ var Wall = new Class({
                         // Attiva elemento del coda
                         this.codaActiveItem(this.id);
                     }
-                    // Callback wall    
+                    // Callback wall
                     this.options.callOnUpdate(this.updateWall());
                 }.bind( this )
             });
@@ -308,20 +304,20 @@ var Wall = new Class({
             "left": this.options.startx*this.options.width,
             "top": this.options.starty*this.options.height
         })
-        
+
         // Aggiorna Wall ed esegue CallBack di creazione
         this.options.callOnUpdate(this.updateWall());
 
         // Inizializza Slideshow
         if( this.options.slideshow == true ) this.initSlideshow();
-       
+
         // Inizializza Device Mobile
         if( this.options.detectMobile && this.detectMobile() ) this.initMobile();
 
         //
         return this;
     },
-    
+
     /**
      * Verifica se il Wall si è spostato
      * @return boolean
@@ -332,7 +328,7 @@ var Wall = new Class({
         this.moved = 0;
         return m;
     },
-    
+
     /**
      * @PRIVATE
      * Calcola lo spazio di contenimento del wall e il relativo spostamento
@@ -374,7 +370,7 @@ var Wall = new Class({
         }
         return coordinates;
     },
-    
+
     /**
      * Estrae id da Coordinate spaziali
      * @return numeric id
@@ -389,7 +385,7 @@ var Wall = new Class({
         }
         return indice;
     },
-    
+
     /**
      * Restituisce le coordinate del tassello richiesto
      * @return object o.c, o.r
@@ -397,7 +393,7 @@ var Wall = new Class({
     getCoordinatesFromId: function(id){
       return this.coordinates[id];
     },
-    
+
     /**
      * Restituisce id elemento attivo
      * @return numeric
@@ -405,7 +401,7 @@ var Wall = new Class({
     getActiveItem: function(){
         return this.id;
     },
-    
+
     /**
      * @PRIVATE
      * Calcola la posizione più prossima al punto raggiunto
@@ -433,7 +429,7 @@ var Wall = new Class({
         this.moveTo(p.c, p.r);
         return;
     },
-    
+
     /**
      * @PRIVATE
      * Aggiorna gli elementi del wall. Calcola gli elementi visibili non ancora generati
@@ -449,7 +445,7 @@ var Wall = new Class({
         // Tile Size
         var tile_w = this.options.width;
         var tile_h = this.options.height;
-        
+
         // Viewport Size
         var vp_w = vp_coordinate.width;
         var vp_h = vp_coordinate.height;
@@ -461,7 +457,7 @@ var Wall = new Class({
             left: wall_coordinate.left - vp_coordinate.left,
             top:  wall_coordinate.top  - vp_coordinate.top
         }
-        
+
         // Calcola visibilità elemento
         var visible_left_col = Math.ceil(-pos.left / tile_w)  - 1;
         var visible_top_row  = Math.ceil(-pos.top /  tile_h)  - 1;
@@ -477,16 +473,16 @@ var Wall = new Class({
                 }
             }
         }
-        
+
         // Update viewport info.
         wall_width  = wall_coordinate.width;
         wall_height = wall_coordinate.height;
         wall_cols = Math.ceil(wall_width  / tile_w);
         wall_rows = Math.ceil(wall_height / tile_h);
-        
+
         return newItems;
     },
-    
+
     /**
      * @PRIVATE
      * Aggiunge un elemento al Wall
@@ -494,7 +490,7 @@ var Wall = new Class({
      */
     appendTile: function(i,j){
         this.grid[i][j] = true;
-        
+
         // Tile Size
         var tile_w = this.options.width;
         var tile_h = this.options.height;
@@ -503,7 +499,7 @@ var Wall = new Class({
         var range_row = this.options.rangey;
         if (i < range_col[0] || (range_col[1]) < i) return {};
         if (j < range_row[0] || (range_row[1]) < j) return {};
-        
+
         var x    = i * tile_w;
         var y    = j * tile_h;
         var e    = new Element("div").inject(this.wall);
@@ -522,7 +518,7 @@ var Wall = new Class({
             if( this.options.printCoordinates ) e.set("text", i+"x"+j);
             return {"node":e, "x":j, "y":i};
     },
-    
+
     /**
      * Esegue operazione di alimentazione massificata eseguendo la generazione di tutti i tasselli
      * Azione applicabile al coda, sconsigliato su wall di grandi dimensioni
@@ -539,7 +535,7 @@ var Wall = new Class({
         this.options.callOnUpdate(newItems);
         return newItems;
     },
-    
+
     /**
      * Imposta CallBack di di inizializzazione tile del Wall
      */
@@ -547,7 +543,7 @@ var Wall = new Class({
         this.options.callOnUpdate = f;
         return f;
     },
-    
+
     /**
      * Imposta CallBack di aggiornamento focus elemento
      */
@@ -566,7 +562,7 @@ var Wall = new Class({
         if( this.options.showDuration < this.options.speed ) this.options.showDuration = this.options.speed;
         this.slideshowInterval = this.getAutomaticNext.periodical(this.options.showDuration, this );
     },
-    
+
     /**
      * @PRIVATE
      * Richiede elemento successivo nel coda Slideshow
@@ -591,7 +587,7 @@ var Wall = new Class({
         clearTimeout(this.slideshowInterval);
         this.slideshowInterval = undefined;
     },
-    
+
     /**
      * Esegue spostamento del Wall alle coordinate indicate
      * return false || nodo Dom attivo
@@ -609,7 +605,7 @@ var Wall = new Class({
             'left': Math.max(-(c*this.options.width), this.minx),
             'top':  Math.max(-(r*this.options.height), this.miny)
         });
-        
+
         // Calcola l'id in base alle coordinate
         this.id = this.getIdFromCoordinates(c,r);
 
@@ -621,7 +617,7 @@ var Wall = new Class({
         if( item.length > 0) return $$("#"+this.__target+" div[rel="+name+"]")[0];
         return false;
     },
-    
+
     /**
      * Posiziona il Wall su elemento attivo
      * return Object node Dom elemento con focus di posizionamento
@@ -630,7 +626,7 @@ var Wall = new Class({
         // Muove il Wall alle coordinate del tile con id attivo
         return this.moveTo(this.coordinates[this.id].c, this.coordinates[this.id].r)
     },
-    
+
     /**
      * Posiziona il Wall su elemento successivo
      * return Object node Dom elemento con focus di posizionamento
@@ -650,7 +646,7 @@ var Wall = new Class({
         if( (this.id-1) >= 0 ){ this.id--; }
         return this.moveTo(this.coordinates[this.id].c, this.coordinates[this.id].r)
     },
-    
+
     /**
      * Richiede la lista dei punti sotto forma di Link
      * @target: ID DOM element dove inserire i links
@@ -701,18 +697,16 @@ var Wall = new Class({
             return this.coda_items[i];
         }
     },
-    
+
     /**
      * @PRIVATE
      * Esegue Detect di device iPad, iPod, iPhone
      * @return boolean
      */
     detectMobile: function(){
-        var ua = navigator.userAgent;
-        var isiPad = /iPad/i.test(ua) || /iPhone OS 3_1_2/i.test(ua) || /iPhone OS 3_2_2/i.test(ua) || /iPhone/i.test(ua) || /iPod/i.test(ua)
-        return isiPad;
+        return 'ontouchstart' in window || navigator.msMaxTouchPoints;
     },
-    
+
     /**
      * @PRIVATE
      * Inizializza comportamenti per il magico ditino
@@ -722,10 +716,10 @@ var Wall = new Class({
         this.wall.__root = this
         this.wall.addEvent('touchstart',function(e) {
             if( e ) e.stop();
-            
+
             // Interrompe Slideshow
             this.__root.clearSlideShow();
-            
+
             // Data Start
             this._startXMouse = e.page.x;
             this._startYMouse = e.page.y;
@@ -749,7 +743,7 @@ var Wall = new Class({
             }
             // Imposta posizione X
             if( endx <= this.__root.maxx) this.setStyle("left",  endx );
-            
+
             // Vertical
             var _deltay = this._startYMouse - e.page.y;
             var _y  = this.getStyle("top").toInt();
@@ -761,7 +755,7 @@ var Wall = new Class({
             }
             // Imposta posizione Y
             if( endy <= this.__root.maxy) this.setStyle("top",  endy );
-            
+
             // Aggiorna Wall ed esegue CallBack di creazione
             this.__root.options.callOnUpdate(this.__root.updateWall());
         });
