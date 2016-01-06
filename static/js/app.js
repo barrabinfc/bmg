@@ -192,12 +192,6 @@ init = function() {
 
 module.exports.init = init;
 
-window.API_URL = '/photos/json';
-
-window.API_SUBMIT_PHOTO = '/photos/upload';
-
-window.API_VERIFY_PHOTO = '/photos/verify';
-
 window.WIDTH = window.innerWidth;
 
 window.HEIGHT = window.innerHeight;
