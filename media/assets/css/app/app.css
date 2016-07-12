@@ -516,7 +516,7 @@ p {
     left: 0px;
     top: 0px;
 
-    filter: grayscale();
+    filter: grayscale(0);
     -webkit-filter: grayscale(0);
 }
 
