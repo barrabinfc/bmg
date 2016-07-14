@@ -21,7 +21,6 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Banco genital">
-    <meta name="author" content="Caroline Barrueco, Luiza Só, Vitor Faleiros">
 
     <meta property="og:title" content="Banco Mundial da Genitália" >
     <meta property="og:description" content="Banco Mundial da Genitália" >
@@ -37,24 +36,16 @@
     <link href="{{ STATIC_URL }}css/app.css" rel="stylesheet" media="screen">
 
 
-    <script type="text/javascript">
-        var MEDIA_URL  = "{{ MEDIA_URL }}";
-        var STATIC_URL = "{{ STATIC_URL }}";
-
-        window.API_URL = '/pugs/json'
-        window.API_SUBMIT_PHOTO = '/photos/upload'
-        window.API_VERIFY_PHOTO = '/photos/verify'
-    </script>
-    <script src="{{ STATIC_URL }}js/vendors.min.js" type="text/javascript" charset="utf-8" ></script>
-    <script src="{{ STATIC_URL }}js/app.js" type="text/javascript" charset="utf-8" ></script>
 </head>
 
 <body>
 
-    <div id="overlay" class="unselectable">
+    <div id="overlay" class="overlay unselectable">
+      <!--
         <div id="startmessage" class="infoscreen">
-            <!-- Are you 18+ and not easily offended ? -->
+             Are you 18+ and not easily offended ?
         </div>
+      -->
 
         <!-- upload -->
         <div id="mostraoteu" class="infoscreen">
@@ -70,18 +61,31 @@
                  </div>
         </div>
 
+        <!-- Photo View -->
+        <div id="photoview" class="infoscreen photoview">
+            <div class="container">
+              <img class="photo" src="http://rockcandymedia.com/puggin.it/pugs/03387a446a154ce49e083722b2482322.jpg" />
+
+              <a class="previous" href="#">
+                ⇠
+              </a>
+              <a class="next" href="#">
+                ⇢
+              </a>
+            </div>
+        </div>
+
     </div>
 
       <div id="menu">
           <ul>
               <li class="right">
-                  <a id="menu-mostraoteu" href="/upload" class="squarebuttons s100 hidden">
+                  <a id="menu-mostraoteu" href="#upload" class="squarebuttons s100">
                       <i class="icon-plus icon-2x" style="vertical-align: middle;"></i>
                   </a>
               </li>
           </ul>
       </div>
-
 
 
     <div id="viewport" class="unselectable">
@@ -103,6 +107,17 @@
       })();
 
     </script>
+
+    <script type="text/javascript">
+        var MEDIA_URL  = "{{ MEDIA_URL }}";
+        var STATIC_URL = "{{ STATIC_URL }}";
+
+        window.API_URL = '/pugs/json'
+        window.API_SUBMIT_PHOTO = '/photos/upload'
+        window.API_VERIFY_PHOTO = '/photos/verify'
+    </script>
+    <script src="{{ STATIC_URL }}js/vendors.js" type="text/javascript" charset="utf-8" ></script>
+    <script src="{{ STATIC_URL }}js/app.js" type="text/javascript" charset="utf-8" ></script>
 
     </body>
 </html>

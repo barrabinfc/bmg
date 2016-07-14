@@ -13,10 +13,9 @@ class PhotoUploadOvr
         @idx  = 0
         window.upinterval  = null
 
-    start: =>
+    start: (page_data) =>
         # Setup dropzone
         @dropzone = new Dropzone('#photo-submit', {
-        #$jQ('#photo-submit',@el).dropzone({
             url: window.API_SUBMIT_PHOTO,
             paramName: 'photo',
 
@@ -30,10 +29,7 @@ class PhotoUploadOvr
             autoProcessQueue: true,
         })
 
-        #@dropzone = $jQ('#photo-submit').data('dropzone')
-
         # Show a sign while Dragging
-        #@dropzone.on("addedfile", @createThumb );
         @dropzone.on("dragenter",   @dragEnter )
         @dropzone.on("dragleave",   @dragLeave )
         @dropzone.on("drop",        @drop )
@@ -50,8 +46,10 @@ class PhotoUploadOvr
     stop: =>
         return
 
+    render: (page_data) =>
+        return
+
     on_show_complete: =>
-        console.log( 'Hello upload', @dropzone )
         return
 
     on_hide_complete: =>

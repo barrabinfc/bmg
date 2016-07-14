@@ -14,7 +14,7 @@ time, mark, audio, video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
-  font-family: 'Monaco', serif;
+  font-family: monospace, serif;
 }
 
 article, aside, details, figcaption, figure,
@@ -25,7 +25,7 @@ footer, header, hgroup, menu, nav, section {
 a {
     text-decoration: none;
     color: #ededed;
-    font-family: 'Monaco', serif;
+    font-family: monospace, serif;
     font-size: 24px;
     text-transform: uppercase;
     font-weight: bold;
@@ -38,6 +38,7 @@ a:hover , a:active {
 
 ol,ul {
     list-style: none;
+    margin: 0;
 }
 
 li {
@@ -46,12 +47,13 @@ li {
 }
 
 body {
-  font: 16px 'Monaco', serif;
+  font: 16px monospace, serif;
   -webkit-font-smoothing: subpixel-antialiased;
 
-  background: #D8D5D2;
+  background: #1f1f1f;
   color: #ededed;
   display: block;
+  margin: 0px;
 
     width: 100%;
     height: 100%;
@@ -76,7 +78,7 @@ html {
 
 h1 {
     /*font-family: "helvetica neue", helvetica, arial, verdana, sans-serif;*/
-    font-family: 'Monaco', serif;
+    font-family: monospace, serif;
     font-size: 31px;
     font-weight: bold;
     text-transform: uppercase;
@@ -105,7 +107,7 @@ p {
     display: block;
     text-align: center;
     text-decoration: none;
-    font-family: 'Monaco', serif;
+    font-family: monospace,serif;
     text-transform: lowercase;
     font-weight: bold;
     color: #fff;
@@ -116,10 +118,10 @@ p {
 
     margin: 0px auto;
 
-    -webkit-transition: all .150s ease-out;
-       -moz-transition: all .150s ease-out;
-         -o-transition: all .150s ease-out;
-            transition: all .150s ease-out;
+    -webkit-transition: all .150s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+       -moz-transition: all .150s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+         -o-transition: all .150s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+            transition: all .150s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
 }
 .squarebuttons:hover {
     border: 2px solid #fff;
@@ -136,11 +138,10 @@ p {
     padding-top: 10px;
 
     /*line-height: 52px;*/
-
-    -webkit-transition: all .150s ease-out;
-       -moz-transition: all .150s ease-out;
-         -o-transition: all .150s ease-out;
-            transition: all .150s ease-out;
+    -webkit-transition: all .150s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+       -moz-transition: all .150s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+         -o-transition: all .150s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+            transition: all .150s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
 }
 
 .iconbutton:hover {
@@ -207,6 +208,11 @@ p {
 }
 
 
+/* Animations and easing */
+
+
+
+
 #loading {
     width: 100%;
     height: 100%;
@@ -214,18 +220,28 @@ p {
     margin: 0 auto;
     background-color: rgba(0,0,0,0.8);
     z-index: 1020;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #loading p {
+    font-family: monospace;
     color: #fff;
-    margin: 25% 40%;
+    margin: 0% 40%;
     text-transform: lowercase;
     font-weight: bold;
-    font-size: 76px;
+    font-size: 78px;
     width: 40%;
-    text-align: left;
+    min-width: 300px;
+    text-align: center;
+    overflow: hidden;
 }
 
+
+/*
+ * Overlay pages
+ */
 
 #overlay {
     width: 100%;
@@ -252,8 +268,10 @@ p {
     width: 100%;
     height: 100%;
 
-    /* starts hidden*/
-    display: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .infoscreen .left {
@@ -283,6 +301,9 @@ p {
 }
 
 
+/*
+ * Upload
+ */
 #mostraoteu .top {
   margin: 0px auto;
   width: 320px;
@@ -295,6 +316,8 @@ p {
 
 #mostraoteu .info {
   margin: 10px;
+  max-height: 120px;
+  overflow: hidden;
 }
 
 
@@ -307,7 +330,6 @@ p {
 
 #photo-submit {
     position: relative;
-    width:  320px;
     height: 470px;
     cursor: pointer;
     border: 2px dashed #fff;
@@ -332,9 +354,7 @@ p {
 }
 
 
-/*
- *  Thumbnail
- */
+/* thumbs */
 #photo-submit img {
     position: absolute;
     top:  10px;
@@ -369,21 +389,94 @@ p {
 
 
 
+/*
+ *
+ */
+.photoview {
+  width: 100%;
+  height: 100%;
+  margin: 0 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photoview .container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.photoview .container .photo {
+  max-width: 70%;
+  order: 100;
+}
+
+.photoview .container .next,
+.photoview .container .previous {
+  width: 10%;
+  text-align: center;
+  font-size: 2em;
+  font-weight: normal;
+}
+
+.photoview .container a {
+  -webkit-transform:translateZ(0);
+  -moz-transform: translateZ(0);
+  transform: translateZ(0);
+  transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+
+  font-weight: normal;
+  font-size: 2em;
+  transition: all 0.15s  cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+}
+.photoview .container a:hover {
+  transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+}
+
+.photoview .container .previous { order: 0; }
+.photoview .container .next { order: 300; }
 
 
+
+/*
+ * Menu
+ */
 #menu {
     position: fixed;
     width: 100%;
-    top: 0px;
+    top: 15px;
     right: 15px;
     z-index: 1010;
 }
+#menu ul {
+  margin: 0;
+}
 #menu-mostraoteu {
 
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #000;
+  width: 80px; height: 80px;
+
+  background-color: #ef1f3e;
+  color: #000;
+
+  line-height: 80px;
+
+  transition: all 0.2s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
   -webkit-transform-origin:       50% 50%;
       -moz-transform-origin:      50% 50%;
       -o-transform-origin:        50% 50%;
         transform-origin:         50% 50%;
+
+
 }
 #menu-mostraoteu:hover {
     transform: scale(1.2);
@@ -392,12 +485,13 @@ p {
 
 #menu-mostraoteu.closebtn {
   border: 0px;
+  box-shadow: none;
   background-color: rgba(0,0,0,0);
-}
-#menu-mostraoteu.closebtn {
-    transform: rotateZ(-45deg);
+  color: #dfdfdf;
+  transform: rotateZ(-45deg);
 }
 #menu-mostraoteu.closebtn:hover {
+    text-shadow: 0 0 10px #fff;
     transform: rotateZ(-45deg) scale(1.2);
     opacity: 1.0;
     color: #fff;
@@ -432,6 +526,10 @@ p {
 
 
 
+
+/*
+ * Another brick in the wall
+ */
 
 #wall {
     -webkit-backface-visibility: hidden;
@@ -474,17 +572,23 @@ p {
     opacity: 0.8;
     z-index: 10;
 
-    filter: grayscale(1);
     -webkit-filter: grayscale(1);
+    -moz-filter: grayscale(1);
+    -ms-filter: grayscale(1);
+    -o-filter: grayscale(1);
+    filter: grayscale(1);
 
     -webkit-backface-visibility: hidden;
       -moz-backface-visibility: hidden;
         -ms-backface-visibility: hidden;
+        -o-backface-visibility: hidden;
     backface-visibility: hidden;
 
     -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
     -ms-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+
     transform-style: preserve-3d;
 
     -webkit-transform-origin:       50% 50%;
@@ -492,10 +596,10 @@ p {
         -o-transform-origin:        50% 50%;
           transform-origin:         50% 50%;
 
-    -webkit-transition: all .450s ease-out;
-       -moz-transition: all .450s ease-out;
-         -o-transition: all .450s ease-out;
-            transition: all .450s ease-out;
+    -webkit-transition: all .450s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+       -moz-transition: all .450s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+         -o-transition: all .450s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+            transition: all .450s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
 
     /*
     -webkit-box-shadow:  0px 0px 20px #000;
@@ -518,18 +622,46 @@ p {
 
     filter: grayscale(0);
     -webkit-filter: grayscale(0);
+    -moz-filter: grayscale(0);
+    -ms-filter: grayscale(0);
+    -o-filter: grayscale(0);
 }
 
 .tile img:hover {
     z-index: 15;
 
-    -webkit-transition: all .150s ease-out;
-       -moz-transition: all .150s ease-out;
-         -o-transition: all .150s ease-out;
-            transition: all .150s ease-out;
+    -webkit-transition: all .150s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+       -moz-transition: all .150s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+         -o-transition: all .150s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+            transition: all .150s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
 
     transform:          scale( 1.3,1.3 );
     -webkit-transform:  scale( 1.3,1.3 );
     -moz-transform:     scale( 1.3,1.3 );
     -o-transform:       scale( 1.3,1.3 );
+}
+
+
+
+
+
+/*
+ * Mobile
+ */
+@media (max-width: 480px){
+  #menu-mostraoteu {
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+  }
+  #menu-mostraoteu i.icon-plus {
+    font-size: 1.25em;
+  }
+
+
+  /* upload page */
+  #mostraoteu .top {
+    margin-top: 40px;
+    max-width: 280px;
+  }
 }

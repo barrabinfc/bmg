@@ -27,6 +27,7 @@ init = ->
 
     # Plz wait 600 ms before finishing
     onLoadedComplete = (instance, img) ->
+        console.log('loader complete')
         setTimeout( mloader.complete , 600 )
 
     # Get genitalia pictures, and start feeding it!
@@ -38,6 +39,7 @@ init = ->
     # User Events #
     ###############
     $jQ('#menu-mostraoteu').on 'click', (ev) ->
+                            console.log("click ", ev)
                             if(overlay.on)
                                 overlay.hide()
                             else

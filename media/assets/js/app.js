@@ -13,6 +13,7 @@ App = (function() {
     this.onResize = bind(this.onResize, this);
     this.zoomOut = bind(this.zoomOut, this);
     this.zoomIn = bind(this.zoomIn, this);
+    this.viewPhoto = bind(this.viewPhoto, this);
     this.onPhotoClick = bind(this.onPhotoClick, this);
     this.onScrollStart = bind(this.onScrollStart, this);
     this.createDOMPhotos = bind(this.createDOMPhotos, this);
@@ -23,6 +24,7 @@ App = (function() {
     this.photoJSONList = [];
     this.photosDOMList = [];
     this.inZoom = false;
+    this.dragged = false;
     this.container = $jQ(viewport);
     this.onResize();
   }
@@ -32,16 +34,14 @@ App = (function() {
     this.photoJSONList = photoList;
     this.imgCounter = Math.floor(Math.random() * (this.photoJSONList.length - 1));
     window.addEventListener('resize', $jQ.debounce(100, this.onResize), false);
-    $jQ('#wall').on('mouseup', '.tile', (function(_this) {
-      return function(ev, e) {
-        if (!_this.dragged) {
-          return _this.onPhotoClick(ev, e);
-        }
-      };
-    })(this));
-    $jQ(document).on('mousewheel', this.onScrollStart.bind(this));
+
+    /*
+    $jQ('#wall').on('mouseup', '.tile', (ev,e ) =>
+        @onPhotoClick(ev,e) if not @dragged
+    )
+     */
     this.wall = new Wall("wall", {
-      "draggable": false,
+      "draggable": true,
       "scrollable": true,
       "width": 120,
       "height": 180,
@@ -51,6 +51,32 @@ App = (function() {
       "printCoordinates": false,
       "rangex": [-100, 100],
       "rangey": [-100, 100],
+      callOnMouseUp: (function(_this) {
+        return function(ev) {
+          console.log("callonMouseUp", _this.dragged);
+          if (_this.dragged) {
+            _this.dragged = false;
+          }
+        };
+      })(this),
+      callOnMouseDown: (function(_this) {
+        return function(ev) {};
+      })(this),
+      callOnMouseClick: (function(_this) {
+        return function(ev) {
+          if (_this.dragged) {
+            _this.dragged = false;
+            return;
+          }
+          return _this.onPhotoClick(ev);
+        };
+      })(this),
+      callOnMouseDragged: (function(_this) {
+        return function(ev) {
+          _this.dragged = true;
+          console.log("dragging");
+        };
+      })(this),
       callOnUpdate: (function(_this) {
         return function(items) {
           if (items.length === 0) {
@@ -105,19 +131,32 @@ App = (function() {
   };
 
   App.prototype.onPhotoClick = function(ev, e) {
+    var info;
     this.cTarget = $jQ(ev.target);
     if (this.cTarget.is('div')) {
       this.cTarget = this.cTarget.children();
     }
-    if (!this.inZoom) {
-      return this.zoomIn(this.cTarget);
-    } else {
-      if (this.cTarget.attr('src') === this.prevTarget.attr('src')) {
-        return this.zoomOut();
-      } else {
-        return this.zoomIn(this.cTarget);
-      }
-    }
+    info = $jQ(this.cTarget).data('photo_info');
+    return this.viewPhoto({
+      info: info,
+      el: this.cTarget
+    });
+
+    /*
+    if not @inZoom
+        @zoomIn( @cTarget )
+    else
+        if @cTarget.attr('src') == @prevTarget.attr('src')
+            @zoomOut()
+        else
+            @zoomIn( @cTarget )
+     */
+  };
+
+  App.prototype.viewPhoto = function(photo) {
+    console.log("Clicked at: ", photo);
+    window.overlay.setPage('photoview', photo);
+    return window.overlay.show();
   };
 
   App.prototype.zoomIn = function(photo_el) {
@@ -182,6 +221,7 @@ init = function() {
     }
   };
   onLoadedComplete = function(instance, img) {
+    console.log('loader complete');
     return setTimeout(mloader.complete, 600);
   };
   $jQ.getJSON(API_URL, (function(_this) {
@@ -190,6 +230,7 @@ init = function() {
     };
   })(this));
   $jQ('#menu-mostraoteu').on('click', function(ev) {
+    console.log("click ", ev);
     if (overlay.on) {
       overlay.hide();
     } else {
@@ -233,7 +274,7 @@ onFlashready = ->
  */
 
 
-},{"./app4.coffee":1,"./loader.coffee":3,"./overlay/manager.coffee":6}],3:[function(require,module,exports){
+},{"./app4.coffee":1,"./loader.coffee":3,"./overlay/manager.coffee":7}],3:[function(require,module,exports){
 var Loader,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -259,14 +300,14 @@ Loader = (function() {
 
   Loader.prototype.loadingAnimation = function() {
     var cycle, i;
-    cycle = ['.:.:.', ':.:.:', '.:.:.'];
+    cycle = ['.....', ':....', '.:...', '..:..', ':..:.', '.:..:', ':.:..', '::.:.', '.::.:', '..::.', '...::', '....:'];
     i = 0;
     return this.load_id = setInterval((function(_this) {
       return function() {
         i = (++i) % cycle.length;
         return $jQ(_this.el).children('p').text(cycle[i]);
       };
-    })(this), 1000 / 8);
+    })(this), 1000 / 4);
   };
 
   Loader.prototype.complete = function() {
@@ -302,6 +343,7 @@ PhotoUploadOvr = (function() {
     this.drop = bind(this.drop, this);
     this.on_hide_complete = bind(this.on_hide_complete, this);
     this.on_show_complete = bind(this.on_show_complete, this);
+    this.render = bind(this.render, this);
     this.stop = bind(this.stop, this);
     this.start = bind(this.start, this);
     this.delta = 1000.0 / 4;
@@ -310,7 +352,7 @@ PhotoUploadOvr = (function() {
     window.upinterval = null;
   }
 
-  PhotoUploadOvr.prototype.start = function() {
+  PhotoUploadOvr.prototype.start = function(page_data) {
     this.dropzone = new Dropzone('#photo-submit', {
       url: window.API_SUBMIT_PHOTO,
       paramName: 'photo',
@@ -335,9 +377,9 @@ PhotoUploadOvr = (function() {
 
   PhotoUploadOvr.prototype.stop = function() {};
 
-  PhotoUploadOvr.prototype.on_show_complete = function() {
-    console.log('Hello upload', this.dropzone);
-  };
+  PhotoUploadOvr.prototype.render = function(page_data) {};
+
+  PhotoUploadOvr.prototype.on_show_complete = function() {};
 
   PhotoUploadOvr.prototype.on_hide_complete = function() {};
 
@@ -408,6 +450,62 @@ module.exports = PhotoUploadOvr;
 
 
 },{}],5:[function(require,module,exports){
+var PhotoView,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+PhotoView = (function() {
+  function PhotoView(parent, el) {
+    this.parent = parent;
+    this.el = el;
+    this.initComplete = bind(this.initComplete, this);
+    this.render = bind(this.render, this);
+    this.previous = bind(this.previous, this);
+    this.next = bind(this.next, this);
+    this.stop = bind(this.stop, this);
+    this.start = bind(this.start, this);
+    console.log("photview:Constructor");
+    console.log(this.el);
+  }
+
+  PhotoView.prototype.start = function(page_data) {
+    window.photoview = true;
+    this.photoview = true;
+    return console.log("photoview:start");
+  };
+
+  PhotoView.prototype.stop = function() {
+    return console.log("photoview:stop");
+  };
+
+  PhotoView.prototype.next = function(ev) {
+    return ev.stopPropagation();
+  };
+
+  PhotoView.prototype.previous = function(ev) {
+    return ev.stopPropagation();
+  };
+
+  PhotoView.prototype.render = function(page_data) {
+    console.log("render", page_data);
+    $jQ('.photo', this.el).attr({
+      src: page_data.info.url
+    });
+    $jQ('.next', this.el).bind('click', this.next);
+    return $jQ('.previous', this.el).bind('click', this.previous);
+  };
+
+  PhotoView.prototype.initComplete = function(ev) {
+    return console.log("photoiew:init");
+  };
+
+  return PhotoView;
+
+})();
+
+module.exports = PhotoView;
+
+
+},{}],6:[function(require,module,exports){
 var PhotoboothOvr,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -422,6 +520,8 @@ PhotoboothOvr = (function() {
     this.uploadedSuccessful = bind(this.uploadedSuccessful, this);
     this.initComplete = bind(this.initComplete, this);
     this.embedComplete = bind(this.embedComplete, this);
+    this.render = bind(this.render, this);
+    this.stop = bind(this.stop, this);
     this.start = bind(this.start, this);
   }
 
@@ -463,6 +563,10 @@ PhotoboothOvr = (function() {
     return this.openbooth = window.openbooth;
   };
 
+  PhotoboothOvr.prototype.stop = function() {};
+
+  PhotoboothOvr.prototype.render = function(page_data) {};
+
   PhotoboothOvr.prototype.embedComplete = function() {
     console.log("Embed complete, calling openbooth.init()");
     console.log(this.openbooth);
@@ -493,13 +597,29 @@ PhotoboothOvr = (function() {
 module.exports = PhotoboothOvr;
 
 
-},{}],6:[function(require,module,exports){
-var OverlayManager, PhotoUpload, Photobooth,
+},{}],7:[function(require,module,exports){
+var OverlayManager, PhotoUpload, PhotoView, Photobooth,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 PhotoUpload = require('./PhotoUpload.coffee');
 
 Photobooth = require('./Photobooth.coffee');
+
+PhotoView = require('./PhotoView.coffee');
+
+
+/*
+
+    A single overlay , with multiple pages.
+    Only one active page per time.
+
+    @cpage = DOM element
+    @cobj  = Page Controller
+
+    PageController.start = on first appeareance
+    PageController.stop  = on hided
+    PageController.render = on *every* appeareance
+ */
 
 OverlayManager = (function() {
   function OverlayManager(el) {
@@ -507,14 +627,15 @@ OverlayManager = (function() {
     this.show = bind(this.show, this);
     this.setPage = bind(this.setPage, this);
     this.el = $jQ(el);
-    this.pages = ['photobooth', 'mostraoteu'];
-    this.controllers = [new Photobooth(this, this.el), new PhotoUpload(this, this.el)];
+    this.pages = ['photobooth', 'mostraoteu', 'photoview'];
+    this.controllers = [new Photobooth(this, this.el), new PhotoUpload(this, this.el), new PhotoView(this, this.el)];
     this.el.css({
       width: WIDTH,
       height: HEIGHT
     });
     this.on = false;
     this.init = false;
+    $jQ('.overlay').on('click', this.hide);
     $jQ('.overlay-close').on('click', this.hide);
   }
 
@@ -522,11 +643,20 @@ OverlayManager = (function() {
     return this.controllers[this.pages.lastIndexOf(page_name)];
   };
 
+
+  /* Return active controller class */
+
   OverlayManager.prototype.getActiveController = function() {
     return this.controllers[this.pages.lastIndexOf(this.cpage_name)];
   };
 
-  OverlayManager.prototype.setPage = function(new_page) {
+
+  /* Change current active page */
+
+  OverlayManager.prototype.setPage = function(new_page, page_data) {
+    if (page_data == null) {
+      page_data = {};
+    }
     if (this.cpage) {
       this.cpage.hide();
     }
@@ -534,10 +664,15 @@ OverlayManager = (function() {
     this.cpage_name = new_page;
     this.cobj = this.controllers[this.pages.lastIndexOf(new_page)];
     if (!this.init) {
-      this.cobj.start();
+      this.cobj.start(page_data);
       return this.init = true;
+    } else {
+      return this.cobj.render(page_data);
     }
   };
+
+
+  /* Show overlay */
 
   OverlayManager.prototype.show = function() {
     $jQ('#menu-mostraoteu').addClass('closebtn');
@@ -547,6 +682,9 @@ OverlayManager = (function() {
     this.cpage.show();
     return this.on = true;
   };
+
+
+  /* Hide overlay */
 
   OverlayManager.prototype.hide = function() {
     if (this.cobj) {
@@ -578,4 +716,4 @@ OverlayManager = (function() {
 module.exports = OverlayManager;
 
 
-},{"./PhotoUpload.coffee":4,"./Photobooth.coffee":5}]},{},[2]);
+},{"./PhotoUpload.coffee":4,"./PhotoView.coffee":5,"./Photobooth.coffee":6}]},{},[2]);

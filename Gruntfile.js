@@ -10,7 +10,7 @@ module.exports = function(grunt) {
             css: {
                 src: [
                         'media/assets/css/libs/fa/font-awesome.css',
-                        'media/assets/css/libs/bootstrap/bootstrap.css',
+                        //'media/assets/css/libs/bootstrap/bootstrap.css',
                         'media/assets/css/app/app.css'
                     ],
                 dest: 'media/assets/css/app.css'
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
                       'media/assets/js/jquery/jquery.mousewheel.js',
                       'media/assets/js/jquery/dropzone.js',
 
-                      'media/assets/js/bootstrap/bootstrap.js',
+                      //'media/assets/js/bootstrap/bootstrap.js',
 
                       //mootools
                       'media/assets/js/mootools/mootools-core-1.3.2.js',
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
                       'media/assets/js/mootools/wall.js',
 
                       // swfobject
-                      'media/assets/js/misc/swfobject.js'
+                      //'media/assets/js/misc/swfobject.js'
                       ],
                 dest: 'media/assets/js/vendors.js'
             }

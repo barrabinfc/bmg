@@ -16,6 +16,7 @@ class App
         @photoJSONList  = []
         @photosDOMList  = []
         @inZoom         = false
+        @dragged        = false
 
         @container = $jQ(viewport)
         @onResize()
@@ -27,15 +28,17 @@ class App
 
         # Setup Events
         window.addEventListener('resize', $jQ.debounce( 100, @onResize ), false)
+        ###
         $jQ('#wall').on('mouseup', '.tile', (ev,e ) =>
             @onPhotoClick(ev,e) if not @dragged
         )
-        $jQ(document).on('mousewheel', @onScrollStart.bind(this))
+        ###
+        #$jQ(document).on('mousewheel', @onScrollStart.bind(this))
         #$jQ(document).on('mousewheel DOMMouseScroll', @onScrollStop)
 
         # start wall
         @wall = new Wall("wall", {
-                        "draggable": false,
+                        "draggable": true,
                         "scrollable": true,
                         "width":    120,
                         "height":   180,
@@ -45,6 +48,26 @@ class App
                         "printCoordinates": false,
                         "rangex":   [-100,100],
                         "rangey":   [-100,100],
+
+                        callOnMouseUp: (ev) =>
+                          console.log("callonMouseUp", @dragged)
+                          if @dragged
+                            @dragged = false
+                            return
+
+                        callOnMouseDown: (ev) =>
+                          return
+
+                        callOnMouseClick: (ev) =>
+                          if @dragged
+                            @dragged = false
+                            return
+                          @onPhotoClick(ev);
+
+                        callOnMouseDragged: (ev) =>
+                          @dragged = true;
+                          console.log("dragging");
+                          return
 
                         callOnUpdate:  (items) =>
                             return if items.length == 0
@@ -108,6 +131,11 @@ class App
         @cTarget = $jQ(ev.target)
         if(@cTarget).is('div')
           @cTarget = @cTarget.children()
+
+        info = $jQ(@cTarget).data('photo_info');
+        @viewPhoto({info: info, el: @cTarget})
+
+        ###
         if not @inZoom
             @zoomIn( @cTarget )
         else
@@ -115,6 +143,12 @@ class App
                 @zoomOut()
             else
                 @zoomIn( @cTarget )
+        ###
+
+    viewPhoto: (photo) =>
+        console.log("Clicked at: ", photo);
+        window.overlay.setPage('photoview', photo)
+        window.overlay.show()
 
     zoomIn: (photo_el) =>
         @prevTarget = @cTarget

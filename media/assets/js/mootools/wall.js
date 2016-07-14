@@ -152,12 +152,15 @@ var Wall = new Class({
         // Click sul Wall
         document.id(this.__target).addEvent("click", function(e){
             e.stopPropagation();
+            this.options.callOnMouseClick(e);
             // Reset Movement
             this.moved = 0;
         }.bind( this ))
 
         if(this.options.scrollable == true){
             document.id(this.__target).addEvent(['scroll','mousewheel'], function(el, e){
+                console.log("scrolling");
+
                 this.xspeed = e.page.x - this.xPos; // x mouse speed
                 this.yspeed = e.page.y - this.yPos; // y mouse speed
                 this.xPos   = e.page.x;
@@ -167,6 +170,7 @@ var Wall = new Class({
                                                     this.startY - this.yPos] , e)
                 //
                 e.stopPropagation();
+
                 // Interrompe Slideshow
                 this.clearSlideShow();
                 // Tronca transizione se riparte il drag
