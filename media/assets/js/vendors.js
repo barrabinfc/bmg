@@ -5697,8 +5697,9 @@ var Wall = new Class({
         }.bind( this ))
 
         if(this.options.scrollable == true){
-            document.id(this.__target).addEvent(['scroll','mousewheel'], function(el, e){
-                console.log("scrolling");
+            console.log("wall:is_scrollable")
+            //document.id(this.__target).addEvent(['scroll','mousewheel'], function(el, e){
+            document.id(document).addEvent('mousewheel', function(e){
 
                 this.xspeed = e.page.x - this.xPos; // x mouse speed
                 this.yspeed = e.page.y - this.yPos; // y mouse speed
@@ -5717,7 +5718,7 @@ var Wall = new Class({
                 this.options.callOnUpdate(this.updateWall());
                 // Considera movimento
                 this.moved++;
-            });
+            }.bind(this));
         }
 
         // Definisce oggetto draggabile

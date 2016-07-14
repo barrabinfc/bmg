@@ -749,10 +749,72 @@ p {
 
 
 /* Animations and easing */
+.appear {
+  -moz-animation-name: appear-keyframes;
+  -moz-animation-duration: 1700ms;
+  -moz-animation-delay: 0ms;
+  -moz-animation-fill-mode: forwards;
+  -moz-animation-timing-function: linear;
+  -moz-animation-iteration-count: 1;
+  -webkit-animation-name: appear-keyframes;
+  -webkit-animation-duration: 1700ms;
+  -webkit-animation-delay: 0ms;
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: 1;
+  animation-name: appear-keyframes;
+  animation-duration: 1700ms;
+  animation-delay: 0ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+}
+@-moz-keyframes appear-keyframes {
+  0% {-moz-transform:translate(0px, 0px) scale(0.1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  9.09% {-moz-transform:translate(0px, 0px) scale(0.0711) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  18.18% {-moz-transform:translate(0px, 0px) scale(0.0234) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  27.27% {-moz-transform:translate(0px, 0px) scale(0.0151) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  36.36% {-moz-transform:translate(0px, 0px) scale(0.1047) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  45.45% {-moz-transform:translate(0px, 0px) scale(0.3504) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  54.55% {-moz-transform:translate(0px, 0px) scale(0.7496) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  63.64% {-moz-transform:translate(0px, 0px) scale(0.9953) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  72.73% {-moz-transform:translate(0px, 0px) scale(1.0849) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  81.82% {-moz-transform:translate(0px, 0px) scale(1.0766) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  90.91% {-moz-transform:translate(0px, 0px) scale(1.0289) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  100% {-moz-transform:translate(0px, 0px) scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+}
+@-webkit-keyframes appear-keyframes {
+  0% {-webkit-transform:translate(0px, 0px) scale(0.1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  9.09% {-webkit-transform:translate(0px, 0px) scale(0.0711) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  18.18% {-webkit-transform:translate(0px, 0px) scale(0.0234) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  27.27% {-webkit-transform:translate(0px, 0px) scale(0.0151) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  36.36% {-webkit-transform:translate(0px, 0px) scale(0.1047) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  45.45% {-webkit-transform:translate(0px, 0px) scale(0.3504) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  54.55% {-webkit-transform:translate(0px, 0px) scale(0.7496) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  63.64% {-webkit-transform:translate(0px, 0px) scale(0.9953) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  72.73% {-webkit-transform:translate(0px, 0px) scale(1.0849) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  81.82% {-webkit-transform:translate(0px, 0px) scale(1.0766) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  90.91% {-webkit-transform:translate(0px, 0px) scale(1.0289) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  100% {-webkit-transform:translate(0px, 0px) scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+}
+@keyframes appear-keyframes {
+  0% {transform:translate(0px, 0px) scale(0.1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  9.09% {transform:translate(0px, 0px) scale(0.0711) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  18.18% {transform:translate(0px, 0px) scale(0.0234) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  27.27% {transform:translate(0px, 0px) scale(0.0151) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  36.36% {transform:translate(0px, 0px) scale(0.1047) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  45.45% {transform:translate(0px, 0px) scale(0.3504) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  54.55% {transform:translate(0px, 0px) scale(0.7496) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  63.64% {transform:translate(0px, 0px) scale(0.9953) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  72.73% {transform:translate(0px, 0px) scale(1.0849) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  81.82% {transform:translate(0px, 0px) scale(1.0766) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  90.91% {transform:translate(0px, 0px) scale(1.0289) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  100% {transform:translate(0px, 0px) scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+}
 
 
 
-
+/* loader */
 #loading {
     width: 100%;
     height: 100%;
@@ -811,7 +873,7 @@ p {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .infoscreen .left {
@@ -852,6 +914,7 @@ p {
 #mostraoteu .bottom {
     margin: 30px auto;
     width: 300px;
+    min-height: 60px;
 }
 
 #mostraoteu .info {
@@ -1008,7 +1071,8 @@ p {
   background-color: #ef1f3e;
   color: #000;
 
-  line-height: 80px;
+  line-height: 85px;
+  text-shadow: 0px 0px 5px #1f1f1f;
 
   transition: all 0.2s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
   -webkit-transform-origin:       50% 50%;
@@ -1046,11 +1110,8 @@ p {
    position: absolute;
    overflow: hidden;
 
-   margin:0 auto;
+   margin:0 0;
    background:#212121;
-
-   background-image: url(../img/broken_noise.png);
-   background-repeat: repeat;
 
     -webkit-backface-visibility: hidden;
       -moz-backface-visibility: hidden;
@@ -1081,13 +1142,20 @@ p {
     -moz-transform-style: preserve-3d;
     -ms-transform-style: preserve-3d;
     transform-style: preserve-3d;
+
+/*
+    transform: perspective(1200px) rotateY(0deg);
+
+    -webkit-transition: all .750s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+       -moz-transition: all .750s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+         -o-transition: all .750s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+            transition: all .750s cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+*/
 }
 
-.title {
+.tile {
     width: 120px;
     height: 180px;
-
-    background-color: #fff;
 
     -webkit-backface-visibility: hidden;
       -moz-backface-visibility: hidden;
@@ -1101,22 +1169,20 @@ p {
 }
 
 .tile img {
-    cursor: pointer;
     position: absolute;
-    background-size: cover;
+    background-color: #f17f3e;
 
-    width: 60px;
-    height: 90px;
-    left: 30px;
-    top: 30px;
-    opacity: 0.8;
+    border-radius: 50%;
+    width: 110px;
+    height: 110px;
+    left: 0px;
+    top: 0px;
+    opacity: 1.0;
     z-index: 10;
 
-    -webkit-filter: grayscale(1);
-    -moz-filter: grayscale(1);
-    -ms-filter: grayscale(1);
-    -o-filter: grayscale(1);
-    filter: grayscale(1);
+    -webkit-transform: scale(0.1);
+    -moz-transform: scale(0.1);
+    transform: scale(0.1);
 
     -webkit-backface-visibility: hidden;
       -moz-backface-visibility: hidden;
@@ -1128,8 +1194,8 @@ p {
     -moz-transform-style: preserve-3d;
     -ms-transform-style: preserve-3d;
     -o-transform-style: preserve-3d;
-
     transform-style: preserve-3d;
+
 
     -webkit-transform-origin:       50% 50%;
         -moz-transform-origin:      50% 50%;
@@ -1152,6 +1218,29 @@ p {
     */
 }
 
+/* some colors to add difference */
+.tile:nth-child(5n+0) img {
+  background-color: #31e728;
+}
+.tile:nth-child(5n+1) img {
+  background-color: #e77e1f;
+}
+.tile:nth-child(5n+2) img {
+  background-color: #ff779f;
+}
+.tile:nth-child(5n+3) img {
+  background-color: #1f3ee4;
+}
+.tile:nth-child(5n+3) img {
+  background-color: #f1e304;
+}
+
+
+
+
+/*
+ * Image loaded
+ */
 .tile img.loaded {
     width: 110px;
     height: 170px;
@@ -1160,14 +1249,14 @@ p {
     left: 0px;
     top: 0px;
 
-    filter: grayscale(0);
-    -webkit-filter: grayscale(0);
-    -moz-filter: grayscale(0);
-    -ms-filter: grayscale(0);
-    -o-filter: grayscale(0);
+    border-radius: 0;
+
+    -webkit-transform: scale(1.0);
+    -moz-transform: scale(1.0);
+      transform: scale(1.0);
 }
 
-.tile img:hover {
+.tile img.loaded:hover {
     z-index: 15;
 
     -webkit-transition: all .150s cubic-bezier( 0.420, 0.0,  0.58, 1.0);

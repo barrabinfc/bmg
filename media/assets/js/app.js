@@ -33,7 +33,7 @@ App = (function() {
     var loadingImages;
     this.photoJSONList = photoList;
     this.imgCounter = Math.floor(Math.random() * (this.photoJSONList.length - 1));
-    window.addEventListener('resize', $jQ.debounce(100, this.onResize), false);
+    window.addEventListener('resize', $jQ.debounce(300, this.onResize), false);
 
     /*
     $jQ('#wall').on('mouseup', '.tile', (ev,e ) =>
@@ -47,34 +47,32 @@ App = (function() {
       "height": 180,
       "speed": 800,
       "inertia": true,
-      "inertiaSpeed": 0.93,
+      "inertiaSpeed": 0.8,
       "printCoordinates": false,
       "rangex": [-100, 100],
       "rangey": [-100, 100],
       callOnMouseUp: (function(_this) {
         return function(ev) {
-          console.log("callonMouseUp", _this.dragged);
-          if (_this.dragged) {
-            _this.dragged = false;
-          }
+          console.log("mouseUp");
         };
       })(this),
       callOnMouseDown: (function(_this) {
         return function(ev) {};
       })(this),
+      callOnMouseDragged: $jQ.debounce(300, (function(_this) {
+        return function(pos, ev) {
+          var xDir, yDir;
+          xDir = pos[0] > 0 && 1 || -1;
+          yDir = pos[1] > 0 && 1 || -1;
+          console.log(xDir, yDir);
+        };
+      })(this)),
       callOnMouseClick: (function(_this) {
         return function(ev) {
-          if (_this.dragged) {
-            _this.dragged = false;
+          if (_this.wall.getMovement()) {
             return;
           }
           return _this.onPhotoClick(ev);
-        };
-      })(this),
-      callOnMouseDragged: (function(_this) {
-        return function(ev) {
-          _this.dragged = true;
-          console.log("dragging");
         };
       })(this),
       callOnUpdate: (function(_this) {

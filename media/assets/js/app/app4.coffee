@@ -27,7 +27,7 @@ class App
         @imgCounter = Math.floor( Math.random() * (@photoJSONList.length - 1) )
 
         # Setup Events
-        window.addEventListener('resize', $jQ.debounce( 100, @onResize ), false)
+        window.addEventListener('resize', $jQ.debounce( 300, @onResize ), false)
         ###
         $jQ('#wall').on('mouseup', '.tile', (ev,e ) =>
             @onPhotoClick(ev,e) if not @dragged
@@ -44,30 +44,37 @@ class App
                         "height":   180,
                         "speed":    800,
                         "inertia":  true,
-                        "inertiaSpeed": 0.93,
+                        "inertiaSpeed": 0.8,
                         "printCoordinates": false,
                         "rangex":   [-100,100],
                         "rangey":   [-100,100],
 
                         callOnMouseUp: (ev) =>
-                          console.log("callonMouseUp", @dragged)
-                          if @dragged
-                            @dragged = false
-                            return
+                          console.log("mouseUp");
+                          #$jQ('#wall').css({transform: 'perspective(1200px) ' +
+                          #                              'rotateY(0deg)' +
+                          #                              'rotateX(0deg);' });
+                          return
 
                         callOnMouseDown: (ev) =>
                           return
 
+                        callOnMouseDragged: $jQ.debounce(300, (pos, ev) =>
+                          xDir = (pos[0] > 0 && 1 || -1);
+                          yDir = (pos[1] > 0 && 1 || -1);
+                          console.log(xDir,yDir);
+                          #$jQ('#wall').css({transform: 'perspective(1200px) ' +
+                          #                              'rotateY('+(xDir*5)+'deg)' +
+                          #                              'rotateX('+(yDir*5)+'deg);'});
+                          return
+                        )
+
                         callOnMouseClick: (ev) =>
-                          if @dragged
-                            @dragged = false
+                          if @wall.getMovement()
                             return
+
                           @onPhotoClick(ev);
 
-                        callOnMouseDragged: (ev) =>
-                          @dragged = true;
-                          console.log("dragging");
-                          return
 
                         callOnUpdate:  (items) =>
                             return if items.length == 0
@@ -101,10 +108,11 @@ class App
             currPhoto = @photoJSONList[@imgCounter]
 
             img = new Element("img[src='#{currPhoto.url_small}']")
+            #img.addClass('appear');
             img.inject(e.node)
 
             $jQ(e.node).imagesLoaded( (elem,cb)->
-                $jQ(img).addClass('loaded')
+                $jQ(img).addClass('loaded') #.addClass("appear");
             )
 
             $jQ(img).data('photo_info', currPhoto)
