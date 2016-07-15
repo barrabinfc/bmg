@@ -18,9 +18,11 @@ App = (function() {
     this.onScrollStart = bind(this.onScrollStart, this);
     this.createDOMPhotos = bind(this.createDOMPhotos, this);
     this.setup = bind(this.setup, this);
-    var HEIGHT, WIDTH, ref;
+    var ref, ref1, ref2;
     this.size = size;
-    ref = [this.size[0], this.size[1]], WIDTH = ref[0], HEIGHT = ref[1];
+    ref = [this.size[0], this.size[1]], this.WIDTH = ref[0], this.HEIGHT = ref[1];
+    ref1 = [120, 180], this.item_width = ref1[0], this.item_height = ref1[1];
+    ref2 = [0, 0], this.rows_in_screen = ref2[0], this.cols_in_screen = ref2[1];
     this.photoJSONList = [];
     this.photosDOMList = [];
     this.inZoom = false;
@@ -43,10 +45,11 @@ App = (function() {
     this.wall = new Wall("wall", {
       "draggable": true,
       "scrollable": true,
-      "width": 120,
-      "height": 180,
+      "width": this.item_width,
+      "height": this.item_height,
       "speed": 800,
       "inertia": true,
+      "autoposition": true,
       "inertiaSpeed": 0.8,
       "printCoordinates": false,
       "rangex": [-100, 100],
@@ -64,7 +67,6 @@ App = (function() {
           var xDir, yDir;
           xDir = pos[0] > 0 && 1 || -1;
           yDir = pos[1] > 0 && 1 || -1;
-          console.log(xDir, yDir);
         };
       })(this)),
       callOnMouseClick: (function(_this) {
@@ -129,12 +131,24 @@ App = (function() {
   };
 
   App.prototype.onPhotoClick = function(ev, e) {
-    var info;
+    var center, info;
     this.cTarget = $jQ(ev.target);
     if (this.cTarget.is('div')) {
       this.cTarget = this.cTarget.children();
     }
     info = $jQ(this.cTarget).data('photo_info');
+    center = (function(_this) {
+      return function() {
+        var basePos, diff, middle, pos, tile;
+        tile = _this.cTarget.parent();
+        pos = tile.attr('rel').split('x').map(Number);
+        basePos = _this.wall.getCoordinatesFromId(_this.wall.getActiveItem());
+        middle = [basePos.c + _this.cols_in_screen / 3.0, basePos.r + _this.rows_in_screen / 2.0].map(Math.floor);
+        diff = [middle[0] - pos[0], middle[1] - pos[1]];
+        return _this.wall.moveTo(basePos.c - diff[0], basePos.r - diff[1]);
+      };
+    })(this);
+    center();
     return this.viewPhoto({
       info: info,
       el: this.cTarget
@@ -175,16 +189,20 @@ App = (function() {
   };
 
   App.prototype.onResize = function() {
-    var HEIGHT, WIDTH, ref;
-    ref = [window.innerWidth, window.innerHeight], WIDTH = ref[0], HEIGHT = ref[1];
+    var ref, ref1;
+    ref = [window.innerWidth, window.innerHeight], this.WIDTH = ref[0], this.HEIGHT = ref[1];
+    ref1 = [this.WIDTH / this.item_width, this.HEIGHT / this.item_height].map(Math.floor), this.cols_in_screen = ref1[0], this.rows_in_screen = ref1[1];
     $jQ(this.container).css({
-      width: WIDTH,
-      height: HEIGHT
+      width: this.WIDTH,
+      height: this.HEIGHT
     });
-    return $jQ('#overlay').css({
-      width: WIDTH,
-      height: HEIGHT
+    $jQ('#overlay').css({
+      width: this.WIDTH,
+      height: this.HEIGHT
     });
+    if (this.wall) {
+      return this.wall.options.callOnUpdate(this.wall.updateWall());
+    }
   };
 
   return App;
@@ -212,14 +230,13 @@ init = function() {
   banco = new App('#viewport', [window.innerWidth, window.innerHeight]);
   menu = $jQ('#menu');
   menu.show();
-  prefetch = 50;
+  prefetch = 30;
   onLoadProgress = function(instance, img) {
     if (img.length > prefetch) {
       return onLoadedComplete(instance, img);
     }
   };
   onLoadedComplete = function(instance, img) {
-    console.log('loader complete');
     return setTimeout(mloader.complete, 600);
   };
   $jQ.getJSON(API_URL, (function(_this) {
@@ -468,7 +485,8 @@ PhotoView = (function() {
   PhotoView.prototype.start = function(page_data) {
     window.photoview = true;
     this.photoview = true;
-    return console.log("photoview:start");
+    $jQ('.next', this.el).bind('click', this.next);
+    return $jQ('.previous', this.el).bind('click', this.previous);
   };
 
   PhotoView.prototype.stop = function() {
@@ -483,13 +501,11 @@ PhotoView = (function() {
     return ev.stopPropagation();
   };
 
-  PhotoView.prototype.render = function(page_data) {
-    console.log("render", page_data);
-    $jQ('.photo', this.el).attr({
-      src: page_data.info.url
+  PhotoView.prototype.render = function(photo) {
+    console.log("render", photo);
+    return $jQ('.media.center > .photo', this.el).attr({
+      src: photo.info.url
     });
-    $jQ('.next', this.el).bind('click', this.next);
-    return $jQ('.previous', this.el).bind('click', this.previous);
   };
 
   PhotoView.prototype.initComplete = function(ev) {

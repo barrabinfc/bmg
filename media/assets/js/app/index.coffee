@@ -20,14 +20,13 @@ init = ->
     menu  = $jQ('#menu')
     menu.show()
 
-    prefetch = 50
+    prefetch = 30
     onLoadProgress = (instance, img) ->
         if (img.length > prefetch)
             onLoadedComplete(instance,img)
 
     # Plz wait 600 ms before finishing
     onLoadedComplete = (instance, img) ->
-        console.log('loader complete')
         setTimeout( mloader.complete , 600 )
 
     # Get genitalia pictures, and start feeding it!

@@ -5700,7 +5700,7 @@ var Wall = new Class({
             console.log("wall:is_scrollable")
             //document.id(this.__target).addEvent(['scroll','mousewheel'], function(el, e){
             document.id(document).addEvent('mousewheel', function(e){
-
+                console.log("mousewheel", this);
                 this.xspeed = e.page.x - this.xPos; // x mouse speed
                 this.yspeed = e.page.y - this.yPos; // y mouse speed
                 this.xPos   = e.page.x;
@@ -6230,6 +6230,7 @@ var Wall = new Class({
      * @return node Dom element
      */
     codaActiveItem: function(i){
+        console.log("codaActiveItem", i);
         // Esegue CallBack
         this.options.callOnChange(i);
         // Attivazione

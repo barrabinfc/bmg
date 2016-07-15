@@ -7,7 +7,9 @@ class PhotoView
         window.photoview = true
         @photoview = true
 
-        console.log("photoview:start")
+        $jQ('.next',@el).bind('click', @next)
+        $jQ('.previous',@el).bind('click',@previous)
+
 
     stop: =>
         console.log("photoview:stop")
@@ -18,12 +20,10 @@ class PhotoView
     previous: (ev) =>
       return ev.stopPropagation();
 
-    render: (page_data) =>
-        console.log("render", page_data);
+    render: (photo) =>
+        console.log("render", photo);
 
-        $jQ('.photo',@el).attr({src: page_data.info.url})
-        $jQ('.next',@el).bind('click', @next)
-        $jQ('.previous',@el).bind('click',@previous)
+        $jQ('.media.center > .photo',@el).attr({src: photo.info.url})
 
 
     initComplete: (ev) =>

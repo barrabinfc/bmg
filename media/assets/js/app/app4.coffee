@@ -11,7 +11,9 @@ window.zoomSettings = {
 class App
     constructor: (viewport,size) ->
         @size   = size
-        [WIDTH,HEIGHT] = [ @size[0], @size[1]]
+        [@WIDTH,@HEIGHT] = [ @size[0], @size[1]]
+        [@item_width, @item_height ] = [ 120, 180 ];
+        [@rows_in_screen,@cols_in_screen] = [ 0, 0 ];
 
         @photoJSONList  = []
         @photosDOMList  = []
@@ -40,10 +42,11 @@ class App
         @wall = new Wall("wall", {
                         "draggable": true,
                         "scrollable": true,
-                        "width":    120,
-                        "height":   180,
+                        "width":    @item_width,
+                        "height":   @item_height,
                         "speed":    800,
                         "inertia":  true,
+                        "autoposition": true,
                         "inertiaSpeed": 0.8,
                         "printCoordinates": false,
                         "rangex":   [-100,100],
@@ -62,7 +65,6 @@ class App
                         callOnMouseDragged: $jQ.debounce(300, (pos, ev) =>
                           xDir = (pos[0] > 0 && 1 || -1);
                           yDir = (pos[1] > 0 && 1 || -1);
-                          console.log(xDir,yDir);
                           #$jQ('#wall').css({transform: 'perspective(1200px) ' +
                           #                              'rotateY('+(xDir*5)+'deg)' +
                           #                              'rotateX('+(yDir*5)+'deg);'});
@@ -140,7 +142,29 @@ class App
         if(@cTarget).is('div')
           @cTarget = @cTarget.children()
 
+        # Get photo data
         info = $jQ(@cTarget).data('photo_info');
+
+        # Get photo position (row/col)
+        center = () =>
+          tile = @cTarget.parent()
+          pos  = tile.attr('rel').split('x').map( Number );
+
+          # Get middle wall position
+          basePos = @wall.getCoordinatesFromId( @wall.getActiveItem() )
+          middle = [basePos.c + @cols_in_screen/3.0,
+                    basePos.r + @rows_in_screen/2.0].map( Math.floor );
+
+          # Get delta diff. from photo position to the middle
+          diff = [middle[0] - pos[0], middle[1] - pos[1]];
+
+          # Now move deltaDiff from the base (activeItem)
+          @wall.moveTo( basePos.c - diff[0], basePos.r - diff[1] )
+
+
+
+        # show the overlay
+        center()
         @viewPhoto({info: info, el: @cTarget})
 
         ###
@@ -175,9 +199,15 @@ class App
         $jQ('body').zoomTo(window.zoomSettings)
 
     onResize: =>
-        [WIDTH,HEIGHT] = [window.innerWidth, window.innerHeight]
-        $jQ(@container).css({width: WIDTH, height: HEIGHT});
-        $jQ('#overlay').css({width: WIDTH, height: HEIGHT});
+        [@WIDTH,@HEIGHT]                    = [window.innerWidth, window.innerHeight];
+        [@cols_in_screen, @rows_in_screen]  = [@WIDTH/@item_width, @HEIGHT/@item_height].map( Math.floor );
+
+        $jQ(@container).css({width: @WIDTH, height: @HEIGHT});
+        $jQ('#overlay').css({width: @WIDTH, height: @HEIGHT});
+
+        if(@wall)
+          @wall.options.callOnUpdate(@wall.updateWall());
+        
 
 
 module.exports = App

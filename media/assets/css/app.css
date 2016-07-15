@@ -630,17 +630,17 @@ p {
 }
 
 
-*.unselectable {
-   -moz-user-select: -moz-none;
-   -khtml-user-select: none;
-   -webkit-user-select: none;
+.unselectable {
+   -moz-user-select: -moz-none !important;
+   -khtml-user-select: none !important;
+   -webkit-user-select: none !important;
 
    /*
      Introduced in IE 10.
      See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
    */
-   -ms-user-select: none;
-   user-select: none;
+   -ms-user-select: none !important;
+   user-select: none !important;
 }
 
 .squarebuttons {
@@ -709,14 +709,11 @@ p {
 }
 
 
-
-
-.left {
-    float: left;
+.float.left {
+  float: left;
 }
-
-.right {
-    float: right;
+.float.right {
+  float: right;
 }
 
 .pink {
@@ -848,11 +845,11 @@ p {
 #overlay {
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
     z-index: 1000;
     overflow: hidden;
     background-color: rgba(0,0,0,0.95);
-    background: transparent -webkit-gradient(radial, center center, 3000, center center, 0, from(transparent), to(#000000));
+    /*background: #transparent -webkit-gradient(radial, center center, 3000, center center, 0, from(transparent), to(#000000)); */
 
     -webkit-backface-visibility: hidden;
       -moz-backface-visibility: hidden;
@@ -869,6 +866,7 @@ p {
     margin: 10% auto;
     width: 100%;
     height: 100%;
+    opacity: 0;
 
     display: flex;
     flex-direction: column;
@@ -1006,45 +1004,82 @@ p {
 }
 
 .photoview .container {
+  position: absolute;
+  width: 100%;
+  top: 0; left: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.photoview .container .media {
+  pointer-events: none;
+
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0%;
+
+  transition: all 0.45s  cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+}
+
+.photoview .container .media .photo {
+  max-width: 70%;
+  max-height: 90%;
+  order: 100;
+  border: 15px solid #f1f1f1;
+}
+
+
+/*
+ * Carousel left/right/center photos
+ */
+.photoview .container .media.center {
+  left: 0%;
+}
+.photoview .container .media.left {
+  left: -100%;
+}
+.photoview .container .media.right {
+  left: 100%;
+}
+
+
+
+/*
+ * Controls left / right
+ */
+.photoview .controls {
   width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
   align-items: center;
+  justify-content: center;
 }
 
-.photoview .container .photo {
-  max-width: 70%;
-  order: 100;
-}
-
-.photoview .container .next,
-.photoview .container .previous {
-  width: 10%;
-  text-align: center;
-  font-size: 2em;
-  font-weight: normal;
-}
-
-.photoview .container a {
-  -webkit-transform:translateZ(0);
-  -moz-transform: translateZ(0);
-  transform: translateZ(0);
+.photoview .controls a {
   transform-origin: 50% 50%;
   -webkit-transform-origin: 50% 50%;
   -moz-transform-origin: 50% 50%;
 
+  width: 10%;
+  text-align: center;
+  font-size: 2em;
   font-weight: normal;
+
   font-size: 2em;
   transition: all 0.15s  cubic-bezier( 0.420, 0.0,  0.58, 1.0);
 }
-.photoview .container a:hover {
+.photoview .controls a:hover {
   transform: scale(1.2);
   -webkit-transform: scale(1.2);
 }
 
-.photoview .container .previous { order: 0; }
-.photoview .container .next { order: 300; }
+.photoview .controls .spacer { order: 10; min-width: 80%; width: 80%;}
+.photoview .controls .previous { order: 0; }
+.photoview .controls .next { order: 300; }
 
 
 
@@ -1053,7 +1088,6 @@ p {
  */
 #menu {
     position: fixed;
-    width: 100%;
     top: 15px;
     right: 15px;
     z-index: 1010;
@@ -1156,16 +1190,6 @@ p {
 .tile {
     width: 120px;
     height: 180px;
-
-    -webkit-backface-visibility: hidden;
-      -moz-backface-visibility: hidden;
-        -ms-backface-visibility: hidden;
-    backface-visibility: hidden;
-
-    -webkit-transform-style: preserve-3d;
-    -moz-transform-style: preserve-3d;
-    -ms-transform-style: preserve-3d;
-    transform-style: preserve-3d;
 }
 
 .tile img {
