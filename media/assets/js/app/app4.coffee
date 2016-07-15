@@ -35,19 +35,18 @@ class App
             @onPhotoClick(ev,e) if not @dragged
         )
         ###
-        #$jQ(document).on('mousewheel', @onScrollStart.bind(this))
+        $jQ(document).on('mousewheel', @onScrollStart.bind(this))
         #$jQ(document).on('mousewheel DOMMouseScroll', @onScrollStop)
 
         # start wall
         @wall = new Wall("wall", {
                         "draggable": true,
-                        "scrollable": true,
+                        "scrollable": false,
                         "width":    @item_width,
                         "height":   @item_height,
                         "speed":    800,
                         "inertia":  true,
-                        "autoposition": true,
-                        "inertiaSpeed": 0.8,
+                        "inertiaSpeed": 0.9,
                         "printCoordinates": false,
                         "rangex":   [-100,100],
                         "rangey":   [-100,100],
@@ -65,10 +64,8 @@ class App
                         callOnMouseDragged: $jQ.debounce(300, (pos, ev) =>
                           xDir = (pos[0] > 0 && 1 || -1);
                           yDir = (pos[1] > 0 && 1 || -1);
-                          #$jQ('#wall').css({transform: 'perspective(1200px) ' +
-                          #                              'rotateY('+(xDir*5)+'deg)' +
-                          #                              'rotateX('+(yDir*5)+'deg);'});
-                          return
+                          console.log('callonMouseDragged');
+                          return true
                         )
 
                         callOnMouseClick: (ev) =>
@@ -135,50 +132,38 @@ class App
 
       return false;
 
+    moveToCenter: (pos) =>
+        # Get middle wall position
+        basePos = @wall.getCoordinatesFromId( @wall.getActiveItem() )
+        middle = [basePos.c + @cols_in_screen/2.0,
+                  basePos.r + @rows_in_screen/2.0].map( Math.floor );
+
+        # Get delta diff. from photo position to the middle
+        diff = [middle[0] - pos.c, middle[1] - pos.r];
+
+        # Now move deltaDiff from the base (activeItem)
+        @wall.moveTo( basePos.c - diff[0], basePos.r - diff[1] )
+
     # Someone clicked on the photo.
     onPhotoClick: (ev,e) =>
         # Dont zoom if dragging
         @cTarget = $jQ(ev.target)
-        if(@cTarget).is('div')
-          @cTarget = @cTarget.children()
+        if(@cTarget).is('img')
+          @cTarget = @cTarget.parent()
 
         # Get photo data
-        info = $jQ(@cTarget).data('photo_info');
+        info = $jQ('img',@cTarget).data('photo_info');
 
         # Get photo position (row/col)
-        center = () =>
-          tile = @cTarget.parent()
-          pos  = tile.attr('rel').split('x').map( Number );
-
-          # Get middle wall position
-          basePos = @wall.getCoordinatesFromId( @wall.getActiveItem() )
-          middle = [basePos.c + @cols_in_screen/3.0,
-                    basePos.r + @rows_in_screen/2.0].map( Math.floor );
-
-          # Get delta diff. from photo position to the middle
-          diff = [middle[0] - pos[0], middle[1] - pos[1]];
-
-          # Now move deltaDiff from the base (activeItem)
-          @wall.moveTo( basePos.c - diff[0], basePos.r - diff[1] )
-
-
+        tile  = @cTarget
+        _pos  = tile.attr('rel').split('x').map( Number );
+        pos   = {c: _pos[0], r: _pos[1]}
 
         # show the overlay
-        center()
-        @viewPhoto({info: info, el: @cTarget})
-
-        ###
-        if not @inZoom
-            @zoomIn( @cTarget )
-        else
-            if @cTarget.attr('src') == @prevTarget.attr('src')
-                @zoomOut()
-            else
-                @zoomIn( @cTarget )
-        ###
+        @moveToCenter( pos );
+        @viewPhoto( @cTarget );
 
     viewPhoto: (photo) =>
-        console.log("Clicked at: ", photo);
         window.overlay.setPage('photoview', photo)
         window.overlay.show()
 
@@ -207,7 +192,7 @@ class App
 
         if(@wall)
           @wall.options.callOnUpdate(@wall.updateWall());
-        
+
 
 
 module.exports = App

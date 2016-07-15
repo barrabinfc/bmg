@@ -15,6 +15,7 @@ App = (function() {
     this.zoomIn = bind(this.zoomIn, this);
     this.viewPhoto = bind(this.viewPhoto, this);
     this.onPhotoClick = bind(this.onPhotoClick, this);
+    this.moveToCenter = bind(this.moveToCenter, this);
     this.onScrollStart = bind(this.onScrollStart, this);
     this.createDOMPhotos = bind(this.createDOMPhotos, this);
     this.setup = bind(this.setup, this);
@@ -42,15 +43,15 @@ App = (function() {
         @onPhotoClick(ev,e) if not @dragged
     )
      */
+    $jQ(document).on('mousewheel', this.onScrollStart.bind(this));
     this.wall = new Wall("wall", {
       "draggable": true,
-      "scrollable": true,
+      "scrollable": false,
       "width": this.item_width,
       "height": this.item_height,
       "speed": 800,
       "inertia": true,
-      "autoposition": true,
-      "inertiaSpeed": 0.8,
+      "inertiaSpeed": 0.9,
       "printCoordinates": false,
       "rangex": [-100, 100],
       "rangey": [-100, 100],
@@ -67,6 +68,8 @@ App = (function() {
           var xDir, yDir;
           xDir = pos[0] > 0 && 1 || -1;
           yDir = pos[1] > 0 && 1 || -1;
+          console.log('callonMouseDragged');
+          return true;
         };
       })(this)),
       callOnMouseClick: (function(_this) {
@@ -130,43 +133,32 @@ App = (function() {
     return false;
   };
 
-  App.prototype.onPhotoClick = function(ev, e) {
-    var center, info;
-    this.cTarget = $jQ(ev.target);
-    if (this.cTarget.is('div')) {
-      this.cTarget = this.cTarget.children();
-    }
-    info = $jQ(this.cTarget).data('photo_info');
-    center = (function(_this) {
-      return function() {
-        var basePos, diff, middle, pos, tile;
-        tile = _this.cTarget.parent();
-        pos = tile.attr('rel').split('x').map(Number);
-        basePos = _this.wall.getCoordinatesFromId(_this.wall.getActiveItem());
-        middle = [basePos.c + _this.cols_in_screen / 3.0, basePos.r + _this.rows_in_screen / 2.0].map(Math.floor);
-        diff = [middle[0] - pos[0], middle[1] - pos[1]];
-        return _this.wall.moveTo(basePos.c - diff[0], basePos.r - diff[1]);
-      };
-    })(this);
-    center();
-    return this.viewPhoto({
-      info: info,
-      el: this.cTarget
-    });
+  App.prototype.moveToCenter = function(pos) {
+    var basePos, diff, middle;
+    basePos = this.wall.getCoordinatesFromId(this.wall.getActiveItem());
+    middle = [basePos.c + this.cols_in_screen / 2.0, basePos.r + this.rows_in_screen / 2.0].map(Math.floor);
+    diff = [middle[0] - pos.c, middle[1] - pos.r];
+    return this.wall.moveTo(basePos.c - diff[0], basePos.r - diff[1]);
+  };
 
-    /*
-    if not @inZoom
-        @zoomIn( @cTarget )
-    else
-        if @cTarget.attr('src') == @prevTarget.attr('src')
-            @zoomOut()
-        else
-            @zoomIn( @cTarget )
-     */
+  App.prototype.onPhotoClick = function(ev, e) {
+    var _pos, info, pos, tile;
+    this.cTarget = $jQ(ev.target);
+    if (this.cTarget.is('img')) {
+      this.cTarget = this.cTarget.parent();
+    }
+    info = $jQ('img', this.cTarget).data('photo_info');
+    tile = this.cTarget;
+    _pos = tile.attr('rel').split('x').map(Number);
+    pos = {
+      c: _pos[0],
+      r: _pos[1]
+    };
+    this.moveToCenter(pos);
+    return this.viewPhoto(this.cTarget);
   };
 
   App.prototype.viewPhoto = function(photo) {
-    console.log("Clicked at: ", photo);
     window.overlay.setPage('photoview', photo);
     return window.overlay.show();
   };
@@ -469,17 +461,26 @@ var PhotoView,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 PhotoView = (function() {
-  function PhotoView(parent, el) {
+  function PhotoView(parent, el1) {
     this.parent = parent;
-    this.el = el;
+    this.el = el1;
     this.initComplete = bind(this.initComplete, this);
     this.render = bind(this.render, this);
     this.previous = bind(this.previous, this);
     this.next = bind(this.next, this);
+    this.setActiveItem = bind(this.setActiveItem, this);
     this.stop = bind(this.stop, this);
     this.start = bind(this.start, this);
     console.log("photview:Constructor");
-    console.log(this.el);
+    this.id = 0;
+    this.info = {};
+    this.tile = false;
+    this.pos = {
+      c: 0,
+      r: 0
+    };
+    this.nextId = this.prevId = 0;
+    this.nextPhoto = this.prevPhoto = {};
   }
 
   PhotoView.prototype.start = function(page_data) {
@@ -493,19 +494,62 @@ PhotoView = (function() {
     return console.log("photoview:stop");
   };
 
+  PhotoView.prototype.setActiveItem = function(el) {
+    var _pos;
+    this.tile = el;
+    this.info = $jQ('img', this.tile).data('photo_info');
+    _pos = this.tile.attr('rel').split('x').map(Number);
+    this.pos = {
+      c: _pos[0],
+      r: _pos[1]
+    };
+    this.nextPos = {
+      c: this.pos.c + 1,
+      r: this.pos.r
+    };
+    this.prevPos = {
+      c: this.pos.c - 1,
+      r: this.pos.r
+    };
+    this.nextTile = $jQ('div[rel=' + this.nextPos.c + 'x' + this.nextPos.r + ']', window.banco.wall.wall);
+    this.prevTile = $jQ('div[rel=' + this.prevPos.c + 'x' + this.prevPos.r + ']', window.banco.wall.wall);
+    this.nextPhoto = $jQ('img', this.nextTile).data('photo_info');
+    this.prevPhoto = $jQ('img', this.prevTile).data('photo_info');
+    $jQ('.media.left > .photo', this.el).attr({
+      src: this.prevPhoto.url
+    });
+    $jQ('.media.center > .photo', this.el).attr({
+      src: this.info.url
+    });
+    return $jQ('.media.right > .photo', this.el).attr({
+      src: this.nextPhoto.url
+    });
+  };
+
   PhotoView.prototype.next = function(ev) {
+    var left;
+    left = $jQ('.media.left');
+    $jQ('.media.center').removeClass('center').addClass('left');
+    $jQ('.media.right').removeClass('right').addClass('center');
+    left.removeClass('left').addClass('right');
+    window.banco.wall.moveToNext();
+    this.setActiveItem(this.nextTile);
     return ev.stopPropagation();
   };
 
   PhotoView.prototype.previous = function(ev) {
+    var right;
+    right = $jQ('.media.right');
+    $jQ('.media.center').removeClass('center').addClass('right');
+    $jQ('.media.left').removeClass('left').addClass('center');
+    right.removeClass('right').addClass('left');
+    window.banco.wall.moveToPrev();
+    this.setActiveItem(this.prevTile);
     return ev.stopPropagation();
   };
 
-  PhotoView.prototype.render = function(photo) {
-    console.log("render", photo);
-    return $jQ('.media.center > .photo', this.el).attr({
-      src: photo.info.url
-    });
+  PhotoView.prototype.render = function(tile) {
+    return this.setActiveItem(tile);
   };
 
   PhotoView.prototype.initComplete = function(ev) {
@@ -649,8 +693,11 @@ OverlayManager = (function() {
     });
     this.on = false;
     this.init = false;
-    $jQ('.overlay').on('click', this.hide);
-    $jQ('.overlay-close').on('click', this.hide);
+    $jQ('.overlay').on('click', $jQ.debounce(300, this.hide));
+    $jQ('.overlay-close').on('click', $jQ.debounce(300, this.hide));
+    $jQ('#photobooth').hide();
+    $jQ('#mostraoteu').hide();
+    $jQ('#photoview').hide();
   }
 
   OverlayManager.prototype.getController = function(page_name) {
@@ -690,9 +737,7 @@ OverlayManager = (function() {
 
   OverlayManager.prototype.show = function() {
     $jQ('#menu-mostraoteu').addClass('closebtn');
-    this.el.show().transition({
-      opacity: 1
-    });
+    this.el.addClass('visible');
     this.cpage.show();
     return this.on = true;
   };
@@ -701,21 +746,7 @@ OverlayManager = (function() {
   /* Hide overlay */
 
   OverlayManager.prototype.hide = function() {
-    if (this.cobj) {
-      this.el.transition({
-        opacity: 0
-      }).queue(function() {
-        var ref;
-        $jQ(this).hide().dequeue();
-        return (ref = this.cobj) != null ? typeof ref.on_hide_complete === "function" ? ref.on_hide_complete() : void 0 : void 0;
-      });
-    } else {
-      this.el.transition({
-        opacity: 0
-      }).queue(function() {
-        return $jQ(this).hide().dequeue();
-      });
-    }
+    this.el.removeClass('visible');
     this.on = false;
     if (this.cobj) {
       this.cobj.stop();

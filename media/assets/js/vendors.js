@@ -5697,22 +5697,41 @@ var Wall = new Class({
         }.bind( this ))
 
         if(this.options.scrollable == true){
-            console.log("wall:is_scrollable")
             //document.id(this.__target).addEvent(['scroll','mousewheel'], function(el, e){
-            document.id(document).addEvent('mousewheel', function(e){
-                console.log("mousewheel", this);
+            document.id(document).addEvent('mousewheel', function(e,et){
+              /*
                 this.xspeed = e.page.x - this.xPos; // x mouse speed
                 this.yspeed = e.page.y - this.yPos; // y mouse speed
                 this.xPos   = e.page.x;
                 this.yPos   = e.page.y;
+              */
 
+                console.log(et);
+                console.log(e.deltaFactor)
+                this.xspeed = e.deltaX * e.deltaFactor;
+                this.yspeed = e.deltaY * e.deltaFactor;
+
+                this._startLeft   = this.wall.getStyle("left").toInt();
+                this._startTop    = this.wall.getStyle("top").toInt();
+
+                finX = this._startLeft + (this.xspeed*-1);
+                finY = this._startTop + (this.yspeed);
+
+                /*
                 this.options.callOnMouseDragged( [this.startX - this.xPos,
                                                     this.startY - this.yPos] , e)
-                //
+
+                [this.startX - this.xPos,
+                                                 this.startY - this.yPos]
+                */
+                console.log("mousewheel", (this.xspeed,this.yspeed));
+                this.wall.setStyles({"left": (finX),
+                                     "top":  (finY) });
+
                 e.stopPropagation();
 
                 // Interrompe Slideshow
-                this.clearSlideShow();
+                //this.clearSlideShow();
                 // Tronca transizione se riparte il drag
                 if( this.wallFX ) this.wallFX.cancel();
                 this.options.callOnUpdate(this.updateWall());
@@ -6230,7 +6249,6 @@ var Wall = new Class({
      * @return node Dom element
      */
     codaActiveItem: function(i){
-        console.log("codaActiveItem", i);
         // Esegue CallBack
         this.options.callOnChange(i);
         // Attivazione
@@ -6259,6 +6277,7 @@ var Wall = new Class({
     initMobile: function(){
         // Touch Start Slider
         this.wall.__root = this
+        console.log("initMobile");
         this.wall.addEvent('touchstart',function(e) {
             if( e ) e.stop();
 

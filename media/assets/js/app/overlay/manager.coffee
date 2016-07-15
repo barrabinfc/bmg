@@ -18,14 +18,19 @@ class OverlayManager
     constructor: (el) ->
         @el = $jQ(el)
         @pages = ['photobooth','mostraoteu','photoview']
-        @controllers   = [new Photobooth(this,@el),new PhotoUpload(this,@el), new PhotoView(this,@el)]
+        @controllers   = [new Photobooth(this,@el), new PhotoUpload(this,@el), new PhotoView(this,@el)]
 
         @el.css({width: WIDTH, height: HEIGHT})
         @on = false
         @init = false
 
-        $jQ('.overlay').on('click', @hide);
-        $jQ('.overlay-close').on('click', @hide)
+        $jQ('.overlay').on('click', $jQ.debounce( 300, @hide ) );
+        $jQ('.overlay-close').on('click', $jQ.debounce( 300, @hide ) )
+
+        $jQ('#photobooth').hide();
+        $jQ('#mostraoteu').hide();
+        $jQ('#photoview').hide();
+
 
     getController: (page_name) ->
         return @controllers[ @pages.lastIndexOf( page_name ) ]
@@ -51,21 +56,15 @@ class OverlayManager
     ### Show overlay ###
     show: =>
         $jQ('#menu-mostraoteu').addClass('closebtn')
-        @el.show().transition({opacity: 1})
+        @el.addClass('visible');
+        #@el.show().transition({opacity: 1})
         @cpage.show()
         @on = true
 
     ### Hide overlay ###
     hide: =>
-        if(@cobj)
-            @el.transition({opacity: 0}).queue( ->
-                $jQ(this).hide().dequeue()
-                @cobj?.on_hide_complete?()
-            )
-        else
-            @el.transition({opacity: 0}).queue( ->
-                $jQ(this).hide().dequeue()
-            )
+        @el.removeClass('visible')
+
         @on = false
         @cobj.stop() if @cobj
 
