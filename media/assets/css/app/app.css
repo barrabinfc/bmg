@@ -720,18 +720,24 @@ p {
 /* some colors to add difference */
 .tile:nth-child(5n+0) img {
   background-color: #31e728;
+  transition-delay: 0.20s;
 }
 .tile:nth-child(5n+1) img {
   background-color: #e77e1f;
+  transition-delay: 0.40s;
 }
 .tile:nth-child(5n+2) img {
   background-color: #ff779f;
+  transition-delay: 0.60s;
 }
 .tile:nth-child(5n+3) img {
   background-color: #1f3ee4;
+  transition-delay: 0.80s;
+
 }
 .tile:nth-child(5n+3) img {
   background-color: #f1e304;
+  transition-delay: 1.0s;
 }
 
 

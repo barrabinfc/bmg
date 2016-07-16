@@ -50,8 +50,8 @@ class OverlayManager
         if not @init
             @cobj.start( page_data )
             @init = true
-        else
-            @cobj.render( page_data )
+
+        @cobj.render( page_data )
 
     ### Show overlay ###
     show: =>

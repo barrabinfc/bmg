@@ -469,6 +469,7 @@ PhotoView = (function() {
     this.previous = bind(this.previous, this);
     this.next = bind(this.next, this);
     this.setActiveItem = bind(this.setActiveItem, this);
+    this.show = bind(this.show, this);
     this.stop = bind(this.stop, this);
     this.start = bind(this.start, this);
     console.log("photview:Constructor");
@@ -484,6 +485,7 @@ PhotoView = (function() {
   }
 
   PhotoView.prototype.start = function(page_data) {
+    console.log('photoview:start');
     window.photoview = true;
     this.photoview = true;
     $jQ('.next', this.el).bind('click', this.next);
@@ -492,6 +494,10 @@ PhotoView = (function() {
 
   PhotoView.prototype.stop = function() {
     return console.log("photoview:stop");
+  };
+
+  PhotoView.prototype.show = function() {
+    return console.log("photoview:show");
   };
 
   PhotoView.prototype.setActiveItem = function(el) {
@@ -549,6 +555,7 @@ PhotoView = (function() {
   };
 
   PhotoView.prototype.render = function(tile) {
+    console.log("photoview:render");
     return this.setActiveItem(tile);
   };
 
@@ -726,10 +733,9 @@ OverlayManager = (function() {
     this.cobj = this.controllers[this.pages.lastIndexOf(new_page)];
     if (!this.init) {
       this.cobj.start(page_data);
-      return this.init = true;
-    } else {
-      return this.cobj.render(page_data);
+      this.init = true;
     }
+    return this.cobj.render(page_data);
   };
 
 

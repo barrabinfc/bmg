@@ -9,6 +9,7 @@ class PhotoView
       @nextPhoto = @prevPhoto = {}
 
     start: (page_data) =>
+        console.log('photoview:start')
         window.photoview = true
         @photoview = true
 
@@ -18,6 +19,8 @@ class PhotoView
     stop: =>
         console.log("photoview:stop")
 
+    show: =>
+        console.log("photoview:show")
 
     setActiveItem: (el) =>
         @tile =  el
@@ -65,6 +68,7 @@ class PhotoView
       return ev.stopPropagation();
 
     render: (tile) =>
+        console.log("photoview:render")
         @setActiveItem(tile)
 
     initComplete: (ev) =>

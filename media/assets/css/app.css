@@ -797,18 +797,18 @@ p {
   100% {-webkit-transform:translate(0px, 0px) scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
 }
 @keyframes appear-keyframes {
-  0% {transform:translate(0px, 0px) scale(0.1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
-  9.09% {transform:translate(0px, 0px) scale(0.0711) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
-  18.18% {transform:translate(0px, 0px) scale(0.0234) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
-  27.27% {transform:translate(0px, 0px) scale(0.0151) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
-  36.36% {transform:translate(0px, 0px) scale(0.1047) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
-  45.45% {transform:translate(0px, 0px) scale(0.3504) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
-  54.55% {transform:translate(0px, 0px) scale(0.7496) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
-  63.64% {transform:translate(0px, 0px) scale(0.9953) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
-  72.73% {transform:translate(0px, 0px) scale(1.0849) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
-  81.82% {transform:translate(0px, 0px) scale(1.0766) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
-  90.91% {transform:translate(0px, 0px) scale(1.0289) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
-  100% {transform:translate(0px, 0px) scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate(-50%, -50%);}
+  0% {transform:translate(0px, 0px) scale(0.1) rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+  9.09% {transform:translate(0px, 0px) scale(0.0711) rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+  18.18% {transform:translate(0px, 0px) scale(0.0234) rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+  27.27% {transform:translate(0px, 0px) scale(0.0151) rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+  36.36% {transform:translate(0px, 0px) scale(0.1047) rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+  45.45% {transform:translate(0px, 0px) scale(0.3504) rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+  54.55% {transform:translate(0px, 0px) scale(0.7496) rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+  63.64% {transform:translate(0px, 0px) scale(0.9953) rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+  72.73% {transform:translate(0px, 0px) scale(1.0849) rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+  81.82% {transform:translate(0px, 0px) scale(1.0766) rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+  90.91% {transform:translate(0px, 0px) scale(1.0289) rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+  100% {transform:translate(0px, 0px) scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
 }
 
 
@@ -868,6 +868,7 @@ p {
     transform-origin: 50% 50%;
     transform: scale(1.1);
     transition: all 0.35s  cubic-bezier( 0.420, 0.0,  0.58, 1.0);
+    animation: appear
 }
 #overlay.visible {
     opacity: 1;
@@ -1003,7 +1004,7 @@ p {
 
 
 /*
- *
+ * Carousel
  */
 .photoview {
   width: 100%;
@@ -1061,6 +1062,7 @@ p {
   left: 100%;
   opacity: 0;
 }
+
 
 
 
@@ -1260,18 +1262,24 @@ p {
 /* some colors to add difference */
 .tile:nth-child(5n+0) img {
   background-color: #31e728;
+  transition-delay: 0.20s;
 }
 .tile:nth-child(5n+1) img {
   background-color: #e77e1f;
+  transition-delay: 0.40s;
 }
 .tile:nth-child(5n+2) img {
   background-color: #ff779f;
+  transition-delay: 0.60s;
 }
 .tile:nth-child(5n+3) img {
   background-color: #1f3ee4;
+  transition-delay: 0.80s;
+
 }
 .tile:nth-child(5n+3) img {
   background-color: #f1e304;
+  transition-delay: 1.0s;
 }
 
 
