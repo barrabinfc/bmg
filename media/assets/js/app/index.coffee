@@ -38,7 +38,6 @@ init = ->
     # User Events #
     ###############
     $jQ('#menu-mostraoteu').on 'click', (ev) ->
-                            console.log("click ", ev)
                             if(overlay.on)
                                 overlay.hide()
                             else

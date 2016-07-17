@@ -1,6 +1,7 @@
 class PhotoView
     constructor: (@parent, @el) ->
       console.log("photview:Constructor" )
+      @init = false
       @id = 0
       @info = {}
       @tile = false
@@ -43,6 +44,7 @@ class PhotoView
         $jQ('.media.right > .photo',@el).attr({src: @nextPhoto.url})
 
     next: (ev) =>
+      console.log('next:click');
 
       # Turn carrousel on
       left = $jQ('.media.left')
@@ -56,6 +58,7 @@ class PhotoView
       return ev.stopPropagation();
 
     previous: (ev) =>
+      console.log('previous:click');
 
       right = $jQ('.media.right')
       $jQ('.media.center').removeClass('center').addClass('right');
@@ -72,6 +75,6 @@ class PhotoView
         @setActiveItem(tile)
 
     initComplete: (ev) =>
-        console.log("photoiew:init")
+        console.log("photoview:init")
 
 module.exports = PhotoView

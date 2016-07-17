@@ -52,10 +52,6 @@ class App
                         "rangey":   [-100,100],
 
                         callOnMouseUp: (ev) =>
-                          console.log("mouseUp");
-                          #$jQ('#wall').css({transform: 'perspective(1200px) ' +
-                          #                              'rotateY(0deg)' +
-                          #                              'rotateX(0deg);' });
                           return
 
                         callOnMouseDown: (ev) =>
@@ -64,7 +60,6 @@ class App
                         callOnMouseDragged: $jQ.debounce(300, (pos, ev) =>
                           xDir = (pos[0] > 0 && 1 || -1);
                           yDir = (pos[1] > 0 && 1 || -1);
-                          console.log('callonMouseDragged');
                           return true
                         )
 
@@ -146,7 +141,6 @@ class App
 
     # Someone clicked on the photo.
     onPhotoClick: (ev,e) =>
-        # Dont zoom if dragging
         @cTarget = $jQ(ev.target)
         if(@cTarget).is('img')
           @cTarget = @cTarget.parent()

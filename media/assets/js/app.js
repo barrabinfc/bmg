@@ -56,9 +56,7 @@ App = (function() {
       "rangex": [-100, 100],
       "rangey": [-100, 100],
       callOnMouseUp: (function(_this) {
-        return function(ev) {
-          console.log("mouseUp");
-        };
+        return function(ev) {};
       })(this),
       callOnMouseDown: (function(_this) {
         return function(ev) {};
@@ -68,7 +66,6 @@ App = (function() {
           var xDir, yDir;
           xDir = pos[0] > 0 && 1 || -1;
           yDir = pos[1] > 0 && 1 || -1;
-          console.log('callonMouseDragged');
           return true;
         };
       })(this)),
@@ -237,7 +234,6 @@ init = function() {
     };
   })(this));
   $jQ('#menu-mostraoteu').on('click', function(ev) {
-    console.log("click ", ev);
     if (overlay.on) {
       overlay.hide();
     } else {
@@ -353,6 +349,7 @@ PhotoUploadOvr = (function() {
     this.render = bind(this.render, this);
     this.stop = bind(this.stop, this);
     this.start = bind(this.start, this);
+    this.init = false;
     this.delta = 1000.0 / 4;
     this.opts = ['8=>         ', '8==>        ', '8===>       ', '8=====>     ', '8=======>  o', '8======>    ', '8===>       ', '8==>        ', '8>          '];
     this.idx = 0;
@@ -426,7 +423,12 @@ PhotoUploadOvr = (function() {
     }
   };
 
-  PhotoUploadOvr.prototype.photoSubmitComplete = function(file, data) {};
+  PhotoUploadOvr.prototype.photoSubmitComplete = function(file, data) {
+    $jQ('.info').html();
+    return $jQ('#photo-submit').css({
+      'border-color': '#ffffff'
+    });
+  };
 
   PhotoUploadOvr.prototype.photoSubmitSuccess = function(file, data) {
     $jQ('.info').removeClass('label-warning').addClass('label-success').html(" Thanks ! Obrigado ! Merci !  Arigatō ! أوبريغادو 👏 👏 ");
@@ -473,6 +475,7 @@ PhotoView = (function() {
     this.stop = bind(this.stop, this);
     this.start = bind(this.start, this);
     console.log("photview:Constructor");
+    this.init = false;
     this.id = 0;
     this.info = {};
     this.tile = false;
@@ -534,6 +537,7 @@ PhotoView = (function() {
 
   PhotoView.prototype.next = function(ev) {
     var left;
+    console.log('next:click');
     left = $jQ('.media.left');
     $jQ('.media.center').removeClass('center').addClass('left');
     $jQ('.media.right').removeClass('right').addClass('center');
@@ -545,6 +549,7 @@ PhotoView = (function() {
 
   PhotoView.prototype.previous = function(ev) {
     var right;
+    console.log('previous:click');
     right = $jQ('.media.right');
     $jQ('.media.center').removeClass('center').addClass('right');
     $jQ('.media.left').removeClass('left').addClass('center');
@@ -560,7 +565,7 @@ PhotoView = (function() {
   };
 
   PhotoView.prototype.initComplete = function(ev) {
-    return console.log("photoiew:init");
+    return console.log("photoview:init");
   };
 
   return PhotoView;
@@ -588,6 +593,7 @@ PhotoboothOvr = (function() {
     this.render = bind(this.render, this);
     this.stop = bind(this.stop, this);
     this.start = bind(this.start, this);
+    this.init = false;
   }
 
   PhotoboothOvr.prototype.start = function() {
@@ -700,8 +706,15 @@ OverlayManager = (function() {
     });
     this.on = false;
     this.init = false;
-    $jQ('.overlay').on('click', $jQ.debounce(300, this.hide));
-    $jQ('.overlay-close').on('click', $jQ.debounce(300, this.hide));
+    $jQ('.overlay').on('click', (function(_this) {
+      return function(e) {
+        var tgt;
+        tgt = $jQ(e.target).attr('class');
+        if (tgt === "infoscreen" || tgt === "photoview") {
+          return _this.hide();
+        }
+      };
+    })(this));
     $jQ('#photobooth').hide();
     $jQ('#mostraoteu').hide();
     $jQ('#photoview').hide();
@@ -731,9 +744,9 @@ OverlayManager = (function() {
     this.cpage = $jQ('#' + new_page);
     this.cpage_name = new_page;
     this.cobj = this.controllers[this.pages.lastIndexOf(new_page)];
-    if (!this.init) {
+    if (!this.cobj.init) {
       this.cobj.start(page_data);
-      this.init = true;
+      this.cobj.init = true;
     }
     return this.cobj.render(page_data);
   };
@@ -751,7 +764,8 @@ OverlayManager = (function() {
 
   /* Hide overlay */
 
-  OverlayManager.prototype.hide = function() {
+  OverlayManager.prototype.hide = function(e) {
+    console.log('overlay:hide');
     this.el.removeClass('visible');
     this.on = false;
     if (this.cobj) {

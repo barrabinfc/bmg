@@ -1,6 +1,7 @@
 class PhotoboothOvr
     constructor: (@parent, @el) ->
-
+        @init = false
+        
     start: =>
         swfobject.switchOffAutoHideShow()
         swfobject.registerObject("openbooth","9")

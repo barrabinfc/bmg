@@ -24,9 +24,14 @@ class OverlayManager
         @on = false
         @init = false
 
-        $jQ('.overlay').on('click', $jQ.debounce( 300, @hide ) );
-        $jQ('.overlay-close').on('click', $jQ.debounce( 300, @hide ) )
+        $jQ('.overlay').on('click', (e) =>
+          # filter only overlay background clicks
+          tgt = $jQ(e.target).attr('class');
+          if( tgt == "infoscreen" || tgt == "photoview")
+            @hide()
+        );
 
+        # By default, hide everyone
         $jQ('#photobooth').hide();
         $jQ('#mostraoteu').hide();
         $jQ('#photoview').hide();
@@ -47,9 +52,9 @@ class OverlayManager
 
         @cpage_name = new_page
         @cobj = @controllers[ @pages.lastIndexOf( new_page ) ]
-        if not @init
+        if not @cobj.init
             @cobj.start( page_data )
-            @init = true
+            @cobj.init = true
 
         @cobj.render( page_data )
 
@@ -62,7 +67,8 @@ class OverlayManager
         @on = true
 
     ### Hide overlay ###
-    hide: =>
+    hide: (e) =>
+        console.log('overlay:hide');
         @el.removeClass('visible')
 
         @on = false

@@ -1,5 +1,6 @@
 class PhotoUploadOvr
     constructor: (@parent, @el) ->
+        @init = false
         @delta    = 1000.0/4
         @opts  = [ '8=>         ',
                   '8==>        ',
@@ -88,9 +89,8 @@ class PhotoUploadOvr
             $jQ('#photo-submit').append(img)
 
     photoSubmitComplete: (file,data ) =>
-        return
-        #$jQ('.info').html( );
-        #$jQ('#photo-submit').css({'border-color': '#ffffff'})
+        $jQ('.info').html( );
+        $jQ('#photo-submit').css({'border-color': '#ffffff'})
 
     photoSubmitSuccess: (file, data) =>
         $jQ('.info').removeClass('label-warning').addClass('label-success')
