@@ -576,6 +576,7 @@ p {
   border-radius: 50%;
   box-shadow: 0 0 60px #000;
   width: 64px; height: 64px;
+  outline: none;
 
   background-color: #ef1f3e;
   color: #000;
