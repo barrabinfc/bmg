@@ -17,10 +17,11 @@ module.exports = function(grunt) {
             },
             js_vendors: {
                 src: [
+                      'media/assets/js/libs/polyfills/performance.now.polyfill.js',
+
                       // jquery js
                       'media/assets/js/jquery/jquery.min.js',
                       'media/assets/js/jquery/jquery.throttle.min.js',
-                      'media/assets/js/jquery/jquery.zoomooz.js',
                       'media/assets/js/jquery/jquery.imagesloaded.js',
                       'media/assets/js/jquery/jquery.transit.js',
                       'media/assets/js/jquery/jquery.mousewheel.js',
@@ -99,6 +100,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-coffee');
+    //grunt.registerTask('default',['concat','browserif
     grunt.loadNpmTasks('grunt-browserify');
 
     //grunt.registerTask('default',['concat','browserify']);

@@ -11,14 +11,17 @@ PhotoView   = require('./PhotoView.coffee')
     @cobj  = Page Controller
 
     PageController.start = on first appeareance
-    PageController.stop  = on hided
+    PageController.stop  = on hidden
     PageController.render = on *every* appeareance
 ###
 class OverlayManager
     constructor: (el) ->
         @el = $jQ(el)
-        @pages = ['photobooth','mostraoteu','photoview']
-        @controllers   = [new Photobooth(this,@el), new PhotoUpload(this,@el), new PhotoView(this,@el)]
+        #@pages = [ 'photobooth','mostraoteu','photoview']
+        #@controllers   = [new Photobooth(this,@el), new PhotoUpload(this,@el), new PhotoView(this,@el)]
+        @pages          = [ 'mostraoteu','photoview']
+        @controllers    = [ new PhotoUpload(this,@el), new PhotoView(this,@el)]
+
 
         @el.css({width: WIDTH, height: HEIGHT})
         @on = false
@@ -32,7 +35,7 @@ class OverlayManager
         );
 
         # By default, hide everyone
-        $jQ('#photobooth').hide();
+        #$jQ('#photobooth').hide();
         $jQ('#mostraoteu').hide();
         $jQ('#photoview').hide();
 
@@ -62,13 +65,11 @@ class OverlayManager
     show: =>
         $jQ('#menu-mostraoteu').addClass('closebtn')
         @el.addClass('visible');
-        #@el.show().transition({opacity: 1})
         @cpage.show()
         @on = true
 
     ### Hide overlay ###
     hide: (e) =>
-        console.log('overlay:hide');
         @el.removeClass('visible')
 
         @on = false

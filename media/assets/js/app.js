@@ -212,6 +212,7 @@ Loader = require('./loader.coffee');
 
 init = function() {
   var banco, menu, mloader, onLoadProgress, onLoadedComplete, overlay, prefetch;
+  ga('send', 'timing', 'JS Loading Time', 'jsloadtime', Math.round(performance.now()));
   overlay = new OverlayManager('#overlay');
   overlay.hide();
   mloader = new Loader('#loading');
@@ -226,10 +227,16 @@ init = function() {
     }
   };
   onLoadedComplete = function(instance, img) {
-    return setTimeout(mloader.complete, 600);
+    var timeSinceLoad;
+    if (window.performance) {
+      timeSinceLoad = Math.round(performance.now());
+      ga('send', 'timing', 'Images loading Time', 'imgloadtime', timeSinceLoad);
+    }
+    return mloader.complete();
   };
   $jQ.getJSON(API_URL, (function(_this) {
     return function(data) {
+      ga('send', 'timing', 'JSON loading Time', 'jsonloadtime', Math.round(performance.now()));
       return banco.setup(data, onLoadProgress, onLoadedComplete);
     };
   })(this));
@@ -265,16 +272,6 @@ document.addEventListener('DOMContentLoaded', function() {
   $.noConflict();
   return init();
 });
-
-
-/*
- This function cannot be renamed.
- OpenBooth will always automatically call "onFlashReady" upon initializing itself.
-onFlashready = ->
-    setTimeout( ->
-        window.overlay.getController('photobooth').embedComplete()
-    , 500 )
- */
 
 
 },{"./app4.coffee":1,"./loader.coffee":3,"./overlay/manager.coffee":7}],3:[function(require,module,exports){
@@ -415,12 +412,14 @@ PhotoUploadOvr = (function() {
     img.src = dataUrl;
     $jQ(img).bind('click', this.showDialog);
     if (($jQ('img', '#photo-submit').length)) {
-      return $jQ('img', '#photo-submit').attr({
+      $jQ('img', '#photo-submit').attr({
         'src': dataUrl
       });
     } else {
-      return $jQ('#photo-submit').append(img);
+      $jQ('#photo-submit').append(img);
     }
+    $jQ('.dz-message').html('');
+    return ga('send', 'event', 'upload', 'thumbnail');
   };
 
   PhotoUploadOvr.prototype.photoSubmitComplete = function(file, data) {
@@ -432,6 +431,7 @@ PhotoUploadOvr = (function() {
 
   PhotoUploadOvr.prototype.photoSubmitSuccess = function(file, data) {
     $jQ('.info').removeClass('label-warning').addClass('label-success').html(" Thanks ! Obrigado ! Merci !  Arigatō ! أوبريغادو 👏 👏 ");
+    ga('send', 'event', 'upload', 'complete');
     return setTimeout(function() {
       if (overlay.on) {
         return overlay.hide(0);
@@ -445,6 +445,7 @@ PhotoUploadOvr = (function() {
     if (data.hasOwnProperty('error')) {
       msg = data['error'];
     }
+    ga('send', 'event', 'upload', 'error', msg);
     $jQ('.info').removeClass('label-success').addClass('label-warning').html('💩 ' + msg);
     return $jQ('#photo-submit').css({
       'border-color': '#ff0000'
@@ -688,7 +689,7 @@ PhotoView = require('./PhotoView.coffee');
     @cobj  = Page Controller
 
     PageController.start = on first appeareance
-    PageController.stop  = on hided
+    PageController.stop  = on hidden
     PageController.render = on *every* appeareance
  */
 
@@ -698,8 +699,8 @@ OverlayManager = (function() {
     this.show = bind(this.show, this);
     this.setPage = bind(this.setPage, this);
     this.el = $jQ(el);
-    this.pages = ['photobooth', 'mostraoteu', 'photoview'];
-    this.controllers = [new Photobooth(this, this.el), new PhotoUpload(this, this.el), new PhotoView(this, this.el)];
+    this.pages = ['mostraoteu', 'photoview'];
+    this.controllers = [new PhotoUpload(this, this.el), new PhotoView(this, this.el)];
     this.el.css({
       width: WIDTH,
       height: HEIGHT
@@ -715,7 +716,6 @@ OverlayManager = (function() {
         }
       };
     })(this));
-    $jQ('#photobooth').hide();
     $jQ('#mostraoteu').hide();
     $jQ('#photoview').hide();
   }
@@ -765,7 +765,6 @@ OverlayManager = (function() {
   /* Hide overlay */
 
   OverlayManager.prototype.hide = function(e) {
-    console.log('overlay:hide');
     this.el.removeClass('visible');
     this.on = false;
     if (this.cobj) {

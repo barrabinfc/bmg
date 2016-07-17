@@ -5,6 +5,8 @@ OverlayManager  = require('./overlay/manager.coffee')
 Loader          = require('./loader.coffee')
 
 init = ->
+    ga('send','timing','JS Loading Time','jsloadtime', Math.round( performance.now() ) );
+
     # Show the /etc/motd
     overlay = new OverlayManager('#overlay')
     overlay.hide()
@@ -27,12 +29,17 @@ init = ->
 
     # Plz wait 600 ms before finishing
     onLoadedComplete = (instance, img) ->
-        setTimeout( mloader.complete , 600 )
+        if(window.performance)
+          timeSinceLoad = Math.round( performance.now() )
+          ga('send','timing','Images loading Time','imgloadtime', timeSinceLoad )
+
+        # Hide loading screen
+        mloader.complete()
 
     # Get genitalia pictures, and start feeding it!
     $jQ.getJSON API_URL , (data) =>
+        ga('send','timing','JSON loading Time','jsonloadtime', Math.round(performance.now()))
         banco.setup data, onLoadProgress, onLoadedComplete
-
 
     ###############
     # User Events #
@@ -68,15 +75,3 @@ document.addEventListener 'DOMContentLoaded', ->
     $.noConflict()
 
     init()
-
-
-
-
-###
- This function cannot be renamed.
- OpenBooth will always automatically call "onFlashReady" upon initializing itself.
-onFlashready = ->
-    setTimeout( ->
-        window.overlay.getController('photobooth').embedComplete()
-    , 500 )
-###

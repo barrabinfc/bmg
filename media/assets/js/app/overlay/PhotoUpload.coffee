@@ -88,6 +88,9 @@ class PhotoUploadOvr
         else
             $jQ('#photo-submit').append(img)
 
+        $jQ('.dz-message').html('');
+        ga('send','event','upload','thumbnail');
+
     photoSubmitComplete: (file,data ) =>
         $jQ('.info').html( );
         $jQ('#photo-submit').css({'border-color': '#ffffff'})
@@ -95,6 +98,8 @@ class PhotoUploadOvr
     photoSubmitSuccess: (file, data) =>
         $jQ('.info').removeClass('label-warning').addClass('label-success')
                     .html( " Thanks ! Obrigado ! Merci !  Arigatō ! أوبريغادو 👏 👏 " );
+
+        ga('send','event','upload','complete');
 
         setTimeout( ->
             if(overlay.on)
@@ -105,6 +110,8 @@ class PhotoUploadOvr
         msg = data
         if(data.hasOwnProperty('error'))
           msg = data['error']
+
+        ga('send','event','upload','error', msg );
 
         $jQ('.info').removeClass('label-success').addClass('label-warning')
                     .html( '💩 ' + msg );

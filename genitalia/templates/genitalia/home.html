@@ -12,7 +12,6 @@
                                         8o    ,8P"`     ,o8
                                          "   mM"        M"
 
-                                         coded by github.com/barrabinfc
 
 -->
 
@@ -33,48 +32,64 @@
     <link href='http://fonts.googleapis.com/css?family=Domine:400,700|EB+Garamond&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Arvo:400,700,400italic,700italic|Nova+Square|Bevan' rel='stylesheet' type='text/css'>               -->
 
-    <link href="{{ STATIC_URL }}css/app.css" rel="stylesheet" media="screen">
-
-
-    <script type="text/javascript">
-        var MEDIA_URL  = "{{ MEDIA_URL }}";
-        var STATIC_URL = "{{ STATIC_URL }}";
-
-        window.API_URL = '/photos/json'
-        window.API_SUBMIT_PHOTO = '/photos/upload'
-        window.API_VERIFY_PHOTO = '/photos/verify'
-    </script>
-    <script src="{{ STATIC_URL }}js/vendors.min.js" type="text/javascript" charset="utf-8" ></script>
-    <script src="{{ STATIC_URL }}js/app.js" type="text/javascript" charset="utf-8" ></script>
+    <link href="{{ STATIC_URL }}css/app.min.css" rel="stylesheet" media="screen">
 </head>
 
 <body>
 
-    <div id="overlay" class="unselectable">
+    <div id="overlay" class="overlay unselectable">
+      <!--
         <div id="startmessage" class="infoscreen">
-            <!-- Are you 18+ and not easily offended ? -->
+             Are you 18+ and not easily offended ?
         </div>
+      -->
 
         <!-- upload -->
         <div id="mostraoteu" class="infoscreen">
-                <div class="top">
-                    <h3><div class="info label-warning"></div></h3>
+                <h3 class="info label-warning"></h3>
+                <div class="photo-container">
                     <form action="/photo/verify" method="POST" enctype="multipart/form-data" id="photo-submit" class="square">
                         <input name="photo" type="file" style="display: none;">
-                        <div class="dz-message">Drag files here to upload</div>
+                        <div class="dz-message">Choose a file or drag it here</div>
                     </form>
                 </div>
                 <div class="bottom">
-                      <div class="progressbar"><div class="bar"></div></div>
+                    <div class="progressbar"><div class="bar"></div></div>
                  </div>
         </div>
 
+        <!-- Photo View -->
+        <div id="photoview" class="photoview">
+            <div class="container">
+              <div class="media left" id="">
+                <img class="photo" src="" />
+              </div>
+              <div class="media center" id="">
+                <img class="photo" src="">
+              </div>
+              <div class="media right" id="">
+                <img class="photo" src="">
+              </div>
+            </div>
+
+
+            <div class="controls">
+              <a class="previous" href="#">
+                ⇠
+              </a>
+              <a class="spacer"></a>
+              <a class="next" href="#">
+                ⇢
+              </a>
+            </div>
+
+        </div>
     </div>
 
       <div id="menu">
           <ul>
-              <li class="right">
-                  <a id="menu-mostraoteu" href="/upload" class="squarebuttons s100">
+              <li class="float right">
+                  <a id="menu-mostraoteu" href="#upload" class="squarebuttons s100">
                       <i class="icon-plus icon-2x" style="vertical-align: middle;"></i>
                   </a>
               </li>
@@ -89,17 +104,26 @@
 
     <div id="loading" class="unselectable"><p>:.:.:</p></div>
 
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-31460681-1']);
-      _gaq.push(['_trackPageview']);
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+      ga('create', 'UA-80901930-1', 'auto');
+      ga('send', 'pageview');
     </script>
+
+    <script type="text/javascript">
+        var MEDIA_URL  = "{{ MEDIA_URL }}";
+        var STATIC_URL = "{{ STATIC_URL }}";
+
+        window.API_URL = '/photos/json'
+        window.API_SUBMIT_PHOTO = '/photos/upload'
+        window.API_VERIFY_PHOTO = '/photos/verify'
+    </script>
+    <script src="{{ STATIC_URL }}js/vendors.min.js" type="text/javascript" charset="utf-8" ></script>
+    <script src="{{ STATIC_URL }}js/app.min.js" type="text/javascript" charset="utf-8" ></script>
 
     </body>
 </html>
