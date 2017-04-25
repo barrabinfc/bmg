@@ -10,6 +10,6 @@ def qs_to_json( queryset ):
     return json_s.serialize( queryset ,ensure_ascii=False )
 
 def json_response( data , status_code=200):
-    t = HttpResponse( json.dumps(data), mimetype='application/json' )
+    t = HttpResponse( json.dumps(data), content_type='application/json' )
     t.status_code = status_code
     return t

@@ -8,7 +8,7 @@ try:
     DEBUG = (uwsgi.opt['DJANGO_DEBUG'] == 'no' ) or True
 except:
     PROJECT_ROOT = os.path.abspath( os.path.join( os.getcwd(), '..' ) )
-    DEBUG = True
+    DEBUG = False
 
 
 TEMPLATE_DEBUG = DEBUG

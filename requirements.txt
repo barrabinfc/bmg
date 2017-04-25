@@ -1,10 +1,10 @@
-Django==1.4
+Django==1.8
 Pillow
 argparse==1.2.1
 certifi==0.0.8
 chardet==1.0.1
 django-dbbackup==1.70
-django-grappelli==2.4.3
+django-grappelli==2.7.3
 dropbox==1.5.1
 simples3==1.0
 wsgiref==0.1.2
